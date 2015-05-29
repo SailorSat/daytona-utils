@@ -1,0 +1,6 @@
+Window = 44, 44, 743, 311, Z, 22, 22, 721, 289, C
+Winsock = 132, 132, 831, 399, 
+Socket = 0, 0, 0, 0, C
+IniFiles = 0, 0, 0, 0, C
+CoreEvents = 0, 0, 0, 0, C
+WindowsAPI = 0, 0, 0, 0, C

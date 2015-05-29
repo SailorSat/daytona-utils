@@ -1,0 +1,9 @@
+IniFiles = 0, 0, 0, 0, C
+ProcessMemory = 0, 0, 0, 0, C
+DaytonaOffsets = 85, 390, 640, 780, 
+Winsock = 1110, 0, 1665, 390, C
+Socket = 0, 0, 0, 0, C
+CoreEvents = 555, 390, 1110, 780, C
+Window = 0, 1, 832, 493, , 0, 390, 817, 780, C
+ControlConstants = 0, 0, 821, 386, 
+WindowLock = 0, 0, 0, 0, C, 22, 22, 327, 255, C

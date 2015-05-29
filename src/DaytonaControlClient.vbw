@@ -1,0 +1,9 @@
+Window = 556, 0, 1112, 492, , 0, 390, 556, 780, C
+IniFiles = 556, 0, 1112, 390, 
+ProcessMemory = 556, 390, 1112, 780, 
+DaytonaOffsets = 78, 0, 640, 492, 
+Winsock = 84, 260, 640, 520, 
+Socket = 0, 0, 0, 0, C
+CoreEvents = 84, 220, 640, 480, 
+ControlConstants = 0, 0, 556, 492, 
+WindowsAPI = 0, 0, 0, 0, C

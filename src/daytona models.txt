@@ -1,0 +1,96 @@
+0283FBB4 - npc 00
+0283FC04 - npc 1
+0283FC54 - npc 2
+0283FCA4 - npc 3
+0283FCF4
+0283FD44
+0283FD94
+0283FDE4
+0283FE34
+0283FFC4 - npc 13
+02840014 - npc 15
+02840064 - npc 16
+028400B4 - npc 20
+02840104 - npc 28
+028401F4 - npc 31
+02840244 - npc 32
+02840294 - npc 35
+028402E4 - npc 42
+02840334 - npc 46
+02840384 - npc 51
+028403D4 - npc 53
+02840424 - npc 55
+02840474 - npc 62
+028404C4 - npc 66
+02840514 - npc 69
+02840564 - npc 71
+028405B4 - npc 73
+02840604 - npc 77
+02840654 - npc 78
+028406A4 - npc 80
+028406F4 - npc 82
+02840924 - npc 99
+02840974 - npc 69 alt
+
+02842F1C - big purple coin
+02843728 - dice
+0284373C - post?
+
+0284378C - roulette
+02843944 - virtua starting lights
+
+028439E4 - virtua stock car?!
+
+02843B38 - GOAL!
+
+02843E44
+
+02843BB0 - at
+02843CF0 - mt
+
+02843E94 - pylon
+
+0284413C - pony
+...
+02844394
+
+028443A8 - gigantic guy?!
+
+028448E4 - adv course
+028448F8 - exp course
+0284490C - beg course
+
+02844934 - bird
+...
+02844BA0
+
+02844E20 - crew
+
+02844E84 - daytona lights
+
+028458E8 - some car?
+
+02845C44 - cockpit at
+02845C58 - cockpit mt
+
+02846D88 - car AT
+02846DB0 - car MT
+
+02848890 - car 1
+028488E0 - car 2
+02848930 - car 3
+02848980 - car 4
+028489D0 - car 5
+02848A20 - car 6
+02848A70 - car 7
+02848AC0 - car 8
+02848B24 - npc 99
+
+0284A30C - 1P
+...
+
+0284A3AC - 1P sideways left?!
+...
+
+0284A44C - 1p sideways right?!
+...
