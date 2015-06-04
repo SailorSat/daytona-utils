@@ -42,13 +42,19 @@ End Sub
 Public Sub STATS_OnReadUDP(lHandle As Long, sBuffer As String, sAddress As String)
   Dim LastFrame As DaytonaFrame
   Dim Index As Integer
+  Dim Packet As DaytonaPacket
   
   Set LastFrame = ParseFrame(sBuffer)
   If Not LastFrame Is Nothing Then
     If CurrentTrack < 3 Then
       For Index = 0 To 7
-        DrawMap LastFrame.Packet(Index)
-        DrawDistance LastFrame.Packet(Index)
+        Set Packet = LastFrame.Packet(Index)
+        If Packet.x016_LocalGameState = &H14 Or Packet.x01B_RemoteGameState = &H14 Or Packet.x016_LocalGameState = &H16 Or Packet.x01B_RemoteGameState = &H16 Then
+          If Packet.x00C_LocalNode = CurrentNode Or Packet.x018_MasterNode = CurrentNode Then
+            DrawMap Packet
+            DrawDistance Packet
+          End If
+        End If
       Next
     End If
     If CLIENT_Online Then
@@ -101,34 +107,30 @@ Private Sub DrawMap(Packet As DaytonaPacket)
   Dim IntX As Integer
   Dim IntY As Integer
   Dim IntZ As Integer
-  If Packet.x016_LocalGameState = &H14 Or Packet.x01B_RemoteGameState = &H14 Or Packet.x016_LocalGameState = &H16 Or Packet.x01B_RemoteGameState = &H16 Then
-    If Packet.x00C_LocalNode = CurrentNode Or Packet.x018_MasterNode = CurrentNode Then
-      If CurrentTrack = 0 Then
-        PosX = Packet.x05C_CarY
-        PosY = Packet.x064_CarX
-        PosZ = Packet.x060_CarZ
-        IntX = (320 - (PosX * 0.9))
-        IntY = (200 + (PosY * 0.9))
-        IntZ = 64 + PosZ
-        Window2.imgCar(Packet.x0D4_CarNumber).Move -8 + IntX, 40 + IntY
-      ElseIf CurrentTrack = 1 Then
-        PosX = Packet.x064_CarX
-        PosY = Packet.x05C_CarY
-        PosZ = Packet.x060_CarZ
-        IntX = (320 + (PosX / 5.5))
-        IntY = (190 + (PosY / 5.5))
-        IntZ = 64 + PosZ
-        Window2.imgCar(Packet.x0D4_CarNumber).Move -8 + IntX, 40 + IntY
-      ElseIf CurrentTrack = 2 Then
-        PosX = Packet.x064_CarX
-        PosY = Packet.x05C_CarY
-        PosZ = Packet.x060_CarZ
-        IntX = (320 - (PosX / 2.25))
-        IntY = (200 - (PosY / 2.25))
-        IntZ = 64 + PosZ
-        Window2.imgCar(Packet.x0D4_CarNumber).Move -8 + IntX, 40 + IntY
-      End If
-    End If
+  If CurrentTrack = 0 Then
+    PosX = Packet.x05C_CarY
+    PosY = Packet.x064_CarX
+    PosZ = Packet.x060_CarZ
+    IntX = (320 - (PosX * 0.9))
+    IntY = (200 + (PosY * 0.9))
+    IntZ = 64 + PosZ
+    Window2.imgCar(Packet.x0D4_CarNumber).Move -8 + IntX, 40 + IntY
+  ElseIf CurrentTrack = 1 Then
+    PosX = Packet.x064_CarX
+    PosY = Packet.x05C_CarY
+    PosZ = Packet.x060_CarZ
+    IntX = (320 + (PosX / 5.5))
+    IntY = (190 + (PosY / 5.5))
+    IntZ = 64 + PosZ
+    Window2.imgCar(Packet.x0D4_CarNumber).Move -8 + IntX, 40 + IntY
+  ElseIf CurrentTrack = 2 Then
+    PosX = Packet.x064_CarX
+    PosY = Packet.x05C_CarY
+    PosZ = Packet.x060_CarZ
+    IntX = (320 - (PosX / 2.25))
+    IntY = (200 - (PosY / 2.25))
+    IntZ = 64 + PosZ
+    Window2.imgCar(Packet.x0D4_CarNumber).Move -8 + IntX, 40 + IntY
   End If
 End Sub
 
