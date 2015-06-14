@@ -126,6 +126,10 @@ Public Function ParseFrame(sBuffer As String) As String
         baBuffer(&H30) = 8  ' Cab #8
         FAKE_Size = FAKE_Size + 1
       End If
+      If baBuffer(&H36) = 0 Then
+        baBuffer(&H36) = 0  ' Cab #1
+        FAKE_Size = FAKE_Size + 1
+      End If
     Case 1
       ' type 1 packet
       ' count up ids
@@ -191,7 +195,7 @@ Public Function ParseFrame(sBuffer As String) As String
           lOffset = 5
           baBuffer(lOffset + &HB) = 0
           baBuffer(lOffset + &HC) = 0
-          baBuffer(lOffset + &H16) = 3
+          baBuffer(lOffset + &H16) = &H3
           baBuffer(lOffset + &H18) = 0
           baBuffer(lOffset + &H1B) = 0
           baBuffer(lOffset + &HD4) = 8 - lIndex
