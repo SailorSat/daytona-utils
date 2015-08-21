@@ -4,15 +4,32 @@ Begin VB.Form Window
    BackColor       =   &H00FFFFFF&
    BorderStyle     =   0  'None
    Caption         =   "LiveStats"
-   ClientHeight    =   9075
+   ClientHeight    =   12000
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   15360
+   ClientWidth     =   19200
    LinkTopic       =   "Form1"
    Picture         =   "Window.frx":0000
-   ScaleHeight     =   605
+   ScaleHeight     =   800
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   1024
+   ScaleWidth      =   1280
+   Begin VB.PictureBox pbBanner 
+      Appearance      =   0  'Flat
+      AutoRedraw      =   -1  'True
+      AutoSize        =   -1  'True
+      BackColor       =   &H00000000&
+      BorderStyle     =   0  'None
+      ForeColor       =   &H80000008&
+      Height          =   720
+      Left            =   9600
+      Picture         =   "Window.frx":11D6
+      ScaleHeight     =   48
+      ScaleMode       =   3  'Pixel
+      ScaleWidth      =   683
+      TabIndex        =   6
+      Top             =   0
+      Width           =   10245
+   End
    Begin VB.PictureBox pbBackground 
       Appearance      =   0  'Flat
       AutoRedraw      =   -1  'True
@@ -22,7 +39,7 @@ Begin VB.Form Window
       ForeColor       =   &H80000008&
       Height          =   7200
       Left            =   9600
-      Picture         =   "Window.frx":11D6
+      Picture         =   "Window.frx":392F
       ScaleHeight     =   480
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   640
@@ -39,7 +56,7 @@ Begin VB.Form Window
       ForeColor       =   &H80000008&
       Height          =   5760
       Left            =   0
-      Picture         =   "Window.frx":23AC
+      Picture         =   "Window.frx":4B05
       ScaleHeight     =   384
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   640
@@ -56,7 +73,7 @@ Begin VB.Form Window
       ForeColor       =   &H80000008&
       Height          =   7200
       Left            =   0
-      Picture         =   "Window.frx":2A2D
+      Picture         =   "Window.frx":5186
       ScaleHeight     =   480
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   640
@@ -77,7 +94,7 @@ Begin VB.Form Window
       Height          =   5760
       Index           =   0
       Left            =   9600
-      Picture         =   "Window.frx":6CEA
+      Picture         =   "Window.frx":9443
       ScaleHeight     =   384
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   640
@@ -104,7 +121,7 @@ Begin VB.Form Window
       Height          =   5760
       Index           =   1
       Left            =   9600
-      Picture         =   "Window.frx":7BDA
+      Picture         =   "Window.frx":A333
       ScaleHeight     =   384
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   640
@@ -126,7 +143,7 @@ Begin VB.Form Window
       Height          =   5760
       Index           =   2
       Left            =   9600
-      Picture         =   "Window.frx":8DB0
+      Picture         =   "Window.frx":B509
       ScaleHeight     =   384
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   640
@@ -140,7 +157,7 @@ Begin VB.Form Window
       Height          =   240
       Index           =   7
       Left            =   0
-      Picture         =   "Window.frx":A002
+      Picture         =   "Window.frx":C75B
       Top             =   1680
       Width           =   240
    End
@@ -149,7 +166,7 @@ Begin VB.Form Window
       Height          =   240
       Index           =   6
       Left            =   0
-      Picture         =   "Window.frx":A380
+      Picture         =   "Window.frx":CAD9
       Top             =   1440
       Width           =   240
    End
@@ -158,7 +175,7 @@ Begin VB.Form Window
       Height          =   240
       Index           =   5
       Left            =   0
-      Picture         =   "Window.frx":A6FA
+      Picture         =   "Window.frx":CE53
       Top             =   1200
       Width           =   240
    End
@@ -167,7 +184,7 @@ Begin VB.Form Window
       Height          =   240
       Index           =   4
       Left            =   0
-      Picture         =   "Window.frx":AA76
+      Picture         =   "Window.frx":D1CF
       Top             =   960
       Width           =   240
    End
@@ -176,7 +193,7 @@ Begin VB.Form Window
       Height          =   240
       Index           =   3
       Left            =   0
-      Picture         =   "Window.frx":ADF4
+      Picture         =   "Window.frx":D54D
       Top             =   720
       Width           =   240
    End
@@ -185,7 +202,7 @@ Begin VB.Form Window
       Height          =   240
       Index           =   2
       Left            =   0
-      Picture         =   "Window.frx":B170
+      Picture         =   "Window.frx":D8C9
       Top             =   480
       Width           =   240
    End
@@ -194,7 +211,7 @@ Begin VB.Form Window
       Height          =   240
       Index           =   1
       Left            =   0
-      Picture         =   "Window.frx":B4EC
+      Picture         =   "Window.frx":DC45
       Top             =   240
       Width           =   240
    End
@@ -203,7 +220,7 @@ Begin VB.Form Window
       Height          =   240
       Index           =   0
       Left            =   0
-      Picture         =   "Window.frx":B86A
+      Picture         =   "Window.frx":DFC3
       Top             =   0
       Width           =   240
    End
@@ -310,15 +327,28 @@ End Sub
 
 Public Sub MoveBorder()
   WINDOW_Offset = WINDOW_Offset - 1
-  If WINDOW_Offset <= -640 Then WINDOW_Offset = 0
+  If WINDOW_Offset <= -683 Then WINDOW_Offset = 0
+  
+  ' Banner
+'  BitBlt Window.hDC, WINDOW_Offset, 0, 683, 48, pbBanner.hDC, 0, 0, vbSrcCopy
+'  BitBlt Window.hDC, 683 + WINDOW_Offset, 0, 683, 48, pbBanner.hDC, 0, 0, vbSrcCopy
+  BitBlt Window.hDC, WINDOW_Offset, 432, 683, 48, pbBanner.hDC, 0, 0, vbSrcCopy
+  BitBlt Window.hDC, 683 + WINDOW_Offset, 432, 683, 48, pbBanner.hDC, 0, 0, vbSrcCopy
+'  BitBlt Window2.hDC, WINDOW_Offset, 0, 683, 48, pbBanner.hDC, 0, 0, vbSrcCopy
+'  BitBlt Window2.hDC, 683 + WINDOW_Offset, 0, 683, 48, pbBanner.hDC, 0, 0, vbSrcCopy
+  BitBlt Window2.hDC, WINDOW_Offset, 432, 683, 48, pbBanner.hDC, 0, 0, vbSrcCopy
+  BitBlt Window2.hDC, 683 + WINDOW_Offset, 432, 683, 48, pbBanner.hDC, 0, 0, vbSrcCopy
+  
+  ' Background (Checkerboard)
   BitBlt Window.hDC, WINDOW_Offset, 0, 640, 48, pbBackground.hDC, 0, 0, vbSrcCopy
   BitBlt Window.hDC, 640 + WINDOW_Offset, 0, 640, 48, pbBackground.hDC, 0, 0, vbSrcCopy
-  BitBlt Window.hDC, WINDOW_Offset, 432, 640, 48, pbBackground.hDC, 0, 432, vbSrcCopy
-  BitBlt Window.hDC, 640 + WINDOW_Offset, 432, 640, 48, pbBackground.hDC, 0, 432, vbSrcCopy
+'  BitBlt Window.hDC, WINDOW_Offset, 432, 640, 48, pbBackground.hDC, 0, 432, vbSrcCopy
+'  BitBlt Window.hDC, 640 + WINDOW_Offset, 432, 640, 48, pbBackground.hDC, 0, 432, vbSrcCopy
   BitBlt Window2.hDC, WINDOW_Offset, 0, 640, 48, pbBackground.hDC, 0, 0, vbSrcCopy
   BitBlt Window2.hDC, 640 + WINDOW_Offset, 0, 640, 48, pbBackground.hDC, 0, 0, vbSrcCopy
-  BitBlt Window2.hDC, WINDOW_Offset, 432, 640, 48, pbBackground.hDC, 0, 432, vbSrcCopy
-  BitBlt Window2.hDC, 640 + WINDOW_Offset, 432, 640, 48, pbBackground.hDC, 0, 432, vbSrcCopy
+'  BitBlt Window2.hDC, WINDOW_Offset, 432, 640, 48, pbBackground.hDC, 0, 432, vbSrcCopy
+'  BitBlt Window2.hDC, 640 + WINDOW_Offset, 432, 640, 48, pbBackground.hDC, 0, 432, vbSrcCopy
+
   Window.Refresh
   Window2.Refresh
 End Sub
