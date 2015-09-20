@@ -3,13 +3,66 @@ Begin VB.Form Window
    BackColor       =   &H00404040&
    BorderStyle     =   0  'None
    Caption         =   "DriveFeedback"
-   ClientHeight    =   240
+   ClientHeight    =   3450
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   240
+   ClientWidth     =   6105
    LinkTopic       =   "Form1"
-   ScaleHeight     =   240
-   ScaleWidth      =   240
+   ScaleHeight     =   3450
+   ScaleWidth      =   6105
+   Begin VB.TextBox txtLamp 
+      Alignment       =   2  'Center
+      BeginProperty Font 
+         Name            =   "Fixedsys"
+         Size            =   9
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   285
+      Left            =   1320
+      TabIndex        =   1
+      Text            =   "00"
+      Top             =   360
+      Width           =   375
+   End
+   Begin VB.TextBox txtDrive 
+      Alignment       =   2  'Center
+      BeginProperty Font 
+         Name            =   "Fixedsys"
+         Size            =   9
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   285
+      Left            =   480
+      TabIndex        =   0
+      Text            =   "00"
+      Top             =   360
+      Width           =   375
+   End
+   Begin VB.Label lblDebug 
+      Alignment       =   2  'Center
+      BeginProperty Font 
+         Name            =   "Fixedsys"
+         Size            =   9
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   255
+      Left            =   480
+      TabIndex        =   2
+      Top             =   960
+      Width           =   1215
+   End
 End
 Attribute VB_Name = "Window"
 Attribute VB_GlobalNameSpace = False
@@ -45,7 +98,7 @@ Private Sub Form_Load()
   Dim Port As Long
 
   Me.BackColor = RGB(255, 0, 0)
-  Me.Move Me.Width * 2, 0
+  Me.Move 480, 0 ', 240, 240
   Me.Show
   
   Winsock.Load
@@ -167,14 +220,6 @@ Private Sub Form_Load()
         If Profile <> "" Then
           MODEL2_Online = True
         End If
-      Else
-        Dim drivByte As Byte
-        Dim lampByte As Byte
-        drivByte = &HFF
-        lampByte = &HFF   'Rnd * 255
-        'SendUDP UDP_Socket, Chr(&HA5) & Chr(drivByte) & Chr(lampByte), UDP_RemoteAddress
-        drivByte = &H10
-        'SendUDP UDP_Socket, Chr(&HA5) & Chr(drivByte) & Chr(lampByte), UDP_RemoteAddress
       End If
     End If
   Loop
@@ -201,7 +246,7 @@ Private Function TranslateDrive(ByRef OldData As Byte, ByVal NewData As Byte) As
         Case Else
           Exit Function
       End Select
-      'Debug.Print Profile, Hex(NewData), "->", Hex(TempData)
+      lblDebug.Caption = Hex(NewData) & " > " & Hex(TempData)
       If OldData <> TempData Then
         OldData = TempData
         TranslateDrive = True
@@ -217,7 +262,7 @@ Private Function TranslateDrive(ByRef OldData As Byte, ByVal NewData As Byte) As
         ' halve the force of any movements
         Case &H20, &H30, &H40, &H50, &H60
           TempData = CmdGroup + (CmdForce \ 2)
-          Debug.Print Hex(NewData), Hex(TempData)
+          lblDebug.Caption = Hex(NewData) & " > " & Hex(TempData)
         Case Else
           TempData = NewData
       End Select
@@ -253,11 +298,11 @@ Private Function TranslateDrive(ByRef OldData As Byte, ByVal NewData As Byte) As
         Case &H80 To &H9F
           ' turn right
           Force = (NewData - &H80)
-          TempData = &H60 + (Force / 2)
+          TempData = &H60 + (Force / 4)
         Case &HC0 To &HDF
           ' turn left
           Force = (NewData - &HC0)
-          TempData = &H50 + (Force / 2)
+          TempData = &H50 + (Force / 4)
           
         Case Else
           TempData = NewData
@@ -277,3 +322,38 @@ Private Function TranslateDrive(ByRef OldData As Byte, ByVal NewData As Byte) As
   End If
 End Function
 
+Private Sub txtDrive_KeyPress(KeyAscii As Integer)
+  If KeyAscii = 13 Then
+    KeyAscii = 0
+    Dim DummyData As Byte
+    On Error Resume Next
+    DummyData = CByte("&H" & txtDrive)
+    On Error GoTo 0
+    If Err Then
+      Err.Clear
+      txtDrive.Text = "00"
+    Else
+      DriveData = DummyData
+      UDP_Buffer = Chr(&HA5) & Chr(DriveData) & Chr(LampData)
+      SendUDP UDP_Socket, UDP_Buffer, UDP_RemoteAddress
+    End If
+  End If
+End Sub
+
+Private Sub txtLamp_KeyPress(KeyAscii As Integer)
+  If KeyAscii = 13 Then
+    KeyAscii = 0
+    Dim DummyData As Byte
+    On Error Resume Next
+    DummyData = CByte("&H" & txtLamp)
+    On Error GoTo 0
+    If Err Then
+      Err.Clear
+      txtLamp.Text = "00"
+    Else
+      LampData = DummyData
+      UDP_Buffer = Chr(&HA5) & Chr(DriveData) & Chr(LampData)
+      SendUDP UDP_Socket, UDP_Buffer, UDP_RemoteAddress
+    End If
+  End If
+End Sub

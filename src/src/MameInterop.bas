@@ -18,8 +18,8 @@ Public Function mame_start() As Long
   Debug.Print "mame_start"
   ReDim output_array(1, 0) As String
   MAME_Online = True
-  MAME_DriveData = 0
-  MAME_LampData = 0
+  MAME_DriveData = &H0
+  MAME_LampData = &H0
   MAME_Profile = ""
 End Function
 
