@@ -93,14 +93,9 @@ Public Function ReadSerialBuffer() As Boolean
   bRead = 0
   Result = ReadFile(mHandle, SerialReadBuffer(SerialOffset), bLength, bRead, 0)
   SerialOffset = SerialOffset + bRead
-  If SerialOffset = 9 Then
-    If SerialReadBuffer(8) = &HA5 Then
-      SerialOffset = 0
-      ReadSerialBuffer = True
-    Else
-      SerialOffset = 8
-      Debug.Print "desync...", Hex(SerialReadBuffer(8))
-    End If
+  If SerialOffset = 8 Then
+    SerialOffset = 0
+    ReadSerialBuffer = True
   Else
     ReadSerialBuffer = False
   End If

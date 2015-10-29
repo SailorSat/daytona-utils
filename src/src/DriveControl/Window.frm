@@ -27,10 +27,6 @@ Private PortConfig As String
 
 Private Ready As Boolean
 
-Private DriveData As Byte
-Private LampData As Byte
-Private DataChanged As Boolean
-
 Private Joystick As JOYSTICK_POSITION_V2
 
 Private Sub Form_DblClick()
@@ -70,7 +66,7 @@ Private Sub Form_Load()
   ' init serial port (resets arduino)
   Me.BackColor = RGB(255, 255, 0)
   Ready = False
-  DataChanged = False
+  
   If Not OpenSerial(PortName, PortConfig) Then
     DoEvents
   End If
@@ -82,8 +78,11 @@ Private Sub Form_Load()
     SomeData = ReadSerialByte
     DoEvents
   Wend
-  WriteSerialByte &HA5
   WriteSerialByte &H0
+  WriteSerialByte &H0
+  WriteSerialByte &H1
+  WriteSerialByte &H0
+  WriteSerialByte &H2
   WriteSerialByte &H0
   Ready = True
   
@@ -102,12 +101,8 @@ Private Sub Form_Load()
       Joystick.wAxisZ = CLng(SerialReadBuffer(5)) * 256 + SerialReadBuffer(4)
       Joystick.lButtons = CLng(SerialReadBuffer(7)) * 256 + SerialReadBuffer(6)
       UpdateVJD 1, Joystick
-    End If
-    If DataChanged Then
-      DataChanged = False
-      WriteSerialByte &HA5
-      WriteSerialByte DriveData
-      WriteSerialByte LampData
+      WriteSerialByte &H0
+      WriteSerialByte &H0
     End If
     DoEvents
     Sleep 1
@@ -124,23 +119,27 @@ End Sub
 
 Public Sub OnReadUDP(lHandle As Long, sBuffer As String, sAddress As String)
   UDP_Buffer = UDP_Buffer & sBuffer
-  While Len(UDP_Buffer) > 2
+  While Len(UDP_Buffer) > 1
     Dim bData() As Byte
     bData = StrConv(Left(UDP_Buffer, 3), vbFromUnicode)
-    If bData(0) = &HA5 Then
-      UDP_Buffer = Mid(UDP_Buffer, 4)
-      DriveData = bData(1)
-      LampData = bData(2)
-'      DataChanged = Ready
-      If Ready Then
-        WriteSerialByte &HA5
-        WriteSerialByte DriveData
-        WriteSerialByte LampData
-        Debug.Print "data", Hex(DriveData), Hex(LampData)
-      End If
-    Else
-      UDP_Buffer = Mid(UDP_Buffer, 2)
-    End If
+    Select Case bData(0)
+      Case 1
+        UDP_Buffer = Mid(UDP_Buffer, 3)
+        If Ready Then
+          WriteSerialByte bData(0)
+          WriteSerialByte bData(1)
+          Debug.Print "drive", Hex(bData(1))
+        End If
+      Case 2
+        UDP_Buffer = Mid(UDP_Buffer, 3)
+        If Ready Then
+          WriteSerialByte bData(0)
+          WriteSerialByte bData(1)
+          Debug.Print "lamp", Hex(bData(1))
+        End If
+      Case Else
+        UDP_Buffer = Mid(UDP_Buffer, 2)
+    End Select
   Wend
 End Sub
 

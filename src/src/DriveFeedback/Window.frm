@@ -144,13 +144,17 @@ Private Sub Form_Load()
     
       SomeData = Get_MAME_DriveData
       If SomeData <> DriveData Then
-        DataChanged = TranslateDrive(DriveData, SomeData)
+        If TranslateDrive(DriveData, SomeData) Then
+          UDP_Buffer = Chr(&H1) & Chr(DriveData)
+          SendUDP UDP_Socket, UDP_Buffer, UDP_RemoteAddress
+        End If
       End If
   
       RtlMoveMemory SomeData, MAME_LampData, 1
       If SomeData <> LampData Then
         LampData = SomeData
-        DataChanged = True
+        UDP_Buffer = Chr(&H2) & Chr(LampData)
+        SendUDP UDP_Socket, UDP_Buffer, UDP_RemoteAddress
       End If
   
       If DataChanged Then
@@ -165,13 +169,17 @@ Private Sub Form_Load()
     
         SomeData = ReadByte(DriveOffset)
         If SomeData <> DriveData Then
-          DataChanged = TranslateDrive(DriveData, SomeData)
+          If TranslateDrive(DriveData, SomeData) Then
+            UDP_Buffer = Chr(&H1) & Chr(DriveData)
+            SendUDP UDP_Socket, UDP_Buffer, UDP_RemoteAddress
+          End If
         End If
     
         SomeData = ReadByte(LampOffset)
         If SomeData <> LampData Then
           LampData = SomeData
-          DataChanged = True
+          UDP_Buffer = Chr(&H2) & Chr(LampData)
+          SendUDP UDP_Socket, UDP_Buffer, UDP_RemoteAddress
         End If
     
         If DataChanged Then
@@ -334,7 +342,7 @@ Private Sub txtDrive_KeyPress(KeyAscii As Integer)
       txtDrive.Text = "00"
     Else
       DriveData = DummyData
-      UDP_Buffer = Chr(&HA5) & Chr(DriveData) & Chr(LampData)
+      UDP_Buffer = Chr(&H1) & Chr(DriveData)
       SendUDP UDP_Socket, UDP_Buffer, UDP_RemoteAddress
     End If
   End If
@@ -352,7 +360,7 @@ Private Sub txtLamp_KeyPress(KeyAscii As Integer)
       txtLamp.Text = "00"
     Else
       LampData = DummyData
-      UDP_Buffer = Chr(&HA5) & Chr(DriveData) & Chr(LampData)
+      UDP_Buffer = Chr(&H2) & Chr(LampData)
       SendUDP UDP_Socket, UDP_Buffer, UDP_RemoteAddress
     End If
   End If

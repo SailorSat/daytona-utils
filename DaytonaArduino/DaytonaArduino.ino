@@ -25,10 +25,7 @@ DECODE  = D4
 */
 #include "DaytonaArduino.h"
 
-byte DrivValue = 0;
-byte LampValue = 0;
-byte FlipFlop = 2;
-unsigned long lastTick = 0;
+dataForController_t controllerData = getControllerData();
 
 void setup() {
   setupPins();
@@ -36,36 +33,25 @@ void setup() {
 }
 
 void loop() {
-  if (millis() - lastTick >= 16) {
-    lastTick = millis();
-    dataForController_t controllerData = getControllerData();
-    Serial.write(0xA5);
-    for (byte offset = 0; offset < 8; offset++) {
-      Serial.write(((uint8_t*)&controllerData)[offset]);
-    }
-  }
-
-  while (Serial.available() > 0) {
-    // Always be setting fresh Output (FFB + Lamps) data
+  while (Serial.available() > 1) {
     byte readData = Serial.read();
-    if (readData == 0xA5 && FlipFlop > 1 ) {
-      // sync byte
-      FlipFlop = 0;
-    } else {
-      if (FlipFlop == 0) {
-        // drive board data
-        if (DrivValue != readData) {
-          DrivValue = readData;
-          PORTA = DrivValue;
+    switch (readData) {
+      case 0x00:
+        // 0 - controller feed    
+        Serial.read();
+        controllerData = getControllerData();
+        for (byte offset = 0; offset < 8; offset++) {
+          Serial.write(((uint8_t*)&controllerData)[offset]);
         }
-      } else if (FlipFlop == 1) {
-        // lamp data
-        if (LampValue != readData) {
-          LampValue = readData;
-          PORTK = LampValue;
-        }
-      }
-      FlipFlop++;
+        break;
+      case 0x01:
+        // 1 - drive board command
+        PORTA = Serial.read();
+        break;
+      case 0x02:
+        // 2 - lamp data
+        PORTK = Serial.read();
+        break;
     }
   }
 }
@@ -88,7 +74,7 @@ void setupPins(void) {
 
 void setupSerial() {
   // Start the serial port
-  Serial.begin(115200);
+  Serial.begin(250000);
   Serial.write(0xA5);
 }
 
