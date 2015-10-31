@@ -134,7 +134,6 @@ Private Function OpenProcessMemoryModel3() As Boolean
     CloseProcess
     Exit Function
   End If
-  
   OpenProcessMemoryModel3 = True
 End Function
 
@@ -212,7 +211,7 @@ Private Function OpenProcessID(Process As Long) As Long
 End Function
 
 
-Private Function CloseProcess() As Long
+Public Function CloseProcess() As Long
   Dim Result As Long
   Result = CloseHandle(mHandle)
   CloseProcess = -1

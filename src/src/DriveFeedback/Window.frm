@@ -179,84 +179,13 @@ Private Sub Form_Load()
       Wend
       MODEL3_Online = False
     Else
-      Dim EmulatorWindow As Long
       If OpenMemory Then
-        ' check model 2
-        Profile = ""
-        
-        EmulatorWindow = FindWindowA(vbNullString, "Daytona USA (Saturn Ads)")
-        If EmulatorWindow Then
-          Profile = "daytona"
-          DriveOffset = pRAMBASE + CUSTOM_DRIVE
-          LampOffset = pRAMBASE + CUSTOM_LAMP
-        End If
-          
-        EmulatorWindow = FindWindowA(vbNullString, "Indianapolis 500 (Rev A, Twin, Newer rev)")
-        If EmulatorWindow Then
-          Profile = "indy500"
-          DriveOffset = pRAMBASE + &HEBF74
-          LampOffset = pRAMBASE + &H3C390
-        End If
-          
-        EmulatorWindow = FindWindowA(vbNullString, "Sega Touring Car Championship (Rev A)")
-        If EmulatorWindow Then
-          Profile = "stcc"
-          DriveOffset = pRAM2BASE + &HB2E0&
-          LampOffset = pRAM2BASE + &HB2E4&
-        End If
-          
-        EmulatorWindow = FindWindowA(vbNullString, "Sega Rally Championship")
-        If EmulatorWindow Then
-          Profile = "srallyc"
-          DriveOffset = pRAM2BASE + &H2049&
-          LampOffset = pRAM2BASE + &H204C&
-        End If
-        
-        If Profile <> "" Then
-          MODEL2_Online = True
-        End If
+        CheckProfile
       ElseIf OpenMemoryModel3 Then
-        ' check model 3
-        Profile = ""
-        
-        EmulatorWindow = FindWindowA(vbNullString, "Supermodel - Daytona USA 2 Battle on the Edge")
-        If EmulatorWindow Then
-          Profile = "daytona2"
-          DriveOffset = pRAMBASE + &H1084B1
-          LampOffset = pRAMBASE + &H1016EF
-        End If
-      
-        EmulatorWindow = FindWindowA(vbNullString, "Supermodel - Daytona USA 2 Power Edition")
-        If EmulatorWindow Then
-          Profile = "daytona2"
-          DriveOffset = pRAMBASE + &H737BBE
-          LampOffset = pRAMBASE + &H73780E
-        End If
-      
-        EmulatorWindow = FindWindowA(vbNullString, "Supermodel - Scud Race (Australia)")
-        If EmulatorWindow Then
-          Profile = "daytona2"
-          DriveOffset = pRAMBASE + &H107191
-          LampOffset = pRAMBASE + &H1000E7
-        End If
-        
-        EmulatorWindow = FindWindowA(vbNullString, "Supermodel - Scud Race (Export)")
-        If EmulatorWindow Then
-          Profile = "daytona2"
-          DriveOffset = pRAMBASE + &H107191
-          LampOffset = pRAMBASE + &H1000E7
-        End If
-        
-        EmulatorWindow = FindWindowA(vbNullString, "Supermodel - Scud Race (Japan)")
-        If EmulatorWindow Then
-          Profile = "daytona2"
-          DriveOffset = pRAMBASE + &H105191
-          LampOffset = pRAMBASE + &H1000E7
-        End If
-        
-        If Profile <> "" Then
-          MODEL3_Online = True
-        End If
+        CheckProfileModel3
+      Else
+        SendDrive 0
+        SendLamp 0
       End If
     End If
   Loop
@@ -266,6 +195,96 @@ Private Sub Form_Unload(Cancel As Integer)
   Call close_mame
   Winsock.Unload
   End
+End Sub
+
+Private Sub CheckProfile()
+  ' check model 2
+  Dim EmulatorWindow As Long
+  Profile = ""
+  
+  EmulatorWindow = FindWindowA(vbNullString, "Daytona USA (Saturn Ads)")
+  If EmulatorWindow Then
+    Profile = "daytona"
+    DriveOffset = pRAMBASE + CUSTOM_DRIVE
+    LampOffset = pRAMBASE + CUSTOM_LAMP
+  End If
+    
+  EmulatorWindow = FindWindowA(vbNullString, "Indianapolis 500 (Rev A, Twin, Newer rev)")
+  If EmulatorWindow Then
+    Profile = "indy500"
+    DriveOffset = pRAMBASE + &HEBF74
+    LampOffset = pRAMBASE + &H3C390
+  End If
+    
+  EmulatorWindow = FindWindowA(vbNullString, "Sega Touring Car Championship (Rev A)")
+  If EmulatorWindow Then
+    Profile = "stcc"
+    DriveOffset = pRAM2BASE + &HB2E0&
+    LampOffset = pRAM2BASE + &HB2E4&
+  End If
+    
+  EmulatorWindow = FindWindowA(vbNullString, "Sega Rally Championship")
+  If EmulatorWindow Then
+    Profile = "srallyc"
+    DriveOffset = pRAM2BASE + &H2049&
+    LampOffset = pRAM2BASE + &H204C&
+  End If
+  
+  If Profile <> "" Then
+    MODEL2_Online = True
+  End If
+End Sub
+
+Private Sub CheckProfileModel3()
+  ' check model 3
+  Dim EmulatorWindow As Long
+  Profile = ""
+  
+  EmulatorWindow = FindWindowA(vbNullString, "Supermodel - Daytona USA 2 Battle on the Edge")
+  If EmulatorWindow Then
+    Profile = "daytona2"
+    DriveOffset = pRAMBASE + &H1084B1
+    LampOffset = pRAMBASE + &H1016EF
+  End If
+
+  EmulatorWindow = FindWindowA(vbNullString, "Supermodel - Daytona USA 2 Power Edition")
+  If EmulatorWindow Then
+    Profile = "daytona2"
+    DriveOffset = pRAMBASE + &H737BBE
+    LampOffset = pRAMBASE + &H73780E
+  End If
+
+  EmulatorWindow = FindWindowA(vbNullString, "Supermodel - Scud Race (Australia)")
+  If EmulatorWindow Then
+    Profile = "daytona2"
+    DriveOffset = pRAMBASE + &H107191
+    LampOffset = pRAMBASE + &H1000E7
+  End If
+  
+  EmulatorWindow = FindWindowA(vbNullString, "Supermodel - Scud Race (Export)")
+  If EmulatorWindow Then
+    Profile = "daytona2"
+    DriveOffset = pRAMBASE + &H107191
+    LampOffset = pRAMBASE + &H1000E7
+  End If
+  
+  EmulatorWindow = FindWindowA(vbNullString, "Supermodel - Scud Race (Japan)")
+  If EmulatorWindow Then
+    Profile = "daytona2"
+    DriveOffset = pRAMBASE + &H105191
+    LampOffset = pRAMBASE + &H1000E7
+  End If
+  
+  If Profile <> "" Then
+    If ReadByte(DriveOffset) = &H0 Then
+      MODEL3_Online = False
+      Profile = ""
+      CloseProcess
+      Sleep 250
+    Else
+      MODEL3_Online = True
+    End If
+  End If
 End Sub
 
 Private Function TranslateDrive(ByRef OldData As Byte, ByVal NewData As Byte) As Boolean
