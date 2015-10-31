@@ -27,6 +27,24 @@ Public Function OpenMemory() As Boolean
   End If
 End Function
 
+Public Function OpenMemoryModel3() As Boolean
+  ' check if we got handle
+  If mHandle = -1 Then
+    ' no handle, try to open process
+    OpenMemoryModel3 = OpenProcessMemoryModel3
+  Else
+    ' got handle, check if valid
+    Dim Result As Long
+    Dim Buffer As Byte
+    Result = ReadProcessMemory(mHandle, pRAMBASE, Buffer, 1, 0)
+    If Result = 0 Then
+      CloseProcess
+      OpenMemoryModel3 = False
+    Else
+      OpenMemoryModel3 = True
+    End If
+  End If
+End Function
 
 Public Sub CloseMemory()
   CloseProcess
@@ -84,6 +102,40 @@ Private Function OpenProcessMemory() As Boolean
   End If
   
   OpenProcessMemory = True
+End Function
+
+
+Private Function OpenProcessMemoryModel3() As Boolean
+  Dim Process As Long
+  Dim Handle As Long
+  Dim Module As Long
+  
+  OpenProcessMemoryModel3 = False
+  
+  Process = GetProcessByFilename("Supermodel.exe", 0)
+  If Process = -1 Then
+    Exit Function
+  End If
+  
+  Handle = OpenProcessID(Process)
+  If Handle = -1 Then
+    Exit Function
+  End If
+  
+  Dim EmulatorEXE As Long
+  EmulatorEXE = GetModuleByFilename("Supermodel.exe", Process)
+  If EmulatorEXE = -1 Then
+    CloseProcess
+    Exit Function
+  End If
+  
+  pRAMBASE = ReadLong(EmulatorEXE + &H13026C)
+  If pRAMBASE = 0 Then
+    CloseProcess
+    Exit Function
+  End If
+  
+  OpenProcessMemoryModel3 = True
 End Function
 
 

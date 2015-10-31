@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin VB.Form Window 
    BackColor       =   &H00404040&
-   BorderStyle     =   0  'None
+   BorderStyle     =   0  'Kein
    Caption         =   "DriveFeedback"
    ClientHeight    =   3450
    ClientLeft      =   0
@@ -11,7 +11,7 @@ Begin VB.Form Window
    ScaleHeight     =   3450
    ScaleWidth      =   6105
    Begin VB.TextBox txtLamp 
-      Alignment       =   2  'Center
+      Alignment       =   2  'Zentriert
       BeginProperty Font 
          Name            =   "Fixedsys"
          Size            =   9
@@ -29,7 +29,7 @@ Begin VB.Form Window
       Width           =   375
    End
    Begin VB.TextBox txtDrive 
-      Alignment       =   2  'Center
+      Alignment       =   2  'Zentriert
       BeginProperty Font 
          Name            =   "Fixedsys"
          Size            =   9
@@ -47,7 +47,7 @@ Begin VB.Form Window
       Width           =   375
    End
    Begin VB.Label lblDebug 
-      Alignment       =   2  'Center
+      Alignment       =   2  'Zentriert
       BeginProperty Font 
          Name            =   "Fixedsys"
          Size            =   9
@@ -71,16 +71,20 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
+Private CommandUsed(0 To 255) As Boolean
+
 Private UDP_LocalAddress As String
 Private UDP_RemoteAddress As String
 Private UDP_Socket As Long
 Private UDP_Buffer As String
 
 Private MODEL2_Online As Boolean
+Private MODEL3_Online As Boolean
 
 Private Profile As String
 
 Private DriveData As Byte
+Private DriveReal As Byte
 Private LampData As Byte
 
 Private DriveOffset As Long
@@ -143,58 +147,41 @@ Private Sub Form_Load()
       DataChanged = False
     
       SomeData = Get_MAME_DriveData
-      If SomeData <> DriveData Then
-        If TranslateDrive(DriveData, SomeData) Then
-          UDP_Buffer = Chr(&H1) & Chr(DriveData)
-          SendUDP UDP_Socket, UDP_Buffer, UDP_RemoteAddress
-        End If
-      End If
+      ProcessDrive SomeData
   
       RtlMoveMemory SomeData, MAME_LampData, 1
-      If SomeData <> LampData Then
-        LampData = SomeData
-        UDP_Buffer = Chr(&H2) & Chr(LampData)
-        SendUDP UDP_Socket, UDP_Buffer, UDP_RemoteAddress
-      End If
-  
-      If DataChanged Then
-        UDP_Buffer = Chr(&HA5) & Chr(DriveData) & Chr(LampData)
-        SendUDP UDP_Socket, UDP_Buffer, UDP_RemoteAddress
-        'Debug.Print Hex(DriveData), Hex(LampData)
-      End If
+      ProcessLamp SomeData
     ElseIf MODEL2_Online Then
       While OpenMemory
         Sleep 1
         DataChanged = False
     
         SomeData = ReadByte(DriveOffset)
-        If SomeData <> DriveData Then
-          If TranslateDrive(DriveData, SomeData) Then
-            UDP_Buffer = Chr(&H1) & Chr(DriveData)
-            SendUDP UDP_Socket, UDP_Buffer, UDP_RemoteAddress
-          End If
-        End If
-    
+        ProcessDrive SomeData
+        
         SomeData = ReadByte(LampOffset)
-        If SomeData <> LampData Then
-          LampData = SomeData
-          UDP_Buffer = Chr(&H2) & Chr(LampData)
-          SendUDP UDP_Socket, UDP_Buffer, UDP_RemoteAddress
-        End If
+        ProcessLamp SomeData
     
-        If DataChanged Then
-          UDP_Buffer = Chr(&HA5) & Chr(DriveData) & Chr(LampData)
-          SendUDP UDP_Socket, UDP_Buffer, UDP_RemoteAddress
-          'Debug.Print Hex(DriveData), Hex(LampData)
-        Else
-          DoEvents
-        End If
+        DoEvents
       Wend
       MODEL2_Online = False
+    ElseIf MODEL3_Online Then
+      While OpenMemoryModel3
+        Sleep 1
+    
+        SomeData = ReadByte(DriveOffset)
+        ProcessDrive SomeData
+    
+        SomeData = ReadByte(LampOffset)
+        ProcessLamp SomeData
+    
+        DoEvents
+      Wend
+      MODEL3_Online = False
     Else
-      ' check model 2
+      Dim EmulatorWindow As Long
       If OpenMemory Then
-        Dim EmulatorWindow As Long
+        ' check model 2
         Profile = ""
         
         EmulatorWindow = FindWindowA(vbNullString, "Daytona USA (Saturn Ads)")
@@ -228,6 +215,48 @@ Private Sub Form_Load()
         If Profile <> "" Then
           MODEL2_Online = True
         End If
+      ElseIf OpenMemoryModel3 Then
+        ' check model 3
+        Profile = ""
+        
+        EmulatorWindow = FindWindowA(vbNullString, "Supermodel - Daytona USA 2 Battle on the Edge")
+        If EmulatorWindow Then
+          Profile = "daytona2"
+          DriveOffset = pRAMBASE + &H1084B1
+          LampOffset = pRAMBASE + &H1016EF
+        End If
+      
+        EmulatorWindow = FindWindowA(vbNullString, "Supermodel - Daytona USA 2 Power Edition")
+        If EmulatorWindow Then
+          Profile = "daytona2"
+          DriveOffset = pRAMBASE + &H737BBE
+          LampOffset = pRAMBASE + &H73780E
+        End If
+      
+        EmulatorWindow = FindWindowA(vbNullString, "Supermodel - Scud Race (Australia)")
+        If EmulatorWindow Then
+          Profile = "daytona2"
+          DriveOffset = pRAMBASE + &H107191
+          LampOffset = pRAMBASE + &H1000E7
+        End If
+        
+        EmulatorWindow = FindWindowA(vbNullString, "Supermodel - Scud Race (Export)")
+        If EmulatorWindow Then
+          Profile = "daytona2"
+          DriveOffset = pRAMBASE + &H107191
+          LampOffset = pRAMBASE + &H1000E7
+        End If
+        
+        EmulatorWindow = FindWindowA(vbNullString, "Supermodel - Scud Race (Japan)")
+        If EmulatorWindow Then
+          Profile = "daytona2"
+          DriveOffset = pRAMBASE + &H105191
+          LampOffset = pRAMBASE + &H1000E7
+        End If
+        
+        If Profile <> "" Then
+          MODEL3_Online = True
+        End If
       End If
     End If
   Loop
@@ -242,6 +271,10 @@ End Sub
 Private Function TranslateDrive(ByRef OldData As Byte, ByVal NewData As Byte) As Boolean
   Dim TempData As Byte
   TranslateDrive = False
+  
+  Dim CmdGroup As Byte
+  Dim CmdForce As Byte
+  
   Select Case Profile
     Case "outrun"
       Select Case NewData
@@ -261,8 +294,6 @@ Private Function TranslateDrive(ByRef OldData As Byte, ByVal NewData As Byte) As
       End If
       Exit Function
     Case "vr"
-      Dim CmdGroup As Byte
-      Dim CmdForce As Byte
       CmdForce = NewData Mod &H10
       CmdGroup = NewData - CmdForce
       
@@ -289,7 +320,6 @@ Private Function TranslateDrive(ByRef OldData As Byte, ByVal NewData As Byte) As
       End Select
     
     Case "srallyc"
-      Dim Force As Byte
       Select Case NewData
         Case &H0
           TempData = &H10
@@ -305,12 +335,14 @@ Private Function TranslateDrive(ByRef OldData As Byte, ByVal NewData As Byte) As
           
         Case &H80 To &H9F
           ' turn right
-          Force = (NewData - &H80)
-          TempData = &H60 + (Force / 4)
+          CmdForce = (NewData - &H80)
+          TempData = &H60 + (CmdForce / 4)
+          lblDebug.Caption = Hex(NewData) & " > " & Hex(TempData)
         Case &HC0 To &HDF
           ' turn left
-          Force = (NewData - &HC0)
-          TempData = &H50 + (Force / 4)
+          CmdForce = (NewData - &HC0)
+          TempData = &H50 + (CmdForce / 4)
+          lblDebug.Caption = Hex(NewData) & " > " & Hex(TempData)
           
         Case Else
           TempData = NewData
@@ -322,6 +354,92 @@ Private Function TranslateDrive(ByRef OldData As Byte, ByVal NewData As Byte) As
         TranslateDrive = True
       End If
       Exit Function
+      
+    Case "daytona2"
+'      If Not CommandUsed(NewData) Then
+'        CommandUsed(NewData) = True
+'        Debug.Print "new cmd", Hex(NewData)
+'      End If
+      
+      CmdForce = NewData Mod &H10
+      CmdGroup = NewData - CmdForce
+      
+      Select Case CmdGroup
+        Case &H0
+          ' ?
+          Exit Function
+        Case &H10
+          ' centering
+          TempData = &H30 + CmdForce
+          lblDebug.Caption = Hex(NewData) & " > " & Hex(TempData)
+        Case &H20
+          ' friction/clutch
+          TempData = NewData
+        Case &H30
+          ' uncentering
+          TempData = &H40 + CmdForce
+          lblDebug.Caption = Hex(NewData) & " > " & Hex(TempData)
+        Case &H40
+          ' ?
+          Exit Function
+        Case &H50, &H60
+          ' roll left, roll right
+          TempData = CmdGroup + CmdForce
+          lblDebug.Caption = Hex(NewData) & " > " & Hex(TempData)
+        Case &H70
+          ' set force strength
+          Exit Function
+        Case &H80
+          '80 motor off
+          '81 roll Left
+          '82 roll Right
+          '83 clutch on
+          '84 clutch off
+          '85 center
+          '86 ?
+          '87 ?
+          Exit Function
+        
+        Case &H90
+          ' ?
+          Exit Function
+
+        Case &HA0
+          ' ?
+          Exit Function
+        
+        Case &HB0
+          ' ?
+          Exit Function
+        
+        Case &HC0
+          ' Game State
+          TempData = &H0 + CmdForce
+          lblDebug.Caption = LeadZero(Hex(NewData)) & " > " & LeadZero(Hex(TempData))
+          
+        Case &HD0
+          ' Page Select
+          TempData = &H80 + CmdForce
+          lblDebug.Caption = Hex(NewData) & " > " & Hex(TempData)
+          
+        Case &HE0
+          ' ?
+          Exit Function
+          
+        Case &HF0
+          ' ?
+          Exit Function
+        
+        Case Else
+          TempData = NewData
+      End Select
+      
+      If OldData <> TempData Then
+        OldData = TempData
+        TranslateDrive = True
+      End If
+      Exit Function
+          
           
   End Select
   If OldData <> NewData Then
@@ -342,8 +460,7 @@ Private Sub txtDrive_KeyPress(KeyAscii As Integer)
       txtDrive.Text = "00"
     Else
       DriveData = DummyData
-      UDP_Buffer = Chr(&H1) & Chr(DriveData)
-      SendUDP UDP_Socket, UDP_Buffer, UDP_RemoteAddress
+      SendDrive (DriveData)
     End If
   End If
 End Sub
@@ -360,8 +477,43 @@ Private Sub txtLamp_KeyPress(KeyAscii As Integer)
       txtLamp.Text = "00"
     Else
       LampData = DummyData
-      UDP_Buffer = Chr(&H2) & Chr(LampData)
-      SendUDP UDP_Socket, UDP_Buffer, UDP_RemoteAddress
+      SendLamp (LampData)
     End If
   End If
 End Sub
+
+Private Sub ProcessDrive(Data As Byte)
+  If Data <> DriveData Then
+    DriveData = Data
+    If TranslateDrive(DriveReal, Data) Then
+      SendDrive DriveReal
+    End If
+  End If
+End Sub
+
+Private Sub SendDrive(Data As Byte)
+  UDP_Buffer = Chr(&H1) & Chr(Data)
+  SendUDP UDP_Socket, UDP_Buffer, UDP_RemoteAddress
+  txtDrive.Text = LeadZero(Hex(Data))
+End Sub
+
+Private Sub ProcessLamp(Data As Byte)
+  If Data <> LampData Then
+    LampData = Data
+    SendLamp LampData
+  End If
+End Sub
+
+Private Sub SendLamp(Data As Byte)
+  UDP_Buffer = Chr(&H2) & Chr(Data)
+  SendUDP UDP_Socket, UDP_Buffer, UDP_RemoteAddress
+  txtLamp.Text = LeadZero(Hex(Data))
+End Sub
+
+Private Function LeadZero(Data As String) As String
+  If Len(Data) = 1 Then
+    LeadZero = "0" & Data
+  Else
+    LeadZero = Data
+  End If
+End Function
