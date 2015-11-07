@@ -29,6 +29,8 @@ Private Ready As Boolean
 
 Private Joystick As JOYSTICK_POSITION_V2
 
+Private LastTick As Long
+
 Private Sub Form_DblClick()
   Form_Unload 0
 End Sub
@@ -72,18 +74,13 @@ Private Sub Form_Load()
   End If
   Me.BackColor = RGB(0, 255, 255)
   
+  
   ' wait for serial sync signal
   Dim SomeData As Byte
   While SomeData <> &HA5
     SomeData = ReadSerialByte
     DoEvents
   Wend
-  WriteSerialByte &H0
-  WriteSerialByte &H0
-  WriteSerialByte &H1
-  WriteSerialByte &H0
-  WriteSerialByte &H2
-  WriteSerialByte &H0
   Ready = True
   
   ' init vJoy
@@ -93,16 +90,26 @@ Private Sub Form_Load()
   End If
     
   Me.BackColor = RGB(0, 255, 0)
+  
+  WriteSerialInteger &H0&
+  WriteSerialInteger &H1&
+  WriteSerialInteger &H2&
   Do
     If ReadSerialBuffer Then
+      LastTick = GetTickCount
       Joystick.wAxisX = CLng(SerialReadBuffer(1)) * 256 + SerialReadBuffer(0)
       Joystick.wAxisY = &H4000&
       Joystick.wAxisZRot = CLng(SerialReadBuffer(3)) * 256 + SerialReadBuffer(2)
       Joystick.wAxisZ = CLng(SerialReadBuffer(5)) * 256 + SerialReadBuffer(4)
       Joystick.lButtons = CLng(SerialReadBuffer(7)) * 256 + SerialReadBuffer(6)
       UpdateVJD 1, Joystick
-      WriteSerialByte &H0
-      WriteSerialByte &H0
+      WriteSerialInteger &H0&
+    Else
+      If GetTickCount - LastTick > 100 Then
+        LastTick = GetTickCount
+        WriteSerialInteger &H0&
+        Debug.Print "lost sync?"
+      End If
     End If
     DoEvents
     Sleep 1
@@ -121,20 +128,18 @@ Public Sub OnReadUDP(lHandle As Long, sBuffer As String, sAddress As String)
   UDP_Buffer = UDP_Buffer & sBuffer
   While Len(UDP_Buffer) > 1
     Dim bData() As Byte
-    bData = StrConv(Left(UDP_Buffer, 3), vbFromUnicode)
+    bData = StrConv(Left(UDP_Buffer, 2), vbFromUnicode)
     Select Case bData(0)
       Case 1
         UDP_Buffer = Mid(UDP_Buffer, 3)
         If Ready Then
-          WriteSerialByte bData(0)
-          WriteSerialByte bData(1)
+          WriteSerialInteger 1 + CLng(bData(1)) * 256
           Debug.Print "drive", Hex(bData(1))
         End If
       Case 2
         UDP_Buffer = Mid(UDP_Buffer, 3)
         If Ready Then
-          WriteSerialByte bData(0)
-          WriteSerialByte bData(1)
+          WriteSerialInteger 2 + CLng(bData(1)) * 256
           Debug.Print "lamp", Hex(bData(1))
         End If
       Case Else
@@ -142,4 +147,3 @@ Public Sub OnReadUDP(lHandle As Long, sBuffer As String, sAddress As String)
     End Select
   Wend
 End Sub
-

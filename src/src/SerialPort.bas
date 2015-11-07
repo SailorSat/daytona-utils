@@ -1,8 +1,8 @@
 Attribute VB_Name = "SerialPort"
 Option Explicit
 
-Public SerialReadBuffer(0 To 9) As Byte
-Private SerialOffset As Byte
+Public SerialReadBuffer(0 To 255) As Byte
+Private SerialReadOffset As Long
 
 Private mHandle As Long
 
@@ -23,7 +23,7 @@ Public Function OpenSerial(Port As String, settings As String) As Boolean
     .ReadIntervalTimeout = 20
     .ReadTotalTimeoutConstant = 1
     .ReadTotalTimeoutMultiplier = 1
-    .WriteTotalTimeoutConstant = 10
+    .WriteTotalTimeoutConstant = 20
     .WriteTotalTimeoutMultiplier = 1
   End With
   
@@ -66,54 +66,51 @@ Public Sub FlushSerial()
   FlushFileBuffers mHandle
 End Sub
 
-Public Function ReadSerialString() As String
-  Dim bBuffer(0 To 31) As Byte
-  Dim sBuffer As String
-  Dim Result As Long
-  Dim Length As Long
-  Result = ReadFile(mHandle, bBuffer(0), UBound(bBuffer) + 1, Length, 0)
-  sBuffer = StrConv(bBuffer, vbUnicode)
-  ReadSerialString = Left$(sBuffer, Length)
-End Function
-
 Public Function ReadSerialByte() As Byte
   Dim bBuffer As Byte
-  Dim bLength As Long
-  Dim Result As Long
-  bLength = 1
-  Result = ReadFile(mHandle, bBuffer, bLength, 0, 0)
+  Dim lLength As Long
+  Dim lResult As Long
+  Dim lProcessed As Long
+  lLength = 1&
+  lResult = ReadFile(mHandle, bBuffer, lLength, lProcessed, 0)
   ReadSerialByte = bBuffer
+  Debug.Print "read", "byte", lResult, lProcessed, Err.LastDllError
 End Function
 
 Public Function ReadSerialBuffer() As Boolean
-  Dim Result As Long
-  Dim bLength As Long
-  Dim bRead As Long
-  bLength = 9 - SerialOffset
-  bRead = 0
-  Result = ReadFile(mHandle, SerialReadBuffer(SerialOffset), bLength, bRead, 0)
-  SerialOffset = SerialOffset + bRead
-  If SerialOffset = 8 Then
-    SerialOffset = 0
+  Dim lLength As Long
+  Dim lResult As Long
+  Dim lProcessed As Long
+  lLength = 9& - SerialReadOffset
+  lResult = ReadFile(mHandle, SerialReadBuffer(SerialReadOffset), lLength, lProcessed, 0)
+  SerialReadOffset = SerialReadOffset + lProcessed
+  If SerialReadOffset = 8 Then
+    SerialReadOffset = 0
     ReadSerialBuffer = True
   Else
     ReadSerialBuffer = False
   End If
+  Debug.Print "read", "buffer", lResult, lProcessed
 End Function
 
-Public Sub WriteSerialString(sBuffer As String)
-  Dim bBuffer() As Byte
-  Dim Result As Long
-  bBuffer = StrConv(sBuffer, vbFromUnicode)
-  Result = WriteFile(mHandle, bBuffer(0), UBound(bBuffer) + 1, 0, 0)
-End Sub
-
 Public Sub WriteSerialByte(bData As Byte)
-  Dim Result As Long
   Dim bBuffer As Byte
-  Dim bLength As Long
+  Dim lResult As Long
+  Dim lLength As Long
+  Dim lProcessed As Long
   bBuffer = bData
-  bLength = 1
-  Result = WriteFile(mHandle, bData, bLength, 0, 0)
+  lLength = 1&
+  lResult = WriteFile(mHandle, bBuffer, lLength, lProcessed, 0)
+  Debug.Print "write", "byte", lResult, lProcessed, Err.LastDllError
 End Sub
 
+Public Sub WriteSerialInteger(iData As Long)
+  Dim lBuffer As Long
+  Dim lResult As Long
+  Dim lLength As Long
+  Dim lProcessed As Long
+  lBuffer = iData
+  lLength = 2&
+  lResult = WriteFile(mHandle, lBuffer, lLength, lProcessed, 0)
+  Debug.Print "write", "integer", lResult, lProcessed, Err.LastDllError, Hex(iData)
+End Sub
