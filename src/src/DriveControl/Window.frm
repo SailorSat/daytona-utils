@@ -74,7 +74,6 @@ Private Sub Form_Load()
   End If
   Me.BackColor = RGB(0, 255, 255)
   
-  
   ' wait for serial sync signal
   Dim SomeData As Byte
   While SomeData <> &HA5
@@ -92,8 +91,8 @@ Private Sub Form_Load()
   Me.BackColor = RGB(0, 255, 0)
   
   WriteSerialInteger &H0&
-  WriteSerialInteger &H1&
-  WriteSerialInteger &H2&
+  WriteSerialInteger1 &H1&
+  WriteSerialInteger2 &H2&
   Do
     If ReadSerialBuffer Then
       LastTick = GetTickCount
@@ -133,13 +132,13 @@ Public Sub OnReadUDP(lHandle As Long, sBuffer As String, sAddress As String)
       Case 1
         UDP_Buffer = Mid(UDP_Buffer, 3)
         If Ready Then
-          WriteSerialInteger 1 + CLng(bData(1)) * 256
+          WriteSerialInteger1 1 + CLng(bData(1)) * 256
           Debug.Print "drive", Hex(bData(1))
         End If
       Case 2
         UDP_Buffer = Mid(UDP_Buffer, 3)
         If Ready Then
-          WriteSerialInteger 2 + CLng(bData(1)) * 256
+          WriteSerialInteger2 2 + CLng(bData(1)) * 256
           Debug.Print "lamp", Hex(bData(1))
         End If
       Case Else

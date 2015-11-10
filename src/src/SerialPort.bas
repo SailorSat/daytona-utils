@@ -74,7 +74,7 @@ Public Function ReadSerialByte() As Byte
   lLength = 1&
   lResult = ReadFile(mHandle, bBuffer, lLength, lProcessed, 0)
   ReadSerialByte = bBuffer
-  Debug.Print "read", "byte", lResult, lProcessed, Err.LastDllError
+  'Debug.Print "read", "byte", lResult, lProcessed, Err.LastDllError
 End Function
 
 Public Function ReadSerialBuffer() As Boolean
@@ -90,7 +90,7 @@ Public Function ReadSerialBuffer() As Boolean
   Else
     ReadSerialBuffer = False
   End If
-  Debug.Print "read", "buffer", lResult, lProcessed
+  'Debug.Print "read", "buffer", lResult, lProcessed
 End Function
 
 Public Sub WriteSerialByte(bData As Byte)
@@ -101,7 +101,7 @@ Public Sub WriteSerialByte(bData As Byte)
   bBuffer = bData
   lLength = 1&
   lResult = WriteFile(mHandle, bBuffer, lLength, lProcessed, 0)
-  Debug.Print "write", "byte", lResult, lProcessed, Err.LastDllError
+  'Debug.Print "write", "byte", lResult, lProcessed, Err.LastDllError
 End Sub
 
 Public Sub WriteSerialInteger(iData As Long)
@@ -112,5 +112,31 @@ Public Sub WriteSerialInteger(iData As Long)
   lBuffer = iData
   lLength = 2&
   lResult = WriteFile(mHandle, lBuffer, lLength, lProcessed, 0)
-  Debug.Print "write", "integer", lResult, lProcessed, Err.LastDllError, Hex(iData)
+  If lResult = 0 Then Stop
+  'Debug.Print "write", "integer", lResult, lProcessed, Err.LastDllError, Hex(iData)
 End Sub
+
+Public Sub WriteSerialInteger1(iData As Long)
+  Dim lBuffer As Long
+  Dim lResult As Long
+  Dim lLength As Long
+  Dim lProcessed As Long
+  lBuffer = iData
+  lLength = 2&
+  lResult = WriteFile(mHandle, lBuffer, lLength, lProcessed, 0)
+  If lResult = 0 Then Stop
+  'Debug.Print "write", "integer", lResult, lProcessed, Err.LastDllError, Hex(iData)
+End Sub
+
+Public Sub WriteSerialInteger2(iData As Long)
+  Dim lBuffer As Long
+  Dim lResult As Long
+  Dim lLength As Long
+  Dim lProcessed As Long
+  lBuffer = iData
+  lLength = 2&
+  lResult = WriteFile(mHandle, lBuffer, lLength, lProcessed, 0)
+  If lResult = 0 Then Stop
+  'Debug.Print "write", "integer", lResult, lProcessed, Err.LastDllError, Hex(iData)
+End Sub
+
