@@ -139,7 +139,7 @@ Public Type COMMTIMEOUTS
   WriteTotalTimeoutConstant As Long
 End Type
 
-Type DCB
+Public Type DCB
   DCBlength As Long
   BaudRate As Long
   fBinary As Long
@@ -168,3 +168,97 @@ Type DCB
   EofChar As Byte
   EvtChar As Byte
 End Type
+
+' ---
+' USB
+Public Type GUID
+  Data1 As Long
+  Data2 As Integer
+  Data3 As Integer
+  Data4(7) As Byte
+End Type
+
+Public Type SP_DEVICE_INTERFACE_DATA
+  cbSize As Long
+  InterfaceClassGuid As GUID
+  Flags As Long
+  Reserved As Long
+End Type
+
+Public Type SP_DEVINFO_DATA
+  cbSize As Long
+  ClassGuid As GUID
+  DevInst As Long
+  Reserved As Long
+End Type
+
+Public Type SP_DEVICE_INTERFACE_DETAIL_DATA
+  cbSize As Long
+  DevicePath As Byte
+End Type
+
+Public Type SECURITY_ATTRIBUTES
+  nLength As Long
+  lpSecurityDescriptor As Long
+  bInheritHandle As Long
+End Type
+
+Public Type HIDD_ATTRIBUTES
+  Size As Long
+  VendorID As Integer
+  ProductID As Integer
+  VersionNumber As Integer
+End Type
+
+Public Type HIDP_CAPS
+  Usage As Integer
+  UsagePage As Integer
+  InputReportByteLength As Integer
+  OutputReportByteLength As Integer
+  FeatureReportByteLength As Integer
+  Reserved(16) As Integer
+  NumberLinkCollectionNodes As Integer
+  NumberInputButtonCaps As Integer
+  NumberInputValueCaps As Integer
+  NumberInputDataIndices As Integer
+  NumberOutputButtonCaps As Integer
+  NumberOutputValueCaps As Integer
+  NumberOutputDataIndices As Integer
+  NumberFeatureButtonCaps As Integer
+  NumberFeatureValueCaps As Integer
+  NumberFeatureDataIndices As Integer
+End Type
+
+Public Declare Sub HidD_GetHidGuid Lib "hid.dll" (ByRef HidGuid As GUID)
+Public Declare Function HidD_GetAttributes Lib "hid.dll" (ByVal HidDeviceObject As Long, ByRef Attributes As HIDD_ATTRIBUTES) As Long
+Public Declare Function HidD_GetPreparsedData Lib "hid.dll" (ByVal HidDeviceObject As Long, ByRef PreparsedData As Long) As Long
+Public Declare Function HidP_GetCaps Lib "hid.dll" (ByVal PreparsedData As Long, ByRef Capabilities As HIDP_CAPS) As Long
+Public Declare Function HidD_FreePreparsedData Lib "hid.dll" (ByRef PreparsedData As Long) As Long
+
+Public Declare Function SetupDiEnumDeviceInterfaces Lib "setupapi.dll" (ByVal DeviceInfoSet As Long, ByVal DeviceInfoData As Long, ByRef InterfaceClassGuid As GUID, ByVal MemberIndex As Long, ByRef DeviceInterfaceData As SP_DEVICE_INTERFACE_DATA) As Long
+Public Declare Function SetupDiGetClassDevsA Lib "setupapi.dll" (ByRef ClassGuid As GUID, ByVal Enumerator As String, ByVal hWndParent As Long, ByVal Flags As Long) As Long
+Public Declare Function SetupDiGetDeviceInterfaceDetailA Lib "setupapi.dll" (ByVal DeviceInfoSet As Long, ByRef DeviceInterfaceData As SP_DEVICE_INTERFACE_DATA, ByVal DeviceInterfaceDetailData As Long, ByVal DeviceInterfaceDetailDataSize As Long, ByRef RequiredSize As Long, ByVal DeviceInfoData As Long) As Long
+
+Public Declare Function FormatMessageA Lib "kernel32" (ByVal dwFlags As Long, ByRef lpSource As Any, ByVal dwMessageId As Long, ByVal dwLanguageZId As Long, ByVal lpBuffer As String, ByVal nSize As Long, ByVal Arguments As Long) As Long
+
+Public Const DIGCF_PRESENT = &H2
+Public Const DIGCF_DEVICEINTERFACE = &H10
+
+Public Const FILE_SHARE_READ = &H1
+Public Const FILE_SHARE_WRITE = &H2
+
+Public Const OPEN_EXISTING = 3
+
+Public Const FORMAT_MESSAGE_FROM_SYSTEM = &H1000
+
+Public Function GetErrorString(ByVal LastError As Long) As String
+  'Returns the error message for the last error.
+  'Adapted from Dan Appleman's "Win32 API Puzzle Book"
+  Dim Bytes As Long
+  Dim ErrorString As String
+  ErrorString = String(129, 0)
+  Bytes = FormatMessageA(FORMAT_MESSAGE_FROM_SYSTEM, 0&, LastError, 0, ErrorString, 128, 0)
+  GetErrorString = LastError & " - " & ErrorString
+End Function
+
+
