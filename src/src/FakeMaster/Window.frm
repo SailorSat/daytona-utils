@@ -1,6 +1,6 @@
 VERSION 5.00
 Begin VB.Form Window 
-   BorderStyle     =   4  'Fixed ToolWindow
+   BorderStyle     =   4  'Festes Werkzeugfenster
    Caption         =   "Form1"
    ClientHeight    =   1095
    ClientLeft      =   45
@@ -11,7 +11,7 @@ Begin VB.Form Window
    MinButton       =   0   'False
    ScaleHeight     =   1095
    ScaleWidth      =   2295
-   StartUpPosition =   3  'Windows Default
+   StartUpPosition =   3  'Windows-Standard
    Begin VB.Timer Timer 
       Interval        =   1000
       Left            =   120
@@ -27,10 +27,10 @@ Begin VB.Form Window
    End
    Begin VB.Shape shStatus 
       BackColor       =   &H00000040&
-      BackStyle       =   1  'Opaque
+      BackStyle       =   1  'Undurchsichtig
       Height          =   375
       Left            =   120
-      Shape           =   4  'Rounded Rectangle
+      Shape           =   4  'Gerundetes Rechteck
       Top             =   120
       Width           =   375
    End
@@ -66,7 +66,7 @@ Private Sub Form_Load()
   Dim Port As Long
   
   Host = ReadIni("fakemaster.ini", "network", "LocalHost", "127.0.0.1")
-  Port = CLng(ReadIni("fakemaster.ini", "network", "LocalPort", "7003"))
+  Port = CLng(ReadIni("fakemaster.ini", "network", "LocalPort", "7000"))
   UDP_LocalAddress = Winsock.WSABuildSocketAddress(Host, Port)
   If UDP_LocalAddress = "" Then
     MsgBox "Something went wrong! #UDP_LocalAddress", vbCritical Or vbOKOnly, Window.Caption
@@ -95,9 +95,10 @@ End Sub
 
 Public Sub OnReadUDP(lHandle As Long, sBuffer As String, sAddress As String)
   If FAKE_READY Then
+    Sleep 10
+    DoEvents
     Winsock.SendUDP UDP_Socket, sBuffer, UDP_RemoteAddress
     NET_Framerate = NET_Framerate + 1
-    Sleep 16
   Else
     Winsock.SendUDP UDP_Socket, ParseFrame(sBuffer), UDP_RemoteAddress
   End If
