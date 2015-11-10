@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin VB.Form Window 
    BackColor       =   &H00404040&
-   BorderStyle     =   0  'Kein
+   BorderStyle     =   0  'None
    Caption         =   "DriveFeedback"
    ClientHeight    =   3450
    ClientLeft      =   0
@@ -11,7 +11,7 @@ Begin VB.Form Window
    ScaleHeight     =   3450
    ScaleWidth      =   6105
    Begin VB.TextBox txtLamp 
-      Alignment       =   2  'Zentriert
+      Alignment       =   2  'Center
       BeginProperty Font 
          Name            =   "Fixedsys"
          Size            =   9
@@ -29,7 +29,7 @@ Begin VB.Form Window
       Width           =   375
    End
    Begin VB.TextBox txtDrive 
-      Alignment       =   2  'Zentriert
+      Alignment       =   2  'Center
       BeginProperty Font 
          Name            =   "Fixedsys"
          Size            =   9
@@ -47,7 +47,7 @@ Begin VB.Form Window
       Width           =   375
    End
    Begin VB.Label lblDebug 
-      Alignment       =   2  'Zentriert
+      Alignment       =   2  'Center
       BeginProperty Font 
          Name            =   "Fixedsys"
          Size            =   9
@@ -165,6 +165,8 @@ Private Sub Form_Load()
         DoEvents
       Wend
       MODEL2_Online = False
+      SendDrive 0
+      SendLamp 0
     ElseIf MODEL3_Online Then
       While OpenMemoryModel3
         Sleep 1
@@ -178,14 +180,13 @@ Private Sub Form_Load()
         DoEvents
       Wend
       MODEL3_Online = False
+      SendDrive 0
+      SendLamp 0
     Else
       If OpenMemory Then
         CheckProfile
       ElseIf OpenMemoryModel3 Then
         CheckProfileModel3
-      Else
-        SendDrive 0
-        SendLamp 0
       End If
     End If
   Loop

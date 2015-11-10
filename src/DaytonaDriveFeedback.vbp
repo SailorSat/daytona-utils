@@ -1,5 +1,5 @@
 Type=Exe
-Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#..\..\Windows\SysWOW64\stdole2.tlb#OLE Automation
+Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#..\..\..\Windows\SysWOW64\stdole2.tlb#OLE Automation
 Module=WindowsAPI; src\WindowsAPI.bas
 Module=IniFiles; src\IniFiles.bas
 Module=Winsock; src\Winsock\Winsock.bas
@@ -20,7 +20,7 @@ HelpContextID="0"
 CompatibleMode="0"
 MajorVer=1
 MinorVer=0
-RevisionVer=40
+RevisionVer=51
 AutoIncrementVer=1
 ServerSupportFiles=0
 VersionCompanyName="-"
