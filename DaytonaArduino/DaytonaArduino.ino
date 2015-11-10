@@ -1,5 +1,7 @@
 /*
-DaytonaArduino v1
+DaytonaArduino v2
+  v2 - support for DayontaUSB
+  v1 - initial relase
 
 based on BigPanik Model2Pac v1.2 Final
 Interface Model 2 hardware (wheel, pedals, buttons, gear, FFB and lamps) to USB
@@ -26,6 +28,7 @@ DECODE  = D4
 #include "DaytonaArduino.h"
 
 dataForController_t controllerData = getControllerData();
+byte size = sizeof(dataForController_t) - 1;
 
 void setup() {
   setupPins();
@@ -34,23 +37,23 @@ void setup() {
 
 void loop() {
   while (Serial.available() > 1) {
-    byte readData = Serial.read();
-    switch (readData) {
+    byte cmd = Serial.read();
+    byte val = Serial.read();
+    switch (cmd) {
       case 0x00:
-        // 0 - controller feed    
-        Serial.read();
-        controllerData = getControllerData();
-        for (byte offset = 0; offset < 8; offset++) {
-          Serial.write(((uint8_t*)&controllerData)[offset]);
+        // 0 - controller feed
+        if (val == 0) {
+          controllerData = getControllerData();
         }
+        Serial.write(((uint8_t*)&controllerData)[val]);
         break;
       case 0x01:
         // 1 - drive board command
-        PORTA = Serial.read();
+        PORTA = val;
         break;
       case 0x02:
         // 2 - lamp data
-        PORTK = Serial.read();
+        PORTK = val;
         break;
     }
   }
@@ -83,10 +86,10 @@ dataForController_t getControllerData(void) {
   dataForController_t controllerData;
 
   // get the analog data
-  analogRead(A4);
-  controllerData.axis3 = analogRead(A2);
-  controllerData.axis2 = analogRead(A1);
-  controllerData.axis1 = analogRead(A0);
+  analogRead(A8);
+  controllerData.rz_axis = analogRead(A2);
+  controllerData.z_axis = analogRead(A1);
+  controllerData.x_axis = analogRead(A0);
 
   // VR
   controllerData.button01 = !digitalRead(17);
@@ -164,7 +167,8 @@ dataForController_t getControllerData(void) {
         controllerData.button16 = 1;
     }
   }
-
+  controllerData.rx = 0;
+  
   // And return the data!
   return controllerData;
 }

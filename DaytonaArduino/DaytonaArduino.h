@@ -5,9 +5,9 @@
 
   typedef struct dataForController_t
   {
-    int16_t axis1 : 16;
-    int16_t axis2 : 16;
-    int16_t axis3 : 16;
+    int16_t x_axis : 16;
+    int16_t z_axis : 16;
+    int16_t rz_axis : 16;
     uint8_t button01 : 1;
     uint8_t button02 : 1;
     uint8_t button03 : 1;
@@ -24,5 +24,6 @@
     uint8_t button14 : 1;
     uint8_t button15 : 1;
     uint8_t button16 : 1;
+    uint8_t rx : 8;
   } dataForController_t;
 #endif
