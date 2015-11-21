@@ -53,7 +53,7 @@ Public Function mame_updatestate(ByVal id As Long, ByVal State As Long) As Long
       MAME_LampData = State
       
     Case Else
-      'Debug.Print "mame_updatestate", id, Hex(State), get_name_from_id(id)
+      'Debug.Print "mame_updatestate", id, Hex(State), name
   
   End Select
 End Function
@@ -82,6 +82,7 @@ Public Function get_name_from_id(id As Long, name As String) As String
     
     If id = 0 Then
       MAME_Profile = idStr
+      'Debug.Print MAME_Profile
     End If
   End If
   
