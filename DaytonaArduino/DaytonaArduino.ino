@@ -49,12 +49,13 @@ GEAR 4         = Button 24
 */
 #include "DaytonaArduino.h"
 
-dataForController_t controllerData = getControllerData();
+dataForController_t controllerData;
 byte size = sizeof(dataForController_t) - 1;
 
 void setup() {
   setupPins();
   setupSerial();
+  getControllerData();
 }
 
 void loop() {
@@ -65,7 +66,7 @@ void loop() {
       case 0x00:
         // 0 - controller feed
         if (val == 0) {
-          controllerData = getControllerData();
+          getControllerData();
         }
         Serial.write(((uint8_t*)&controllerData)[val]);
         break;
@@ -103,10 +104,7 @@ void setupSerial() {
   Serial.write(0xA5);
 }
 
-dataForController_t getControllerData(void) {
-  // prepare data
-  dataForController_t controllerData;
-
+void getControllerData(void) {
   // digital pin 21-14
   controllerData.button01 = !digitalRead(21);
   controllerData.button03 = !digitalRead(20);
@@ -215,7 +213,4 @@ dataForController_t getControllerData(void) {
     controllerData.y_axis = 0x0200;
     controllerData.x_axis = analogRead(A0);
   }
-  
-  // And return the data!
-  return controllerData;
 }
