@@ -91,23 +91,53 @@ Private Sub Form_Load()
   Me.BackColor = RGB(0, 255, 0)
   
   WriteSerialInteger &H0&
+  WriteSerialInteger &H100&
+  WriteSerialInteger &H200&
+  WriteSerialInteger &H300&
+  WriteSerialInteger &H400&
+  WriteSerialInteger &H500&
+  WriteSerialInteger &H600&
+  WriteSerialInteger &H700&
+  WriteSerialInteger &H800&
+  WriteSerialInteger &H900&
+  WriteSerialInteger &HA00&
   WriteSerialInteger1 &H1&
   WriteSerialInteger2 &H2&
   Do
     If ReadSerialBuffer Then
       LastTick = GetTickCount
       Joystick.wAxisX = CLng(SerialReadBuffer(1)) * 256 + SerialReadBuffer(0)
-      Joystick.wAxisY = &H4000&
-      Joystick.wAxisZRot = CLng(SerialReadBuffer(3)) * 256 + SerialReadBuffer(2)
-      Joystick.wAxisZ = CLng(SerialReadBuffer(5)) * 256 + SerialReadBuffer(4)
-      Joystick.lButtons = CLng(SerialReadBuffer(7)) * 256 + SerialReadBuffer(6)
+      Joystick.wAxisY = CLng(SerialReadBuffer(3)) * 256 + SerialReadBuffer(2)
+      Joystick.wAxisZRot = CLng(SerialReadBuffer(5)) * 256 + SerialReadBuffer(4)
+      Joystick.wAxisZ = CLng(SerialReadBuffer(7)) * 256 + SerialReadBuffer(6)
+      Joystick.lButtons = CLng(SerialReadBuffer(10)) * 65536 + CLng(SerialReadBuffer(9)) * 256 + SerialReadBuffer(8)
       UpdateVJD 1, Joystick
       WriteSerialInteger &H0&
+      WriteSerialInteger &H100&
+      WriteSerialInteger &H200&
+      WriteSerialInteger &H300&
+      WriteSerialInteger &H400&
+      WriteSerialInteger &H500&
+      WriteSerialInteger &H600&
+      WriteSerialInteger &H700&
+      WriteSerialInteger &H800&
+      WriteSerialInteger &H900&
+      WriteSerialInteger &HA00&
     Else
       If GetTickCount - LastTick > 100 Then
         LastTick = GetTickCount
-        WriteSerialInteger &H0&
-        Debug.Print "lost sync?"
+      Debug.Print "lost sync?"
+      WriteSerialInteger &H0&
+      WriteSerialInteger &H100&
+      WriteSerialInteger &H200&
+      WriteSerialInteger &H300&
+      WriteSerialInteger &H400&
+      WriteSerialInteger &H500&
+      WriteSerialInteger &H600&
+      WriteSerialInteger &H700&
+      WriteSerialInteger &H800&
+      WriteSerialInteger &H900&
+      WriteSerialInteger &HA00&
       End If
     End If
     DoEvents
