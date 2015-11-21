@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin VB.Form Window 
    BackColor       =   &H00404040&
-   BorderStyle     =   0  'None
+   BorderStyle     =   0  'Kein
    Caption         =   "DriveFeedback"
    ClientHeight    =   3450
    ClientLeft      =   0
@@ -11,7 +11,7 @@ Begin VB.Form Window
    ScaleHeight     =   3450
    ScaleWidth      =   6105
    Begin VB.TextBox txtLamp 
-      Alignment       =   2  'Center
+      Alignment       =   2  'Zentriert
       BeginProperty Font 
          Name            =   "Fixedsys"
          Size            =   9
@@ -29,7 +29,7 @@ Begin VB.Form Window
       Width           =   375
    End
    Begin VB.TextBox txtDrive 
-      Alignment       =   2  'Center
+      Alignment       =   2  'Zentriert
       BeginProperty Font 
          Name            =   "Fixedsys"
          Size            =   9
@@ -47,7 +47,7 @@ Begin VB.Form Window
       Width           =   375
    End
    Begin VB.Label lblDebug 
-      Alignment       =   2  'Center
+      Alignment       =   2  'Zentriert
       BeginProperty Font 
          Name            =   "Fixedsys"
          Size            =   9
@@ -273,6 +273,13 @@ Private Sub CheckProfileModel3()
   If EmulatorWindow Then
     Profile = "daytona2"
     DriveOffset = pRAMBASE + &H105191
+    LampOffset = pRAMBASE + &H1000E7
+  End If
+  
+  EmulatorWindow = FindWindowA(vbNullString, "Supermodel - Scud Race Plus")
+  If EmulatorWindow Then
+    Profile = "daytona2"
+    DriveOffset = pRAMBASE + &H107191
     LampOffset = pRAMBASE + &H1000E7
   End If
   
