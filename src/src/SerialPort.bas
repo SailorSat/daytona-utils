@@ -81,10 +81,10 @@ Public Function ReadSerialBuffer() As Boolean
   Dim lLength As Long
   Dim lResult As Long
   Dim lProcessed As Long
-  lLength = 9& - SerialReadOffset
+  lLength = 11& - SerialReadOffset
   lResult = ReadFile(mHandle, SerialReadBuffer(SerialReadOffset), lLength, lProcessed, 0)
   SerialReadOffset = SerialReadOffset + lProcessed
-  If SerialReadOffset = 8 Then
+  If SerialReadOffset = 11 Then
     SerialReadOffset = 0
     ReadSerialBuffer = True
   Else

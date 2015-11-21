@@ -171,7 +171,8 @@ int main( void ) {
 		offset = 0;
 		usbControllerState.x_axis = USART_ReadI(offset);
 		offset += 2;
-		usbControllerState.y_axis = 0x0200;
+		usbControllerState.y_axis = USART_ReadI(offset);
+		offset += 2;
 		usbControllerState.z_axis = USART_ReadI(offset);
 		offset += 2;
 		usbControllerState.rz_axis = USART_ReadI(offset);
