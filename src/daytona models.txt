@@ -39,6 +39,8 @@
 0284378C - roulette
 02843944 - virtua starting lights
 
+028439A8 - tire
+
 028439E4 - virtua stock car?!
 
 02843B38 - GOAL!

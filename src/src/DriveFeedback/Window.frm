@@ -217,6 +217,13 @@ Private Sub CheckProfile()
     LampOffset = pRAMBASE + &H3C390
   End If
     
+  EmulatorWindow = FindWindowA(vbNullString, "Sega Touring Car Championship")
+  If EmulatorWindow Then
+    Profile = "stcc"
+    DriveOffset = pRAM2BASE + &HB2E0&
+    LampOffset = pRAM2BASE + &HB2E4&
+  End If
+    
   EmulatorWindow = FindWindowA(vbNullString, "Sega Touring Car Championship (Rev A)")
   If EmulatorWindow Then
     Profile = "stcc"
@@ -320,7 +327,7 @@ Private Function TranslateDrive(ByRef OldData As Byte, ByVal NewData As Byte) As
         TranslateDrive = True
       End If
       Exit Function
-    Case "vr"
+    Case "vr", "vformula"
       CmdForce = NewData Mod &H10
       CmdGroup = NewData - CmdForce
       
@@ -329,8 +336,17 @@ Private Function TranslateDrive(ByRef OldData As Byte, ByVal NewData As Byte) As
         Case &H20, &H30, &H40, &H50, &H60
           TempData = CmdGroup + (CmdForce \ 2)
           lblDebug.Caption = Hex(NewData) & " > " & Hex(TempData)
+        Case &H0, &H10, &H80
+          ' direct
+          TempData = NewData
+        Case &H70, &H90
+          '0x7x airbags(VR)
+          '0x7x cylinder(VF)
+          '0x9x  taco meter (VF)
+          Exit Function
         Case Else
           TempData = NewData
+          Debug.Print Hex(NewData)
       End Select
       
       If OldData <> TempData Then
@@ -340,10 +356,19 @@ Private Function TranslateDrive(ByRef OldData As Byte, ByVal NewData As Byte) As
       Exit Function
 
     Case "daytona"
-      Select Case NewData
-        Case &H90 To &H9F
+      CmdForce = NewData Mod &H10
+      CmdGroup = NewData - CmdForce
+      Select Case CmdGroup
+        Case &H0, &H10, &H20, &H30, &H40, &H50, &H60, &H80
+          TempData = NewData
+        Case &H70, &HC0, &HD0, &HE0
+          ' 0x7x = "DELUXE CABINET"
+          ' 0xCx = CYLINDER
+          ' 0xDx = QUICK BREATH
+          ' 0xEx = TOWER SIGNAL
           Exit Function
         Case Else
+          Debug.Print Hex(NewData)
       End Select
     
     Case "srallyc"
@@ -351,11 +376,11 @@ Private Function TranslateDrive(ByRef OldData As Byte, ByVal NewData As Byte) As
         Case &H0
           TempData = &H10
           
-        Case &H1 To &HF
+        Case &H1 To &HF, &H7E
           Exit Function
         
         Case &H10
-          TempData = &H10
+          TempData = &H7
           
         Case &H15
           TempData = &H30
@@ -471,6 +496,7 @@ Private Function TranslateDrive(ByRef OldData As Byte, ByVal NewData As Byte) As
   End Select
   If OldData <> NewData Then
     OldData = NewData
+    Debug.Print Hex(NewData)
     TranslateDrive = True
   End If
 End Function
