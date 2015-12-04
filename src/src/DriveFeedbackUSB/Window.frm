@@ -2,14 +2,14 @@ VERSION 5.00
 Begin VB.Form Window 
    BackColor       =   &H00404040&
    BorderStyle     =   0  'None
-   Caption         =   "DriveFeedback"
-   ClientHeight    =   3450
+   Caption         =   "DriveFeedbackUSB"
+   ClientHeight    =   855
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   6105
+   ClientWidth     =   1455
    LinkTopic       =   "Form1"
-   ScaleHeight     =   3450
-   ScaleWidth      =   6105
+   ScaleHeight     =   855
+   ScaleWidth      =   1455
    Begin VB.TextBox txtLamp 
       Alignment       =   2  'Center
       BeginProperty Font 
@@ -22,10 +22,10 @@ Begin VB.Form Window
          Strikethrough   =   0   'False
       EndProperty
       Height          =   285
-      Left            =   1320
+      Left            =   960
       TabIndex        =   1
       Text            =   "00"
-      Top             =   360
+      Top             =   120
       Width           =   375
    End
    Begin VB.TextBox txtDrive 
@@ -40,10 +40,10 @@ Begin VB.Form Window
          Strikethrough   =   0   'False
       EndProperty
       Height          =   285
-      Left            =   480
+      Left            =   120
       TabIndex        =   0
       Text            =   "00"
-      Top             =   360
+      Top             =   120
       Width           =   375
    End
    Begin VB.Label lblDebug 
@@ -58,9 +58,9 @@ Begin VB.Form Window
          Strikethrough   =   0   'False
       EndProperty
       Height          =   255
-      Left            =   480
+      Left            =   120
       TabIndex        =   2
-      Top             =   960
+      Top             =   480
       Width           =   1215
    End
 End
@@ -70,13 +70,6 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
-
-Private CommandUsed(0 To 255) As Boolean
-
-Private UDP_LocalAddress As String
-Private UDP_RemoteAddress As String
-Private UDP_Socket As Long
-Private UDP_Buffer As String
 
 Private MODEL2_Online As Boolean
 Private MODEL3_Online As Boolean
@@ -101,9 +94,6 @@ Private Sub Form_Load()
   Dim SomeData As Byte
   Dim DataChanged As Boolean
 
-  Dim Host As String
-  Dim Port As Long
-
   If ReadIni("drive.ini", "feedback", "hidden", "false") = "true" Then
     Me.BackColor = RGB(255, 0, 0)
     Me.Move 480, 0, 0, 0
@@ -112,31 +102,6 @@ Private Sub Form_Load()
     Me.BackColor = RGB(255, 0, 0)
     Me.Move 480, 0 ', 240, 240
     Me.Show
-  End If
-  
-  Winsock.Load
-  
-  ' init network (drive)
-  Host = ReadIni("drive.ini", "feedback", "localhost", "0.0.0.0")
-  Port = CLng(ReadIni("drive.ini", "feedback", "localport", "9001"))
-  UDP_LocalAddress = Winsock.WSABuildSocketAddress(Host, Port)
-  If UDP_LocalAddress = "" Then
-    MsgBox "Something went wrong! #ADDR", vbCritical Or vbOKOnly, Me.Caption
-    Form_Unload 0
-  End If
-
-  Host = ReadIni("drive.ini", "feedback", "remotehost", "127.0.0.1")
-  Port = CLng(ReadIni("drive.ini", "feedback", "remoteport", "9000"))
-  UDP_RemoteAddress = Winsock.WSABuildSocketAddress(Host, Port)
-  If UDP_RemoteAddress = "" Then
-    MsgBox "Something went wrong! #ADDR", vbCritical Or vbOKOnly, Me.Caption
-    Form_Unload 0
-  End If
-
-  UDP_Socket = Winsock.ListenUDP(UDP_LocalAddress)
-  If UDP_Socket = -1 Then
-    MsgBox "Something went wrong! #SOCK", vbCritical Or vbOKOnly, Me.Caption
-    Form_Unload 0
   End If
   
   Model3Mode = CBool(ReadIni("drive.ini", "feedback", "model3", "false"))
@@ -211,7 +176,6 @@ End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
   Call close_mame
-  Winsock.Unload
   If DebugMode Then
     Close #1
   End If
@@ -394,6 +358,9 @@ Private Function TranslateDrive_M2(ByRef OldData As Byte, ByVal NewData As Byte)
           ' 0xCx = CYLINDER
           ' 0xDx = QUICK BREATH
           ' 0xEx = TOWER SIGNAL
+          Debug.Print Hex(NewData)
+          Exit Function
+        Case &H90, &HA0, &HB0
           Exit Function
         Case Else
           Debug.Print Hex(NewData)
@@ -527,7 +494,6 @@ Private Function TranslateDrive_M2(ByRef OldData As Byte, ByVal NewData As Byte)
 
   If OldData <> NewData Then
     OldData = NewData
-    Debug.Print Hex(NewData)
     TranslateDrive_M2 = True
   End If
 End Function
@@ -759,8 +725,9 @@ Private Sub ProcessDrive(Data As Byte)
 End Sub
 
 Private Sub SendDrive(Data As Byte)
-  UDP_Buffer = Chr(&H1) & Chr(Data)
-  SendUDP UDP_Socket, UDP_Buffer, UDP_RemoteAddress
+  If OpenDriveChannel Then
+    WriteDriveData 1, Data
+  End If
   txtDrive.Text = LeadZero(Hex(Data))
 End Sub
 
@@ -772,8 +739,9 @@ Private Sub ProcessLamp(Data As Byte)
 End Sub
 
 Private Sub SendLamp(Data As Byte)
-  UDP_Buffer = Chr(&H2) & Chr(Data)
-  SendUDP UDP_Socket, UDP_Buffer, UDP_RemoteAddress
+  If OpenDriveChannel Then
+    WriteDriveData 2, Data
+  End If
   txtLamp.Text = LeadZero(Hex(Data))
 End Sub
 

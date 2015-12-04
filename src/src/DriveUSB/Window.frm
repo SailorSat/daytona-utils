@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin VB.Form Window 
    BackColor       =   &H00404040&
-   BorderStyle     =   0  'Kein
+   BorderStyle     =   0  'None
    Caption         =   "DriveControl"
    ClientHeight    =   240
    ClientLeft      =   0
@@ -10,6 +10,7 @@ Begin VB.Form Window
    LinkTopic       =   "Form1"
    ScaleHeight     =   240
    ScaleWidth      =   240
+   ShowInTaskbar   =   0   'False
 End
 Attribute VB_Name = "Window"
 Attribute VB_GlobalNameSpace = False
@@ -30,9 +31,15 @@ Private Sub Form_Load()
   Dim Host As String
   Dim Port As Long
 
-  Me.BackColor = RGB(255, 0, 0)
-  Me.Move Me.Width, 0
-  Me.Show
+  If ReadIni("drive.ini", "feedback", "hidden", "false") = "true" Then
+    Me.BackColor = RGB(255, 0, 0)
+    Me.Move Me.Width, 0, 0, 0
+    Me.Hide
+  Else
+    Me.BackColor = RGB(255, 0, 0)
+    Me.Move Me.Width, 0
+    Me.Show
+  End If
   
   Winsock.Load
   
