@@ -12,6 +12,7 @@ Public Const CTRL_CMD_GAMEMODE As Byte = &H7
 Public Const CTRL_CMD_HANDICAP As Byte = &H8
 Public Const CTRL_CMD_SHUTDOWN As Byte = &H9
 Public Const CTRL_CMD_REBOOT As Byte = &H10
+Public Const CTRL_CMD_EX As Byte = &H11
 
 ' Status (byte 1)
 Public Const CTRL_STATUS_OFFLINE As Byte = &H10

@@ -24,11 +24,10 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
-Private Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
-
 Private SystemPath As String
 
 Private UDP_LocalAddress As String
+Private UDP_RemoteAddress As String
 Private UDP_Socket As Long
 
 Private MEM_Open As Boolean
@@ -42,6 +41,8 @@ Private OPT_Track As Byte
 Private OPT_Gears As Byte
 Private OPT_GameMode As Byte
 Private OPT_Handicap As Byte
+
+Private CTRL_LastEx As Byte
 
 Private FlipFlop As Boolean
 
@@ -74,6 +75,8 @@ Private Sub Form_Load()
     Form_Unload 0
   End If
 
+  OPT_Startup = CByte(ReadIni("control.ini", "client", "opt-startup", "&H30"))
+  
   Timer.Enabled = True
   Timer_Timer
 End Sub
@@ -163,12 +166,30 @@ Private Sub Timer_Timer()
     End If
     
     WriteByte pRAMBASE + CUSTOM_MASK, MEM_Mask
+    
+    Dim CTRL_CurrEx As Byte
+    CTRL_CurrEx = ReadByte(pRAMBASE + CUSTOM_CTRL)
+    If Not CTRL_CurrEx = 0 Then
+      If Not CTRL_CurrEx = CTRL_LastEx Then
+        CTRL_LastEx = CTRL_CurrEx
+      
+        Dim baBuffer() As Byte
+        ReDim baBuffer(0 To 31)
+        baBuffer(0) = CTRL_CMD_EX
+        baBuffer(1) = ReadByte(pRAMBASE + CAR_NODE)
+        baBuffer(2) = CTRL_LastEx
+        Dim sBuffer As String
+        sBuffer = StrConv(baBuffer, vbUnicode)
+        Winsock.SendUDP UDP_Socket, sBuffer, UDP_RemoteAddress
+      End If
+    End If
   End If
 End Sub
 
 Public Sub OnReadUDP(lHandle As Long, sBuffer As String, sAddress As String)
-  
   If Len(sBuffer) < 32 Then Exit Sub
+  UDP_RemoteAddress = sAddress
+  
   Dim baBuffer() As Byte
   baBuffer = StrConv(sBuffer, vbFromUnicode)
   Select Case baBuffer(0)
@@ -183,7 +204,7 @@ Public Sub OnReadUDP(lHandle As Long, sBuffer As String, sAddress As String)
         baBuffer(1) = CTRL_STATUS_OFFLINE
       End If
       sBuffer = StrConv(baBuffer, vbUnicode)
-      Winsock.SendUDP lHandle, sBuffer, sAddress
+      Winsock.SendUDP lHandle, sBuffer, UDP_RemoteAddress
     
     Case CTRL_CMD_RESET
       OPT_Reset = 1
@@ -222,10 +243,10 @@ Public Sub OnReadUDP(lHandle As Long, sBuffer As String, sAddress As String)
       End Select
       
     Case CTRL_CMD_SHUTDOWN
-      ShellExecuteA Me.hwnd, "open", SystemPath & "\shutdown.exe", "-s -f -t 0 -c SHUTDOWN", SystemPath, SW_HIDE
+      ShellExecuteA Me.hWnd, "open", SystemPath & "\shutdown.exe", "-s -f -t 0 -c SHUTDOWN", SystemPath, SW_HIDE
       
     Case CTRL_CMD_REBOOT
-      ShellExecuteA Me.hwnd, "open", SystemPath & "\shutdown.exe", "-r -f -t 0 -c SHUTDOWN", SystemPath, SW_HIDE
+      ShellExecuteA Me.hWnd, "open", SystemPath & "\shutdown.exe", "-r -f -t 0 -c SHUTDOWN", SystemPath, SW_HIDE
   
   End Select
 End Sub

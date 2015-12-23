@@ -402,7 +402,7 @@ Private Function TranslateDrive_M2(ByRef OldData As Byte, ByVal NewData As Byte)
       End If
       Exit Function
 
-    Case "daytona2"
+    Case "daytona2", "scud"
 '      If Not CommandUsed(NewData) Then
 '        CommandUsed(NewData) = True
 '        Debug.Print "new cmd", Hex(NewData)

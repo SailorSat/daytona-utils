@@ -949,6 +949,8 @@ Public Sub OnReadUDP(lHandle As Long, sBuffer As String, sAddress As String)
             shStatus(Index).FillColor = &HC00000
         End Select
       End If
+    Case CTRL_CMD_EX
+      Debug.Print baBuffer(1), Hex(baBuffer(2))
   End Select
 End Sub
 

@@ -4,6 +4,7 @@ Option Explicit
 Public Const CUSTOM_MASK As Long = &H820&
 Public Const CUSTOM_LAMP As Long = &H824&
 Public Const CUSTOM_DRIVE As Long = &H828&
+Public Const CUSTOM_CTRL As Long = &H82C&
 
 Public Const ATTRACT_MODE As Long = &H1070&
 Public Const NO_COLLISION As Long = &H1084&
