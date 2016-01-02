@@ -13,6 +13,23 @@ Begin VB.Form Window
    ScaleHeight     =   800
    ScaleMode       =   3  'Pixel
    ScaleWidth      =   1280
+   Begin VB.PictureBox pbOverlay 
+      Appearance      =   0  'Flat
+      AutoRedraw      =   -1  'True
+      AutoSize        =   -1  'True
+      BackColor       =   &H00FF00FF&
+      BorderStyle     =   0  'None
+      ForeColor       =   &H80000008&
+      Height          =   5760
+      Left            =   0
+      Picture         =   "Window.frx":11D6
+      ScaleHeight     =   384
+      ScaleMode       =   3  'Pixel
+      ScaleWidth      =   640
+      TabIndex        =   4
+      Top             =   720
+      Width           =   9600
+   End
    Begin VB.PictureBox pbBanner 
       Appearance      =   0  'Flat
       AutoRedraw      =   -1  'True
@@ -22,7 +39,7 @@ Begin VB.Form Window
       ForeColor       =   &H80000008&
       Height          =   720
       Left            =   9600
-      Picture         =   "Window.frx":11D6
+      Picture         =   "Window.frx":1857
       ScaleHeight     =   48
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   683
@@ -39,29 +56,12 @@ Begin VB.Form Window
       ForeColor       =   &H80000008&
       Height          =   7200
       Left            =   9600
-      Picture         =   "Window.frx":392F
+      Picture         =   "Window.frx":3FB0
       ScaleHeight     =   480
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   640
       TabIndex        =   5
       Top             =   0
-      Width           =   9600
-   End
-   Begin VB.PictureBox pbOverlay 
-      Appearance      =   0  'Flat
-      AutoRedraw      =   -1  'True
-      AutoSize        =   -1  'True
-      BackColor       =   &H00FF00FF&
-      BorderStyle     =   0  'None
-      ForeColor       =   &H80000008&
-      Height          =   5760
-      Left            =   0
-      Picture         =   "Window.frx":4B05
-      ScaleHeight     =   384
-      ScaleMode       =   3  'Pixel
-      ScaleWidth      =   640
-      TabIndex        =   4
-      Top             =   720
       Width           =   9600
    End
    Begin VB.PictureBox pbVFormula 
