@@ -10,7 +10,7 @@ Public MAME_Profile As String
 
 Public GAMESTATE As Byte
 
-Public Declare Function init_mame Lib "mame" (ByVal id As Long, ByVal name As String, ByVal MameStart As Long, ByVal MameStop As Long, ByVal MameCopyData As Long, ByVal UpdateState As Long) As Long
+Public Declare Function init_mame Lib "mame" (ByVal id As Long, ByVal Name As String, ByVal MameStart As Long, ByVal MameStop As Long, ByVal MameCopyData As Long, ByVal UpdateState As Long) As Long
 Public Declare Function close_mame Lib "mame" () As Long
 Public Declare Function map_id_to_outname Lib "mame" (ByVal id As Long) As String
 
@@ -28,15 +28,22 @@ Public Function mame_stop() As Long
   MAME_Online = False
 End Function
 
-Public Function mame_copydata(ByVal id As Long, ByVal name As String) As Long
-  Call get_name_from_id(id, name)
+Public Function mame_copydata(ByVal id As Long, ByVal Name As String) As Long
+  Call get_name_from_id(id, Name)
+  If id = 0 Then
+    Debug.Print "Profile", MAME_Profile
+    Select Case MAME_Profile
+      Case "orunners", "outrun"
+        MAME_DriveData = &H7
+    End Select
+  End If
 End Function
 
 Public Function mame_updatestate(ByVal id As Long, ByVal State As Long) As Long
-  Dim name As String
-  name = get_name_from_id(id, "")
+  Dim Name As String
+  Name = get_name_from_id(id, "")
   
-  Select Case name
+  Select Case Name
     Case "digit0"
       ' raw drive data
       If State < &H10 Then
@@ -51,14 +58,49 @@ Public Function mame_updatestate(ByVal id As Long, ByVal State As Long) As Long
     Case "digit1"
       ' raw lamp data
       MAME_LampData = State
+    
+    Case "MA_Check_Point_lamp", "MA_Race_Leader_lamp", "MA_Steering_Wheel_motor", "MA_DJ_Music_lamp", "MA_<<_>>_lamp"
+      OutRunners State, Name
       
     Case Else
-      'Debug.Print "mame_updatestate", id, Hex(State), name
+      Debug.Print "mame_updatestate", id, Hex(State), Name
   
   End Select
 End Function
 
-Public Function get_name_from_id(id As Long, name As String) As String
+Public Sub OutRunners(State As Long, Name As String)
+  If Name = "MA_Steering_Wheel_motor" Then
+    If State = 0 Then
+      MAME_DriveData = &H10
+    Else
+      MAME_DriveData = &H40
+    End If
+  Else
+    Dim Mask As Byte
+    Select Case Name
+      Case "MA_Check_Point_lamp"
+        '&H04 - start lamp
+        Mask = &H4
+      Case "MA_Race_Leader_lamp"
+        '&H80 - leader lamp
+        Mask = &H80
+      Case "MA_DJ_Music_lamp"
+        '&H08 - red lamp
+        Mask = &H8
+      Case "MA_<<_>>_lamp"
+        '&H30 - blue & yellow lamp
+        Mask = &H30
+    End Select
+    If State = 0 Then
+      MAME_LampData = MAME_LampData And (&HFF - Mask)
+    Else
+      MAME_LampData = MAME_LampData Or Mask
+    End If
+
+  End If
+End Sub
+
+Public Function get_name_from_id(id As Long, Name As String) As String
   Dim i As Integer
   Dim idStr As String
   
@@ -71,10 +113,10 @@ Public Function get_name_from_id(id As Long, name As String) As String
   Next i
   
   If idStr = "" Then
-    If name = "" Then
+    If Name = "" Then
       idStr = map_id_to_outname(id)
     Else
-      idStr = name
+      idStr = Name
     End If
     ReDim Preserve output_array(1, UBound(output_array, 2) + 1) As String
     output_array(0, UBound(output_array, 2)) = id

@@ -302,6 +302,11 @@ Private Function TranslateDrive_M2(ByRef OldData As Byte, ByVal NewData As Byte)
   Dim CmdForce As Byte
 
   Select Case Profile
+    Case "orunners"
+      If OldData <> NewData Then
+        OldData = NewData
+        TranslateDrive_M2 = True
+      End If
     Case "outrun"
       Select Case NewData
         Case &H1 To &H7
@@ -431,9 +436,13 @@ Private Function TranslateDrive_M2(ByRef OldData As Byte, ByVal NewData As Byte)
           ' uncentering
           TempData = CmdGroup + CmdForce
           lblDebug.Caption = Hex(NewData) & " > " & Hex(TempData)
-        Case &H50, &H60
-          ' roll left, roll right
-          TempData = CmdGroup + CmdForce
+        Case &H50
+          ' roll right
+          TempData = &H60 + CmdForce
+          lblDebug.Caption = Hex(NewData) & " > " & Hex(TempData)
+        Case &H60
+          ' roll left
+          TempData = &H50 + CmdForce
           lblDebug.Caption = Hex(NewData) & " > " & Hex(TempData)
         Case &H70
           ' set force strength

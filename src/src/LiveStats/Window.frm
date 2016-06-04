@@ -4,13 +4,13 @@ Begin VB.Form Window
    BackColor       =   &H00FFFFFF&
    BorderStyle     =   0  'None
    Caption         =   "LiveStats"
-   ClientHeight    =   12000
+   ClientHeight    =   16005
    ClientLeft      =   0
    ClientTop       =   0
    ClientWidth     =   19200
    LinkTopic       =   "Form1"
    Picture         =   "Window.frx":0000
-   ScaleHeight     =   800
+   ScaleHeight     =   1067
    ScaleMode       =   3  'Pixel
    ScaleWidth      =   1280
    Begin VB.PictureBox pbOverlay 
@@ -93,13 +93,13 @@ Begin VB.Form Window
       ForeColor       =   &H80000008&
       Height          =   5760
       Index           =   0
-      Left            =   9600
+      Left            =   10440
       Picture         =   "Window.frx":9443
       ScaleHeight     =   384
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   640
       TabIndex        =   0
-      Top             =   7200
+      Top             =   12120
       Visible         =   0   'False
       Width           =   9600
    End
