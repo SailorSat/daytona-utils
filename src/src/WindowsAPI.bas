@@ -6,6 +6,9 @@ Option Explicit
 
 Public Declare Function GetTickCount Lib "kernel32" () As Long
 
+Public Declare Function timeGetTime Lib "winmm.dll" () As Long
+Public Declare Function timeBeginPeriod Lib "winmm.dll" (ByVal uPeriod As Long) As Long
+
 Public Declare Function CloseHandle Lib "kernel32" (ByVal hObject As Long) As Long
 
 Public Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)

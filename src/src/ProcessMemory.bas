@@ -129,7 +129,9 @@ Private Function OpenProcessMemoryModel3() As Boolean
     Exit Function
   End If
   
-  pRAMBASE = ReadLong(EmulatorEXE + &H13026C)
+  '&H13026C
+  '446 x86 - &H15A444
+  pRAMBASE = ReadLong(EmulatorEXE + &H15A444)
   If pRAMBASE = 0 Then
     CloseProcess
     Exit Function

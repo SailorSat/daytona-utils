@@ -19,4 +19,3 @@ End Sub
 Public Sub OnClose(lHandle As Long)
 End Sub
 
-

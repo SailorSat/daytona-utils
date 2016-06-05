@@ -1,42 +1,59 @@
 Attribute VB_Name = "MameInterop"
 Option Explicit
 
+' cache for output names
 Private output_array() As String
 
+' status flags
 Public MAME_Online As Boolean
 Public MAME_DriveData As Byte
-Public MAME_LampData As Byte
+Public MAME_LampsData As Byte
 Public MAME_Profile As String
 
-Public GAMESTATE As Byte
-
+' api declares
 Public Declare Function init_mame Lib "mame" (ByVal id As Long, ByVal Name As String, ByVal MameStart As Long, ByVal MameStop As Long, ByVal MameCopyData As Long, ByVal UpdateState As Long) As Long
 Public Declare Function close_mame Lib "mame" () As Long
 Public Declare Function map_id_to_outname Lib "mame" (ByVal id As Long) As String
 
+' internal handling for various games
+Public Sub mame_start_internal(Profile As String)
+  Debug.Print "mame_start_internal", Profile
+  MAME_Profile = Profile
+  Select Case MAME_Profile
+    Case "orunners", "outrun"
+      MAME_DriveData = &H7
+      MAME_LampsData = &H0
+    Case Else
+      MAME_DriveData = &H0
+      MAME_LampsData = &H0
+  End Select
+  MAME_Online = True
+End Sub
+
+Public Function Get_MAME_DriveData() As Byte
+  Get_MAME_DriveData = MAME_DriveData
+End Function
+
+Public Function Get_MAME_LampsData() As Byte
+  Get_MAME_LampsData = MAME_LampsData
+End Function
+
+
+' public hooks
 Public Function mame_start() As Long
   Debug.Print "mame_start"
   ReDim output_array(1, 0) As String
-  MAME_Online = True
-  MAME_DriveData = &H0
-  MAME_LampData = &H0
-  MAME_Profile = ""
+  MAME_Online = False
 End Function
 
 Public Function mame_stop() As Long
   Debug.Print "mame_stop"
+  ReDim output_array(1, 0) As String
   MAME_Online = False
 End Function
 
 Public Function mame_copydata(ByVal id As Long, ByVal Name As String) As Long
   Call get_name_from_id(id, Name)
-  If id = 0 Then
-    Debug.Print "Profile", MAME_Profile
-    Select Case MAME_Profile
-      Case "orunners", "outrun"
-        MAME_DriveData = &H7
-    End Select
-  End If
 End Function
 
 Public Function mame_updatestate(ByVal id As Long, ByVal State As Long) As Long
@@ -44,26 +61,19 @@ Public Function mame_updatestate(ByVal id As Long, ByVal State As Long) As Long
   Name = get_name_from_id(id, "")
   
   Select Case Name
-    Case "digit0"
+    Case "digit0", "RawDrive"
       ' raw drive data
-      If State < &H10 Then
-        GAMESTATE = State
-      End If
-      If GAMESTATE = 1 And State = &H46 Then
-        Exit Function
-      End If
       MAME_DriveData = State
-      'decode_force_feedback_command State
       
-    Case "digit1"
+    Case "digit1", "RawLamps"
       ' raw lamp data
-      MAME_LampData = State
+      MAME_LampsData = State
     
     Case "MA_Check_Point_lamp", "MA_Race_Leader_lamp", "MA_Steering_Wheel_motor", "MA_DJ_Music_lamp", "MA_<<_>>_lamp"
       OutRunners State, Name
       
     Case Else
-      Debug.Print "mame_updatestate", id, Hex(State), Name
+      'Debug.Print "mame_updatestate", id, Hex(State), Name
   
   End Select
 End Function
@@ -92,9 +102,9 @@ Public Sub OutRunners(State As Long, Name As String)
         Mask = &H30
     End Select
     If State = 0 Then
-      MAME_LampData = MAME_LampData And (&HFF - Mask)
+      MAME_LampsData = MAME_LampsData And (&HFF - Mask)
     Else
-      MAME_LampData = MAME_LampData Or Mask
+      MAME_LampsData = MAME_LampsData Or Mask
     End If
 
   End If
@@ -122,9 +132,8 @@ Public Function get_name_from_id(id As Long, Name As String) As String
     output_array(0, UBound(output_array, 2)) = id
     output_array(1, UBound(output_array, 2)) = idStr
     
-    If id = 0 Then
-      MAME_Profile = idStr
-      'Debug.Print MAME_Profile
+    If id = 0 And MAME_Online = False Then
+      mame_start_internal idStr
     End If
   End If
   
@@ -271,7 +280,3 @@ End Function
 ' 0x20 - fwd/rvs
 ' 0x40 - brake
 ' 0x80 - seat lock
-
-Public Function Get_MAME_DriveData() As Byte
-  Get_MAME_DriveData = MAME_DriveData
-End Function
