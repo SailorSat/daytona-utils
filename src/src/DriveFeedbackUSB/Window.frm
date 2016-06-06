@@ -82,7 +82,6 @@ End Sub
 
 Private Sub Form_Load()
   Dim SomeData As Byte
-  Dim DataChanged As Boolean
 
   If ReadIni("drive.ini", "feedback", "hidden", "false") = "true" Then
     Me.BackColor = RGB(255, 0, 0)
@@ -106,40 +105,35 @@ Private Sub Form_Load()
   MAME_Online = False
   M2EM_Online = False
   
-  timeBeginPeriod 1
-  
   ' init mame hook
   Call init_mame(ByVal 1, "Test", AddressOf mame_start, AddressOf mame_stop, AddressOf mame_copydata, AddressOf mame_updatestate)
   
   Do
     DoEvents
-    Sleep 1
+    Sleep 10
     If MAME_Online Then
       Profile = MAME_Profile
       While MAME_Online
-        Sleep 1
-        DataChanged = False
-      
         SomeData = Get_MAME_DriveData
         ProcessDrive SomeData
     
         SomeData = Get_MAME_LampsData
         ProcessLamps SomeData
+        
+        Sleep 2
         DoEvents
       Wend
       SendDrive 0
       SendLamps 0
     ElseIf M2EM_Online Then
       While M2EM_Online
-        Sleep 1
-        DataChanged = False
-    
         SomeData = Get_M2EM_DriveData
         ProcessDrive SomeData
         
         SomeData = Get_M2EM_LampsData
         ProcessLamps SomeData
     
+        Sleep 2
         DoEvents
       Wend
       SendDrive 0
@@ -195,7 +189,6 @@ End Sub
 Private Sub ProcessDrive(Data As Byte)
   If Data <> DriveData Then
     DriveData = Data
-    Debug.Print Hex(Data)
     If DebugMode Then
       Print #1, Hex(Data)
     End If

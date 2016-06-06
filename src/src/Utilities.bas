@@ -16,3 +16,12 @@ Public Function LeadSpace(Data As String, Length As Integer) As String
     LeadSpace = Data
   End If
 End Function
+
+Public Function HexDump(sData As String) As String
+  Dim bData() As Byte
+  bData = StrConv(sData, vbFromUnicode)
+  Dim Index As Integer
+  For Index = 0 To UBound(bData)
+    HexDump = HexDump & LeadSpace(Hex(bData(Index)), 2) & " "
+  Next
+End Function
