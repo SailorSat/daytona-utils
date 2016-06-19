@@ -129,12 +129,44 @@ Private Function TranslateDrive_M2(ByRef OldData As Byte, ByVal NewData As Byte)
       End If
       Exit Function
 
-    Case "daytona2", "dayto2pe", "scud"
-'      If Not CommandUsed(NewData) Then
-'        CommandUsed(NewData) = True
-'        Debug.Print "new cmd", Hex(NewData)
-'      End If
-
+    Case "srally2"
+      CmdForce = NewData Mod &H10
+      CmdGroup = NewData - CmdForce
+      Select Case CmdGroup
+        Case &H0, &H10, &H20, &H30
+          ' &H00 to &H3F - left
+          CmdForce = NewData
+          If CmdForce = 0 Then
+            TempData = &H10
+          Else
+            TempData = &H50 + (CmdForce / 4)
+          End If
+          Window.lblDebug.Caption = Hex(NewData) & " > " & Hex(TempData)
+        Case &H40, &H50, &H60, &H70
+          ' &H40 to &H7f - right
+          CmdForce = (NewData - &H40)
+          If CmdForce = 0 Then
+            TempData = &H10
+          Else
+            TempData = &H60 + (CmdForce / 4)
+          End If
+          Window.lblDebug.Caption = Hex(NewData) & " > " & Hex(TempData)
+        Case &HC0
+          TempData = &H0 + CmdForce
+          Window.lblDebug.Caption = Hex(NewData) & " > " & LeadZero(Hex(TempData), 2)
+        
+        Case Else
+          Exit Function
+        
+      End Select
+      
+      If OldData <> TempData Then
+        OldData = TempData
+        TranslateDrive_M2 = True
+      End If
+      Exit Function
+      
+    Case "daytona2", "dayto2pe", "scud", "scuda", "lemans24"
       CmdForce = NewData Mod &H10
       CmdGroup = NewData - CmdForce
 
