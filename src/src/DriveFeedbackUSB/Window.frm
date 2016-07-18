@@ -126,6 +126,7 @@ Private Sub Form_Load()
       SendDrive 0
       SendLamps 0
     ElseIf M2EM_Online Then
+      Profile = M2EM_Profile
       While M2EM_Online
         SomeData = Get_M2EM_DriveData
         ProcessDrive SomeData
