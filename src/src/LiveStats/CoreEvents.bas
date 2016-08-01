@@ -17,6 +17,8 @@ End Sub
 Public Sub OnTimer()
   OVERLAY_OnTimer
   CLIENT_OnTimer
+  
+  Window2.MoveBorder
 End Sub
 
 

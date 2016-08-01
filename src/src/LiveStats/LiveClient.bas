@@ -83,9 +83,13 @@ Public Sub ProcessFrame(LastFrame As DaytonaFrame)
   For iIndex = 0 To 7
     If LastFrame.Packet(iIndex).x0D4_CarNumber = 0 Then
       iMasterCar = iIndex
+      iIndex = 8
     End If
+  Next
+  For iIndex = 0 To 7
     If LastFrame.Packet(iIndex).x0D4_CarNumber = CLIENT_CarNo Then
       iSlaveCar = iIndex
+      iIndex = 8
     End If
   Next
   
@@ -126,6 +130,7 @@ Public Sub ProcessFrame(LastFrame As DaytonaFrame)
       For iIndex = 0 To 7
         If LastFrame.Packet(iIndex).x00C_LocalNode = bMasterNode Then
           iServerCar = iIndex
+          iIndex = 8
         End If
       Next
       Select Case bMasterState
@@ -143,10 +148,6 @@ Public Sub ProcessFrame(LastFrame As DaytonaFrame)
                 CoinLock = True
                 WriteByte pRAMBASE + CUSTOM_MASK, &HF5
               End If
-            Else
-              ' force loading of "low poly" car
-              WriteByte pRAMBASE + CAR_GEAR_MODE, &H1E
-              WriteByte pRAMBASE + CAR_GEAR_MODE + 1, &H2
             End If
           End If
       End Select
@@ -253,7 +254,7 @@ Private Function ProcessFakeFrame(sBuffer As String) As String
       ' type 1 packet
       ' count up ids
       baBuffer(&H5) = 8   ' Player Count
-      baBuffer(&H6) = 9   ' Node
+      baBuffer(&H6) = 9   ' Next Node
       
       baBuffer(&HC) = 8   ' Cab #2
       baBuffer(&H12) = 7  ' Cab #3

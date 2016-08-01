@@ -4,6 +4,10 @@ Option Explicit
 ' cache for output names
 Private output_array() As String
 
+Private HardDrivin_MotorNew As Integer
+Private HardDrivin_MotorOld As Integer
+Private HardDrivin_MotorOffset As Byte
+
 ' status flags
 Public MAME_Online As Boolean
 Public MAME_DriveData As Byte
@@ -60,25 +64,71 @@ Public Function mame_updatestate(ByVal id As Long, ByVal State As Long) As Long
   Dim Name As String
   Name = get_name_from_id(id, "")
   
-  Select Case Name
-    Case "digit0", "RawDrive"
-      ' raw drive data
-      MAME_DriveData = State
-      
-    Case "digit1", "RawLamps"
-      ' raw lamp data
-      MAME_LampsData = State
-    
-    Case "MA_Check_Point_lamp", "MA_Race_Leader_lamp", "MA_Steering_Wheel_motor", "MA_DJ_Music_lamp", "MA_<<_>>_lamp"
-      OutRunners State, Name
-      
-    Case Else
-      'Debug.Print "mame_updatestate", id, Hex(State), Name
+  'Debug.Print "mame_updatestate", id, Hex(State), Name
   
+  Select Case MAME_Profile
+    Case "harddriv", "racedriv"
+      HardDrivin Name, State
+    Case Else
+      Select Case Name
+        Case "digit0", "RawDrive"
+          ' raw drive data
+          MAME_DriveData = State
+          
+        Case "digit1", "RawLamps"
+          ' raw lamp data
+          MAME_LampsData = State
+        
+        Case "MA_Check_Point_lamp", "MA_Race_Leader_lamp", "MA_Steering_Wheel_motor", "MA_DJ_Music_lamp", "MA_<<_>>_lamp"
+          OutRunners Name, State
+          
+      End Select
   End Select
 End Function
 
-Public Sub OutRunners(State As Long, Name As String)
+Public Sub HardDrivin(Name As String, State As Long)
+  Select Case Name
+    Case "digit0"
+      ' wheel latch
+      If (State And &HE0) = 0 Then
+        HardDrivin_MotorOffset = 0
+      Else
+        If HardDrivin_MotorOffset = 0 Then
+          HardDrivin_MotorNew = State And &H1F
+          If HardDrivin_MotorNew = 0 Then
+            If HardDrivin_MotorNew <> HardDrivin_MotorOld Then
+              HardDrivin_MotorOld = HardDrivin_MotorNew
+              MAME_DriveData = &H10
+            End If
+          End If
+        ElseIf HardDrivin_MotorOffset = 1 Then
+          HardDrivin_MotorNew = HardDrivin_MotorNew + (State And &HF) * &H20
+          If State And &H10 Then
+            HardDrivin_MotorNew = HardDrivin_MotorNew * -1
+          End If
+          If HardDrivin_MotorNew <> HardDrivin_MotorOld Then
+            Debug.Print Hex(HardDrivin_MotorNew), HardDrivin_MotorNew
+            HardDrivin_MotorOld = HardDrivin_MotorNew
+            If HardDrivin_MotorNew < -10 Then
+              ' negative (turn left?)
+              MAME_DriveData = &H50 + ((HardDrivin_MotorNew * -1) / 12)
+            ElseIf HardDrivin_MotorNew > 10 Then
+              ' positive (turn right?)
+              MAME_DriveData = &H60 + ((HardDrivin_MotorNew) / 12)
+            Else
+              MAME_DriveData = &H10
+            End If
+          End If
+        End If
+        HardDrivin_MotorOffset = HardDrivin_MotorOffset + 1
+        If HardDrivin_MotorOffset > 2 Then HardDrivin_MotorOffset = 2
+      End If
+    Case Else
+      Debug.Print Name, Hex(State)
+  End Select
+End Sub
+
+Public Sub OutRunners(Name As String, State As Long)
   If Name = "MA_Steering_Wheel_motor" Then
     If State = 0 Then
       MAME_DriveData = &H10

@@ -33,8 +33,8 @@ Public Sub STATS_OnLoad()
 
   Dim Index As Integer
   For Index = 0 To 7
-    Window.imgCar(Index).Move 0, 480
-    Window2.imgCar(Index).Move 0, 480
+    Window2.imgDistance(Index).Move 0, ScreenHeight
+    Window2.imgCar(Index).Move 0, ScreenHeight
   Next
 End Sub
 
@@ -71,8 +71,9 @@ Public Sub STATS_OnRaceStart(Track As Byte, Node As Byte, Players As Byte)
   CurrentTrack = Track
   CurrentNode = Node
   
-  Window.shpDistance.Visible = True
-  BitBlt Window2.hDC, 0, 48, 640, 384, Window.pbTrack(CurrentTrack).hDC, 0, 0, vbSrcCopy
+  Window2.shpDistance.Move 8, 8, ScreenWidth - 16, 16
+  Window2.shpDistance.Visible = True
+  BitBlt Window2.hdc, (ScreenWidth / 2) - 320, (ScreenHeight / 2) - 192, 640, 384, Window2.pbTrack(CurrentTrack).hdc, 0, 0, vbSrcCopy
   Window2.Refresh
 End Sub
 
@@ -81,14 +82,14 @@ Public Sub STATS_OnRaceEnd()
   CurrentTrack = 255
   CurrentNode = 255
   
-  Window.shpDistance.Visible = False
-  BitBlt Window2.hDC, 0, 48, 640, 384, Window.pbBackground.hDC, 0, 48, vbSrcCopy
+  Window2.shpDistance.Visible = False
+  BitBlt Window2.hdc, (ScreenWidth / 2) - 320, (ScreenHeight / 2) - 192, 640, 384, Window2.pbBackground.hdc, 0, 48, vbSrcCopy
   Window2.Refresh
   
   Dim Index As Integer
   For Index = 0 To 7
-    Window.imgCar(Index).Move 0, 480
-    Window2.imgCar(Index).Move 0, 480
+    Window2.imgDistance(Index).Move 0, ScreenHeight
+    Window2.imgCar(Index).Move 0, ScreenHeight
   Next
 End Sub
 
@@ -96,7 +97,7 @@ End Sub
 Private Sub DrawDistance(Packet As DaytonaPacket)
   Dim DstX As Long
   DstX = DistanceToPixel(Packet.x0A0_Distance)
-  Window.imgCar(Packet.x0D4_CarNumber).Move 62 + DstX, 8
+  Window2.imgDistance(Packet.x0D4_CarNumber).Move 10 + DstX, 8
 End Sub
 
 
@@ -111,24 +112,24 @@ Private Sub DrawMap(Packet As DaytonaPacket)
     PosX = Packet.x05C_CarY
     PosY = Packet.x064_CarX
     PosZ = Packet.x060_CarZ
-    IntX = (320 - (PosX * 0.9))
-    IntY = (200 + (PosY * 0.9))
+    IntX = ((ScreenWidth / 2) - (PosX * 0.9))
+    IntY = ((ScreenHeight / 2) - 40 + (PosY * 0.9))
     IntZ = 64 + PosZ
     Window2.imgCar(Packet.x0D4_CarNumber).Move -8 + IntX, 40 + IntY
   ElseIf CurrentTrack = 1 Then
     PosX = Packet.x064_CarX
     PosY = Packet.x05C_CarY
     PosZ = Packet.x060_CarZ
-    IntX = (320 + (PosX / 5.5))
-    IntY = (190 + (PosY / 5.5))
+    IntX = ((ScreenWidth / 2) + (PosX / 5.5))
+    IntY = ((ScreenHeight / 2) - 50 + (PosY / 5.5))
     IntZ = 64 + PosZ
     Window2.imgCar(Packet.x0D4_CarNumber).Move -8 + IntX, 40 + IntY
   ElseIf CurrentTrack = 2 Then
     PosX = Packet.x064_CarX
     PosY = Packet.x05C_CarY
     PosZ = Packet.x060_CarZ
-    IntX = (320 - (PosX / 2.25))
-    IntY = (200 - (PosY / 2.25))
+    IntX = ((ScreenWidth / 2) - (PosX / 2.25))
+    IntY = ((ScreenHeight / 2) - 40 - (PosY / 2.25))
     IntZ = 64 + PosZ
     Window2.imgCar(Packet.x0D4_CarNumber).Move -8 + IntX, 40 + IntY
   End If
@@ -141,11 +142,11 @@ Private Function DistanceToPixel(Distance As Integer) As Long
   End If
   Select Case CurrentTrack
     Case 0
-      DistanceToPixel = (Abs(Distance) / &HF3C) * 500
+      DistanceToPixel = (Abs(Distance) / &HF3C) * (ScreenWidth - 16)
     Case 1
-      DistanceToPixel = (Abs(Distance) / &H1356) * 500
+      DistanceToPixel = (Abs(Distance) / &H1356) * (ScreenWidth - 16)
     Case 2
-      DistanceToPixel = (Abs(Distance) / &H12FC) * 500
+      DistanceToPixel = (Abs(Distance) / &H12FC) * (ScreenWidth - 16)
     Case Else
       DistanceToPixel = 0
   End Select
