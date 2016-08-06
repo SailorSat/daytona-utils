@@ -4,15 +4,17 @@ Begin VB.Form Window2
    AutoRedraw      =   -1  'True
    BackColor       =   &H80000005&
    BorderStyle     =   0  'None
+   Caption         =   "LiveStats #2"
    ClientHeight    =   15360
    ClientLeft      =   0
    ClientTop       =   0
    ClientWidth     =   18405
    LinkTopic       =   "Form1"
+   MaxButton       =   0   'False
+   MinButton       =   0   'False
    ScaleHeight     =   1024
    ScaleMode       =   3  'Pixel
    ScaleWidth      =   1227
-   ShowInTaskbar   =   0   'False
    Begin VB.PictureBox pbTrack 
       Appearance      =   0  'Flat
       AutoRedraw      =   -1  'True
@@ -87,13 +89,13 @@ Begin VB.Form Window2
       BorderStyle     =   0  'None
       ForeColor       =   &H80000008&
       Height          =   7200
-      Left            =   9960
+      Left            =   6240
       Picture         =   "Window2.frx":3318
       ScaleHeight     =   480
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   640
       TabIndex        =   5
-      Top             =   2760
+      Top             =   3840
       Visible         =   0   'False
       Width           =   9600
    End
@@ -315,18 +317,22 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Private BorderOffset As Long
+Private BannerOffset As Long
 
 Public Sub MoveBorder()
-  BorderOffset = BorderOffset - 1
-  If BorderOffset <= -683 Then BorderOffset = 0
-  
   ' Checkerboard (Top)
-  BitBlt Me.hdc, BorderOffset, 0, 640, 48, pbBackground.hdc, 0, 0, vbSrcCopy
-  BitBlt Me.hdc, 640 + BorderOffset, 0, 640, 48, pbBackground.hdc, 0, 0, vbSrcCopy
+  BorderOffset = BorderOffset - 1&
+  If BorderOffset <= -640& Then BorderOffset = 0
+  BitBlt Me.hdc, BorderOffset, 0&, 640&, 48&, pbBackground.hdc, 0&, 0&, vbSrcCopy
+  BitBlt Me.hdc, 640& + BorderOffset, 0&, 640&, 48&, pbBackground.hdc, 0&, 0&, vbSrcCopy
+  BitBlt Me.hdc, 1280& + BorderOffset, 0&, 640&, 48&, pbBackground.hdc, 0&, 0&, vbSrcCopy
 
   ' Banner (Bottom)
-  BitBlt Me.hdc, BorderOffset, ScreenHeight - 48, 683, 48, pbBanner.hdc, 0, 0, vbSrcCopy
-  BitBlt Me.hdc, 683 + BorderOffset, ScreenHeight - 48, 683, 48, pbBanner.hdc, 0, 0, vbSrcCopy
+  BannerOffset = BannerOffset - 1&
+  If BannerOffset <= -683& Then BannerOffset = 0&
+  BitBlt Me.hdc, BorderOffset, ScreenSizeY - 48&, 683&, 48&, pbBanner.hdc, 0&, 0&, vbSrcCopy
+  BitBlt Me.hdc, 683& + BorderOffset, ScreenSizeY - 48&, 683&, 48&, pbBanner.hdc, 0&, 0&, vbSrcCopy
+  BitBlt Me.hdc, 1366& + BorderOffset, ScreenSizeY - 48&, 683&, 48&, pbBanner.hdc, 0&, 0&, vbSrcCopy
 
   Window2.Refresh
 End Sub

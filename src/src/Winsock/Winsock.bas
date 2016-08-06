@@ -145,7 +145,7 @@ Public Function SocketMessage(ByVal lHandle As Long, ByVal lParam As Long) As Lo
         While lBuffer > 0
           sBuffer = Left$(sBuffer, lBuffer)
           OnReadTCP lHandle, sBuffer
-          sBuffer = String(BUFFER_SIZE, 0)
+          sBuffer = String$(BUFFER_SIZE, 0)
           lBuffer = recv(lHandle, sBuffer, BUFFER_SIZE, 0)
         Wend
       Else

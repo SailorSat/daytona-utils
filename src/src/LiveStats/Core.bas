@@ -1,70 +1,66 @@
 Attribute VB_Name = "Core"
 Option Explicit
 
-Global ScreenWidth As Long
-Global ScreenHeight As Long
-Global ScreenZoom As Double
+Global ScreenSizeX As Long
+Global ScreenSizeY As Long
+Global ScreenZoomX As Long
+Global ScreenZoomY As Long
 
-Private IsRunOnIDE As Boolean
+Private RunOnIDE As Boolean
 
-Private Function RunOnIDE() As Boolean
-  IsRunOnIDE = True
+Private Function IsRunOnIDE() As Boolean
   RunOnIDE = True
+  IsRunOnIDE = True
 End Function
 
 Public Sub Main()
   ' check for visual basic ide (debug mode)
-  IsRunOnIDE = False
-  Debug.Assert RunOnIDE
+  RunOnIDE = False
+  Debug.Assert IsRunOnIDE
   
-  'If Not IsRunOnIDE Then
+  If Not RunOnIDE Then
     While Not OpenMemory
       Sleep 500
     Wend
-  'End If
+  End If
   
   ' Check Resolution and calculate zoom
-  ScreenWidth = Screen.Width / Screen.TwipsPerPixelX
-  ScreenHeight = Screen.Height / Screen.TwipsPerPixelY
+  ScreenSizeX = Screen.Width / Screen.TwipsPerPixelX
+  ScreenSizeY = Screen.Height / Screen.TwipsPerPixelY
   
   If RunOnIDE Then
-    ScreenWidth = 848
-    ScreenHeight = 480
+    ScreenSizeX = 512
+    ScreenSizeY = 384
   End If
   
   Dim ScreenZoomX As Double
   Dim ScreenZoomY As Double
-  ScreenZoomX = ScreenWidth / 640
-  ScreenZoomY = ScreenHeight / 480
-  
-  If ScreenZoomX > ScreenZoomY Then
-    ScreenZoom = ScreenZoomY
-  Else
-    ScreenZoom = ScreenZoomX
-  End If
+  ScreenZoomX = ScreenSizeX / 496
+  ScreenZoomY = ScreenSizeY / 360
   
   Dim WindowWidth As Long
   Dim WindowHeight As Long
-  WindowWidth = ScreenWidth * Screen.TwipsPerPixelX
-  WindowHeight = ScreenHeight * Screen.TwipsPerPixelY
+  WindowWidth = ScreenSizeX * Screen.TwipsPerPixelX
+  WindowHeight = ScreenSizeY * Screen.TwipsPerPixelY
   
   ' Screen #1 - Top Left
   Window.Hide
-  Window.Move 0, 0, WindowWidth, WindowHeight
+  Window.Move 0&, 0&, WindowWidth, WindowHeight
   Window.Show
 
   ' Screen #2 - Top Left
   Window2.Hide
-  Window2.Move WindowWidth, 0, WindowWidth, WindowHeight
+  Window2.Move WindowWidth, 0&, WindowWidth, WindowHeight
   Window2.MoveBorder
   Window2.Show
   
   ' Move Mouse
-  SetCursorPos ScreenWidth * 2, ScreenHeight
+  SetCursorPos ScreenSizeX * 2&, ScreenSizeY
   
   ' Prepare Overlay
   ManipulateEmulator
   EnableTransparency
+  EnableAlwaysOnTop
   
   ' Raise OnLoad Event
   OnLoad
@@ -74,9 +70,9 @@ Private Sub ManipulateEmulator()
   Dim EmulatorWindow As Long
   EmulatorWindow = FindWindowA(vbNullString, "Daytona USA (Saturn Ads)")
   If EmulatorWindow Then
-    SetWindowLongA EmulatorWindow, GWL_STYLE, &H16000000
-    SetMenu EmulatorWindow, 0
-    SetWindowPos EmulatorWindow, Window.hWnd, 0, 0, ScreenWidth, ScreenHeight, 0
+    Call SetWindowLongA(EmulatorWindow, GWL_STYLE, &H16000000)
+    Call SetMenu(EmulatorWindow, 0&)
+    Call SetWindowPos(EmulatorWindow, Window.hWnd, 0&, 0&, ScreenSizeX, ScreenSizeY, 0&)
   End If
 End Sub
 
@@ -90,4 +86,6 @@ Private Sub EnableTransparency()
   Call SetLayeredWindowAttributes(Window.hWnd, &HFF00FF, 0&, LWA_COLORKEY)
 End Sub
 
-
+Private Sub EnableAlwaysOnTop()
+  Call SetWindowPos(Window.hWnd, HWND_TOPMOST, 0&, 0&, 0&, 0&, SWP_SHOWWINDOW Or SWP_NOMOVE Or SWP_NOSIZE Or SWP_NOACTIVATE)
+End Sub

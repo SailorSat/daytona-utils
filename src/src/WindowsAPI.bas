@@ -90,12 +90,20 @@ Public Declare Function GetMenu Lib "user32" (ByVal hWnd As Long) As Long
 Public Declare Function SetMenu Lib "user32" (ByVal hWnd As Long, ByVal hMenu As Long) As Long
 Public Declare Function SetLayeredWindowAttributes Lib "user32" (ByVal hWnd As Long, ByVal crKey As Long, ByVal bDefaut As Byte, ByVal dwFlags As Long) As Long
 
-Public Const GWL_STYLE = (-16)
-Public Const GWL_EXSTYLE = (-20)
+Public Const SWP_NOSIZE = &H1&
+Public Const SWP_NOMOVE = &H2&
+Public Const SWP_NOACTIVATE = &H10&
+Public Const SWP_SHOWWINDOW = &H40&
+
+Public Const GWL_STYLE = (-16&)
+Public Const GWL_EXSTYLE = (-20&)
 
 Public Const WS_EX_LAYERED = &H80000
 
-Public Const LWA_COLORKEY = &H1
+Public Const LWA_COLORKEY = &H1&
+
+Public Const HWND_TOPMOST = -1&
+
 
 ' ---
 ' BitBlt

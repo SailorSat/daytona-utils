@@ -1,9 +1,11 @@
 Attribute VB_Name = "CoreEvents"
 Option Explicit
 
+
 ' --- Core Events ---
 Public Sub OnLoad()
   WINSOCK_OnLoad
+  OVERLAY_OnLoad
   STATS_OnLoad
   CLIENT_OnLoad
   CAMERA_OnLoad
@@ -48,18 +50,6 @@ End Sub
 
 
 ' --- Client Events ---
-Public Sub OnLinkDown()
-  If CLIENT_Online Then
-    CLIENT_Online = False
-  End If
-End Sub
-
-Public Sub OnLinkUp()
-  If Not CLIENT_Online Then
-    CLIENT_Online = True
-  End If
-End Sub
-
 Public Sub OnRaceStart(Track As Byte, Node As Byte, Players As Byte)
   OVERLAY_OnRaceStart Track, Node, Players
   STATS_OnRaceStart Track, Node, Players
@@ -71,5 +61,3 @@ Public Sub OnRaceEnd()
   OVERLAY_OnRaceEnd
   STATS_OnRaceEnd
 End Sub
-
-

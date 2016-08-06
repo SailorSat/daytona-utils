@@ -64,10 +64,20 @@ Public Sub CLIENT_OnReadUDP(lHandle As Long, sBuffer As String, sAddress As Stri
 End Sub
 
 
+Public Sub CLIENT_OnLinkDown()
+  If CLIENT_Online Then
+    CLIENT_Online = False
+  End If
+End Sub
+
+Public Sub CLIENT_OnLinkUp()
+  If Not CLIENT_Online Then
+    CLIENT_Online = True
+  End If
+End Sub
+
+
 Public Sub CLIENT_OnRaceEnd()
-  WriteByte pRAMBASE + CAR_GEAR_MODE, 0
-  WriteByte pRAMBASE + CAR_GEAR_MODE + 1, 0
-  WriteInteger pRAMBASE + CAR_MODEL, &H2
 End Sub
 
 
@@ -162,10 +172,6 @@ Public Sub ProcessFrame(LastFrame As DaytonaFrame)
           End If
         End If
         
-        ' Enforce automatic gears
-        WriteByte pRAMBASE + CAR_GEAR_MODE, 0
-        WriteByte pRAMBASE + CAR_GEAR_MODE + 1, 0
-        
         ' Set Laps to 255 to avoid live client finishing the race
         WriteByte pRAMBASE + LAPS_TOTAL, &HFF
         
@@ -248,7 +254,7 @@ Private Function ProcessFakeFrame(sBuffer As String) As String
       baBuffer(&H2A) = 7  ' Cab #7
       baBuffer(&H30) = 8  ' Cab #8
       
-      OnLinkDown
+      CLIENT_OnLinkDown
       
     Case 1
       ' type 1 packet
@@ -269,7 +275,7 @@ Private Function ProcessFakeFrame(sBuffer As String) As String
       ' type 2 packet
       If baBuffer(&H1A) >= &H80 Then
         ' sync phase done!
-        OnLinkUp
+        CLIENT_OnLinkUp
         ProcessFakeFrame = ""
         Exit Function
       Else
