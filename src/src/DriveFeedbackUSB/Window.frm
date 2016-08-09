@@ -113,6 +113,7 @@ Private Sub Form_Load()
     Sleep 10
     If MAME_Online Then
       Profile = MAME_Profile
+      Debug.Print "MAME_Online", MAME_Profile
       While MAME_Online
         SomeData = Get_MAME_DriveData
         ProcessDrive SomeData
@@ -125,8 +126,10 @@ Private Sub Form_Load()
       Wend
       SendDrive 0
       SendLamps 0
+      Debug.Print "Offline"
     ElseIf M2EM_Online Then
       Profile = M2EM_Profile
+      Debug.Print "M2EM_Online", M2EM_Profile
       While M2EM_Online
         SomeData = Get_M2EM_DriveData
         ProcessDrive SomeData
@@ -139,6 +142,7 @@ Private Sub Form_Load()
       Wend
       SendDrive 0
       SendLamps 0
+      Debug.Print "Offline"
     Else
       Check_M2EM
     End If

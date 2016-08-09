@@ -14,6 +14,7 @@ Public Sub Check_M2EM()
 End Sub
 
 Public Function Get_M2EM_DriveData() As Byte
+  M2EM_Online = OpenMemory
   Get_M2EM_DriveData = ReadByte(DriveOffset)
 End Function
 
