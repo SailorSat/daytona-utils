@@ -421,8 +421,7 @@ Private Function TranslateDrive_M3(ByRef OldData As Byte, ByVal NewData As Byte)
           End If
           Window.lblDebug.Caption = Hex(NewData) & " > " & Hex(TempData)
         Case &HC0
-          TempData = &HC0 + CmdForce
-          Window.lblDebug.Caption = Hex(NewData) & " > " & LeadZero(Hex(TempData), 2)
+          TempData = NewData
         
         Case Else
           Exit Function
