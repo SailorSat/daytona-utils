@@ -139,7 +139,7 @@ Private Function TranslateDrive_M2(ByRef OldData As Byte, ByVal NewData As Byte)
           If CmdForce = 0 Then
             TempData = &H10
           Else
-            TempData = &H50 + (CmdForce / 4)
+            TempData = &H50 + (CmdForce / 8)
           End If
           Window.lblDebug.Caption = Hex(NewData) & " > " & Hex(TempData)
         Case &H40, &H50, &H60, &H70
@@ -148,7 +148,7 @@ Private Function TranslateDrive_M2(ByRef OldData As Byte, ByVal NewData As Byte)
           If CmdForce = 0 Then
             TempData = &H10
           Else
-            TempData = &H60 + (CmdForce / 4)
+            TempData = &H60 + (CmdForce / 8)
           End If
           Window.lblDebug.Caption = Hex(NewData) & " > " & Hex(TempData)
         Case &HC0
@@ -323,9 +323,9 @@ Private Function TranslateDrive_M3(ByRef OldData As Byte, ByVal NewData As Byte)
           TempData = &HC0 + CmdForce
           If CmdForce = &HA Then TempData = &HC7
         Case &H10
+          ' spring
           TempData = &H14
         Case &H20, &H40
-          ' spring
           ' clutch
           ' uncenter
           TempData = NewData
@@ -358,6 +358,7 @@ Private Function TranslateDrive_M3(ByRef OldData As Byte, ByVal NewData As Byte)
         TranslateDrive_M3 = True
       End If
       Exit Function
+    
     Case "srallyc"
       Select Case NewData
         Case &H0
@@ -397,42 +398,6 @@ Private Function TranslateDrive_M3(ByRef OldData As Byte, ByVal NewData As Byte)
       End If
       Exit Function
 
-'    Case "daytona2", "dayto2pe"
-'      CmdForce = NewData Mod &H10
-'      CmdGroup = NewData - CmdForce
-'
-'      Select Case CmdGroup
-'        Case &H0
-'          ' play sequences
-'          Exit Function
-'
-'        Case Else
-'          TempData = NewData
-'      End Select
-'
-'      If OldData <> TempData Then
-'        OldData = TempData
-'        TranslateDrive_M3 = True
-'      End If
-'      Exit Function
-  
-'    Case "scud"
-'      CmdForce = NewData Mod &H10
-'      CmdGroup = NewData - CmdForce
-'
-'      Select Case CmdGroup
-'        Case Else
-'          TempData = NewData
-'      End Select
-'
-'      If TempData = &HC6 Then TempData = &HC7
-'
-'      If OldData <> TempData Then
-'        OldData = TempData
-'        TranslateDrive_M3 = True
-'      End If
-'      Exit Function
-
     Case "srally2"
       CmdForce = NewData Mod &H10
       CmdGroup = NewData - CmdForce
@@ -441,18 +406,18 @@ Private Function TranslateDrive_M3(ByRef OldData As Byte, ByVal NewData As Byte)
           ' &H00 to &H3F - left
           CmdForce = NewData
           If CmdForce = 0 Then
-            TempData = &H14
+            TempData = &H10
           Else
-            TempData = &H60 + (CmdForce / 4)
+            TempData = &H60 + (CmdForce / 8)
           End If
           Window.lblDebug.Caption = Hex(NewData) & " > " & Hex(TempData)
         Case &H40, &H50, &H60, &H70
           ' &H40 to &H7f - right
           CmdForce = (NewData - &H40)
           If CmdForce = 0 Then
-            TempData = &H14
+            TempData = &H10
           Else
-            TempData = &H50 + (CmdForce / 4)
+            TempData = &H50 + (CmdForce / 8)
           End If
           Window.lblDebug.Caption = Hex(NewData) & " > " & Hex(TempData)
         Case &HC0
