@@ -60,7 +60,9 @@ Public Sub STATS_OnReadUDP(lHandle As Long, sBuffer As String, sAddress As Strin
   Set LastFrame = ParseFrame(sBuffer)
   If Not LastFrame Is Nothing Then
     If CurrentTrack < 3 Then
-      If STATS_FlipFlop = 0 Then
+      If STATS_FlipFlop > 0 Then
+        STATS_FlipFlop = STATS_FlipFlop - 1
+      Else
         For Index = 0 To 7
           Set Packet = LastFrame.Packet(Index)
           If Packet.x00C_LocalNode = CurrentNode Or Packet.x018_MasterNode = CurrentNode Then
@@ -71,8 +73,6 @@ Public Sub STATS_OnReadUDP(lHandle As Long, sBuffer As String, sAddress As Strin
           End If
         Next
         STATS_FlipFlop = 2
-      Else
-        STATS_FlipFlop = STATS_FlipFlop - 1
       End If
     End If
     If CLIENT_Online Then

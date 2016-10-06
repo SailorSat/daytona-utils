@@ -56,6 +56,8 @@ Public Const CAR_YAW As Long = &H51D8&
 
 Public Const CAR_ICON As Long = &H5214&
 
+Public Const GEAR As Long = &H52CC
+
 Public Const COIN_COUNT As Long = &HFE020
 
 Public Const COIN_NEED_1 As Long = &HFE110  '(non special)
