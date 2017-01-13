@@ -8,6 +8,11 @@ Private HardDrivin_MotorNew As Integer
 Private HardDrivin_MotorOld As Integer
 Private HardDrivin_MotorOffset As Byte
 
+Private HardDrivin_SEL1 As Byte
+Private HardDrivin_SEL2 As Byte
+Private HardDrivin_SEL3 As Byte
+Private HardDrivin_SEL4 As Byte
+
 ' status flags
 Public MAME_Online As Boolean
 Public MAME_DriveData As Byte
@@ -88,7 +93,7 @@ End Function
 
 Public Sub HardDrivin(Name As String, State As Long)
   Select Case Name
-    Case "digit0"
+    Case "wheel"
       ' wheel latch
       If (State And &HE0) = 0 Then
         HardDrivin_MotorOffset = 0
@@ -107,7 +112,6 @@ Public Sub HardDrivin(Name As String, State As Long)
             HardDrivin_MotorNew = HardDrivin_MotorNew * -1
           End If
           If HardDrivin_MotorNew <> HardDrivin_MotorOld Then
-            Debug.Print Hex(HardDrivin_MotorNew), HardDrivin_MotorNew
             HardDrivin_MotorOld = HardDrivin_MotorNew
             If HardDrivin_MotorNew < -10 Then
               ' negative (turn left?)
@@ -123,6 +127,19 @@ Public Sub HardDrivin(Name As String, State As Long)
         HardDrivin_MotorOffset = HardDrivin_MotorOffset + 1
         If HardDrivin_MotorOffset > 2 Then HardDrivin_MotorOffset = 2
       End If
+      
+    Case "SEL1"
+      HardDrivin_SEL1 = State
+
+    Case "SEL2"
+      HardDrivin_SEL2 = State
+
+    Case "SEL3"
+      HardDrivin_SEL3 = State
+
+    Case "SEL4"
+      HardDrivin_SEL4 = State
+
     Case Else
       Debug.Print Name, Hex(State)
   End Select

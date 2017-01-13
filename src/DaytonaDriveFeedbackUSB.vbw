@@ -1,11 +1,11 @@
-WindowsAPI = 156, 156, 1448, 780, 
+WindowsAPI = 156, 161, 1448, 785, 
 IniFiles = 208, 208, 1500, 832, 
 ProcessMemory = 182, 182, 1474, 806, 
 DaytonaOffsets = 88, 88, 814, 455, 
-MameInterop = 110, 110, 858, 425, 
+MameInterop = 110, 110, 858, 425, Z
 CoreEvents = 0, 0, 0, 0, C
 Window = 66, 66, 792, 433, , 44, 44, 770, 411, C
 USB = 88, 88, 814, 455, 
 M2Emulator = 156, 156, 1448, 565, 
-DriveTranslation = 156, 156, 1448, 565, Z
+DriveTranslation = 156, 156, 1448, 565, 
 Utilities = 0, 0, 1292, 409, 
