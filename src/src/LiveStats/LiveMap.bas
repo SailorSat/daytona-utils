@@ -72,7 +72,7 @@ Public Sub STATS_OnReadUDP(lHandle As Long, sBuffer As String, sAddress As Strin
             End If
           End If
         Next
-        STATS_FlipFlop = 2
+        STATS_FlipFlop = 0
       End If
     End If
     If CLIENT_Online Then

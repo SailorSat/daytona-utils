@@ -1,5 +1,5 @@
 IniFiles = 0, 0, 0, 0, C
-DaytonaOffsets = 85, 390, 640, 780, 
+DaytonaOffsets = 85, 390, 640, 780, Z
 Winsock = 1110, 0, 1665, 390, C
 Socket = 0, 0, 0, 0, C
 CoreEvents = 555, 390, 1110, 780, C
