@@ -263,6 +263,11 @@ Public Const OPEN_EXISTING = 3
 
 Public Const FORMAT_MESSAGE_FROM_SYSTEM = &H1000
 
+
+Public Declare Function QueryPerformanceFrequency Lib "kernel32" (lpFrequency As Any) As Long
+Public Declare Function QueryPerformanceCounter Lib "kernel32" (lpPerformanceCount As Any) As Long
+
+
 Public Function GetErrorString(ByVal LastError As Long) As String
   'Returns the error message for the last error.
   'Adapted from Dan Appleman's "Win32 API Puzzle Book"
@@ -272,5 +277,3 @@ Public Function GetErrorString(ByVal LastError As Long) As String
   Bytes = FormatMessageA(FORMAT_MESSAGE_FROM_SYSTEM, 0&, LastError, 0, ErrorString, 128, 0)
   GetErrorString = LastError & " - " & ErrorString
 End Function
-
-

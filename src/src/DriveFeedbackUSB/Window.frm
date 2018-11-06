@@ -110,7 +110,7 @@ Private Sub Form_Load()
   
   Do
     DoEvents
-    Sleep 10
+    Sleep 8
     If MAME_Online Then
       Profile = MAME_Profile
       Debug.Print "MAME_Online", MAME_Profile
@@ -194,6 +194,7 @@ End Sub
 Private Sub ProcessDrive(Data As Byte)
   If Data <> DriveData Then
     DriveData = Data
+    Debug.Print Hex(Data), GetTickCount
     If DebugMode Then
       Print #1, Hex(Data)
     End If

@@ -1,6 +1,6 @@
 VERSION 5.00
 Begin VB.Form Window 
-   BorderStyle     =   4  'Festes Werkzeugfenster
+   BorderStyle     =   4  'Fixed ToolWindow
    Caption         =   "Form1"
    ClientHeight    =   1095
    ClientLeft      =   45
@@ -11,7 +11,36 @@ Begin VB.Form Window
    MinButton       =   0   'False
    ScaleHeight     =   1095
    ScaleWidth      =   2295
-   StartUpPosition =   3  'Windows-Standard
+   StartUpPosition =   3  'Windows Default
+   Begin VB.CommandButton Command2 
+      Caption         =   "+"
+      Height          =   255
+      Left            =   1680
+      TabIndex        =   3
+      Top             =   600
+      Width           =   255
+   End
+   Begin VB.CommandButton Command1 
+      Caption         =   "-"
+      Height          =   255
+      Left            =   1320
+      TabIndex        =   2
+      Top             =   600
+      Width           =   255
+   End
+   Begin VB.CheckBox Check1 
+      Caption         =   "Check1"
+      Height          =   255
+      Left            =   1800
+      TabIndex        =   1
+      Top             =   120
+      Width           =   255
+   End
+   Begin VB.Timer Timer16 
+      Interval        =   16
+      Left            =   600
+      Top             =   600
+   End
    Begin VB.Timer Timer 
       Interval        =   1000
       Left            =   120
@@ -27,10 +56,10 @@ Begin VB.Form Window
    End
    Begin VB.Shape shStatus 
       BackColor       =   &H00000040&
-      BackStyle       =   1  'Undurchsichtig
+      BackStyle       =   1  'Opaque
       Height          =   375
       Left            =   120
-      Shape           =   4  'Gerundetes Rechteck
+      Shape           =   4  'Rounded Rectangle
       Top             =   120
       Width           =   375
    End
@@ -53,12 +82,40 @@ Private UDP_Socket As Long
 Private UDP_Buffer As String
 
 Private NET_Framerate As Long
+Private NET_Delay As Long
+Private NET_FlipFlop As Long
+
+Private NET_Resolution As Currency
 
 Private Sub cmdGo_Click()
   Winsock.SendUDP UDP_Socket, SendFrame0, UDP_RemoteAddress
 End Sub
 
+Private Sub Command1_Click()
+  NET_Delay = NET_Delay - 1
+  If NET_Delay = 0 Then NET_Delay = 1
+End Sub
+
+Private Sub Command2_Click()
+  NET_Delay = NET_Delay + 1
+End Sub
+
 Private Sub Form_Load()
+  Me.Show
+  DoEvents
+  
+  NET_Delay = 3
+  
+  Dim Performance1 As Currency, Performance2 As Currency, Performance3 As Currency
+  QueryPerformanceCounter Performance1
+  Sleep 1000
+  QueryPerformanceCounter Performance2
+  Sleep 1000
+  QueryPerformanceCounter Performance3
+  
+  NET_Resolution = ((Performance2 - Performance1) + (Performance3 - Performance2)) / 2
+  Debug.Print "1000ms ~= " & NET_Resolution
+
   ' Init Winsock
   Winsock.Load
     
@@ -74,7 +131,7 @@ Private Sub Form_Load()
   End If
   
   Host = ReadIni("fakemaster.ini", "network", "RemoteHost", "127.0.0.1")
-  Port = CLng(ReadIni("fakemaster.ini", "network", "RemotePort", "7001"))
+  Port = CLng(ReadIni("fakemaster.ini", "network", "RemotePort", "7002"))
   UDP_RemoteAddress = Winsock.WSABuildSocketAddress(Host, Port)
   If UDP_RemoteAddress = "" Then
     MsgBox "Something went wrong! #UDP_RemoteAddress", vbCritical Or vbOKOnly, Window.Caption
@@ -95,7 +152,7 @@ End Sub
 
 Public Sub OnReadUDP(lHandle As Long, sBuffer As String, sAddress As String)
   If FAKE_READY Then
-    Sleep 10
+    Sleep NET_Delay
     DoEvents
     Winsock.SendUDP UDP_Socket, sBuffer, UDP_RemoteAddress
     NET_Framerate = NET_Framerate + 1
@@ -182,6 +239,16 @@ Public Function SendFrame2() As String
 End Function
 
 Private Sub Timer_Timer()
-  Me.Caption = NET_Framerate
+  Me.Caption = NET_Framerate & " - " & NET_Delay
+  If Check1.Value Then
+    If NET_Framerate > 60 Then
+      NET_Delay = NET_Delay + 1
+      If NET_Delay > 20 Then NET_Delay = 20
+    End If
+    If NET_Framerate < 56 Then
+      NET_Delay = NET_Delay - 1
+      If NET_Delay < 10 Then NET_Delay = 10
+    End If
+  End If
   NET_Framerate = 0
 End Sub

@@ -138,7 +138,7 @@ Public Sub OnReadUDP(lHandle As Long, sBuffer As String, sAddress As String)
     UDP_Buffer = Mid(UDP_Buffer, 3590)
     Packet1 = Translate_M2EM_to_MAME(Packet0)
     If Len(Packet1) > 0 And FAKE_READY Then
-      Winsock.SendTCP TCP_Socket3, Translate_M2EM_to_MAME(sBuffer)
+      Winsock.SendTCP TCP_Socket3, Packet1
     End If
   End If
 End Sub
@@ -189,6 +189,7 @@ Public Function Translate_MAME_to_M2EM(sBuffer As String) As String
     Case &HFC
       ' 0xFC - vsync
       ' silently droped
+      Translate_MAME_to_M2EM = ""
     Case &H1
       ' 0x01 - master data
       baBuffer(4) = 2
@@ -220,7 +221,7 @@ Public Function Translate_M2EM_to_MAME(sBuffer As String) As String
       NET_Framerate = NET_Framerate + 1
       Translate_M2EM_to_MAME = Translate_M2EM_to_MAME & StrConv(baBuffer, vbUnicode)
     Case Else
-      Debug.Print "M2EM: detected type " & Hex(baBuffer(4))
+      Debug.Print "M2EM: detected type " & Hex(baBuffer(0))
   End Select
 End Function
 

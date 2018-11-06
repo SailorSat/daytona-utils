@@ -87,7 +87,7 @@ Private Sub Form_Unload(Cancel As Integer)
 End Sub
 
 Private Sub Timer_Timer()
-  If OpenMemory Then
+  If OpenMemoryModel2 Then
     If Not MEM_Open Then
       Window.BackColor = RGB(0, 255, 0)
       MEM_Open = True

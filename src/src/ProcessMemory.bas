@@ -8,11 +8,11 @@ Public pRAM2BASE As Long
 Public pBACKUPBASE As Long
 
 
-Public Function OpenMemory() As Boolean
+Public Function OpenMemoryModel2() As Boolean
   ' check if we got handle
   If mHandle = -1 Then
     ' no handle, try to open process
-    OpenMemory = OpenProcessMemory
+    OpenMemoryModel2 = OpenProcessMemoryModel2
   Else
     ' got handle, check if valid
     Dim Result As Long
@@ -20,43 +20,25 @@ Public Function OpenMemory() As Boolean
     Result = ReadProcessMemory(mHandle, pRAMBASE, Buffer, 1, 0)
     If Result = 0 Then
       CloseProcess
-      OpenMemory = False
+      OpenMemoryModel2 = False
     Else
-      OpenMemory = True
+      OpenMemoryModel2 = True
     End If
   End If
 End Function
 
-Public Function OpenMemoryModel3() As Boolean
-  ' check if we got handle
-  If mHandle = -1 Then
-    ' no handle, try to open process
-    OpenMemoryModel3 = OpenProcessMemoryModel3
-  Else
-    ' got handle, check if valid
-    Dim Result As Long
-    Dim Buffer As Byte
-    Result = ReadProcessMemory(mHandle, pRAMBASE, Buffer, 1, 0)
-    If Result = 0 Then
-      CloseProcess
-      OpenMemoryModel3 = False
-    Else
-      OpenMemoryModel3 = True
-    End If
-  End If
-End Function
 
 Public Sub CloseMemory()
   CloseProcess
 End Sub
 
 
-Private Function OpenProcessMemory() As Boolean
+Private Function OpenProcessMemoryModel2() As Boolean
   Dim Process As Long
   Dim Handle As Long
   Dim Module As Long
   
-  OpenProcessMemory = False
+  OpenProcessMemoryModel2 = False
   
   Process = GetProcessByFilename("EMULATOR.EXE", 0)
   If Process = -1 Then
@@ -101,42 +83,7 @@ Private Function OpenProcessMemory() As Boolean
     Exit Function
   End If
   
-  OpenProcessMemory = True
-End Function
-
-
-Private Function OpenProcessMemoryModel3() As Boolean
-  Dim Process As Long
-  Dim Handle As Long
-  Dim Module As Long
-  
-  OpenProcessMemoryModel3 = False
-  
-  Process = GetProcessByFilename("Supermodel.exe", 0)
-  If Process = -1 Then
-    Exit Function
-  End If
-  
-  Handle = OpenProcessID(Process)
-  If Handle = -1 Then
-    Exit Function
-  End If
-  
-  Dim EmulatorEXE As Long
-  EmulatorEXE = GetModuleByFilename("Supermodel.exe", Process)
-  If EmulatorEXE = -1 Then
-    CloseProcess
-    Exit Function
-  End If
-  
-  '&H13026C
-  '446 x86 - &H15A444
-  pRAMBASE = ReadLong(EmulatorEXE + &H15A444)
-  If pRAMBASE = 0 Then
-    CloseProcess
-    Exit Function
-  End If
-  OpenProcessMemoryModel3 = True
+  OpenProcessMemoryModel2 = True
 End Function
 
 

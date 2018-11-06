@@ -8,13 +8,13 @@ Private DriveOffset As Long
 Private LampOffset As Long
 
 Public Sub Check_M2EM()
-  If OpenMemory Then
+  If OpenMemoryModel2 Then
     CheckProfile
   End If
 End Sub
 
 Public Function Get_M2EM_DriveData() As Byte
-  M2EM_Online = OpenMemory
+  M2EM_Online = OpenMemoryModel2
   Get_M2EM_DriveData = ReadByte(DriveOffset)
 End Function
 

@@ -1,7 +1,0 @@
-IniFiles = 0, 0, 0, 0, C
-Winsock = 0, 0, 0, 0, C
-Socket = 0, 0, 0, 0, C
-ControlConstants = 22, 22, 747, 389, 
-WindowsAPI = 0, 0, 0, 0, C
-CoreEvents = 0, 0, 0, 0, C
-Window = 66, 66, 791, 433, Z, 44, 44, 769, 411, C
