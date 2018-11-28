@@ -94,7 +94,10 @@ Public Sub Timer()
       If MEM_GameState = &H10 Then
         ' auto startup
         If OPT_Startup = CTRL_STARTUP_AUTO Then
-          MEM_Mask = MEM_Mask And &HF7FF&
+          FlipFlop = Not FlipFlop
+          If FlipFlop Then
+            MEM_Mask = MEM_Mask And &HF7FF&
+          End If
         End If
       End If
       

@@ -40,25 +40,29 @@ Public Sub Load()
   Host = ReadIni("lagfix.ini", "rx", "LocalHost", "127.0.0.1")
   Port = CLng(ReadIni("lagfix.ini", "rx", "LocalPort", "15611"))
   UDP_LocalAddress_RX = Winsock.WSABuildSocketAddress(Host, Port)
+  Debug.Print "rx1", Host, Port
   
   ' Remote-RX (emulator)
   Host = ReadIni("lagfix.ini", "rx", "EmulatorHost", "127.0.0.1")
-  Port = CLng(ReadIni("m2lagfix.ini", "rx", "EmulatorPort", "15612"))
+  Port = CLng(ReadIni("lagfix.ini", "rx", "EmulatorPort", "15612"))
   UDP_RemoteAddress_RX = Winsock.WSABuildSocketAddress(Host, Port)
+  Debug.Print "rx2", Host, Port
 
   ' Local-TX (lagfix)
   Host = ReadIni("lagfix.ini", "tx", "LocalHost", "127.0.0.1")
-  Port = CLng(ReadIni("m2lagfix.ini", "tx", "LocalPort", "15613"))
+  Port = CLng(ReadIni("lagfix.ini", "tx", "LocalPort", "15613"))
   UDP_LocalAddress_TX = Winsock.WSABuildSocketAddress(Host, Port)
+  Debug.Print "tx1", Host, Port
   
   ' Remote-RX (Emulator)
   Host = ReadIni("lagfix.ini", "tx", "RemoteHost", "127.0.0.1")
-  Port = CLng(ReadIni("m2lagfix.ini", "x", "RemotePort", "15611"))
+  Port = CLng(ReadIni("lagfix.ini", "tx", "RemotePort", "15611"))
   UDP_RemoteAddress_TX = Winsock.WSABuildSocketAddress(Host, Port)
+  Debug.Print "tx2", Host, Port
 
   ' Stats (if enabled)
   Host = ReadIni("lagfix.ini", "stats", "RemoteHost", "127.0.0.1")
-  Port = CLng(ReadIni("m2lagfix.ini", "stats", "RemotePort", "-1"))
+  Port = CLng(ReadIni("lagfix.ini", "stats", "RemotePort", "-1"))
   STATS_RemoteAddress = Winsock.WSABuildSocketAddress(Host, Port)
   STATS_Enabled = Not (STATS_RemoteAddress = "")
   

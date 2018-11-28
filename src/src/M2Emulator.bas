@@ -3,6 +3,7 @@ Option Explicit
 
 Public M2EM_Profile As String
 
+Public M2EM_ROMNAME As Long
 Public M2EM_RAMBASE As Long
 Public M2EM_RAM2BASE As Long
 Public M2EM_BACKUPBASE As Long
@@ -10,6 +11,7 @@ Public M2EM_BACKUPBASE As Long
 Private Handle As Long
 Private DriveOffset As Long
 Private LampOffset As Long
+Private ProfileOffset As Long
 
 Public Function M2EM_Online() As Boolean
   ' check if we got handle
@@ -91,6 +93,7 @@ Private Function OpenProcessMemoryModel2() As Boolean
   
   DriveOffset = EmulatorEXE + &H17285B
   LampOffset = EmulatorEXE + &H174CF0
+  ProfileOffset = EmulatorEXE + &HC44100
   
   If Not CheckProfile Then
     CloseProcess
@@ -103,9 +106,15 @@ End Function
 
 Private Function CheckProfile() As Boolean
   Dim Profile As String
-  Profile = StrConv(ReadString(&H19FCA6, 8), vbUnicode)
+  Profile = StrConv(ReadString(ProfileOffset, 8), vbUnicode)
   If InStr(1, Profile, Chr(0), vbBinaryCompare) > 0 Then
     Profile = Left$(Profile, InStr(1, Profile, Chr(0), vbBinaryCompare) - 1)
+  End If
+  If Profile = "" Then
+    Profile = StrConv(ReadString(&H19FCA6, 8), vbUnicode)
+    If InStr(1, Profile, Chr(0), vbBinaryCompare) > 0 Then
+      Profile = Left$(Profile, InStr(1, Profile, Chr(0), vbBinaryCompare) - 1)
+    End If
   End If
 
   Select Case Profile

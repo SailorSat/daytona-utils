@@ -29,7 +29,7 @@ Sub Load()
   Window.Show
   
   ' Move Mouse
-  SetCursorPos ScreenSizeX * 2&, ScreenSizeY
+  SetCursorPos ScreenSizeX, ScreenSizeY
   DoEvents
 End Sub
 
