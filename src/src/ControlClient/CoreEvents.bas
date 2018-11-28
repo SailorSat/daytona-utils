@@ -1,11 +1,15 @@
 Attribute VB_Name = "CoreEvents"
 Option Explicit
 
+Public Sub OnStatus(sModule As String, lStatus As Long, sStatus As String)
+  Window.BackColor = lStatus
+End Sub
+
 Public Sub OnReadTCP(lHandle As Long, sBuffer As String)
 End Sub
 
 Public Sub OnReadUDP(lHandle As Long, sBuffer As String, sAddress As String)
-  Window.OnReadUDP lHandle, sBuffer, sAddress
+  ControlClient.ReadUDP lHandle, sBuffer, sAddress
 End Sub
 
 Public Sub OnIncoming(lHandle As Long, sNewSocket As Long)

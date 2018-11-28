@@ -1,21 +1,21 @@
 Attribute VB_Name = "CoreEvents"
 Option Explicit
 
-Public Sub OnReadTCP(lHandle As Long, sBuffer As String)
+Public Sub OnStatus(sModule As String, lStatus As Long, sStatus As String)
+  Window.BackColor = lStatus
 End Sub
 
-Public Sub OnReadUDP(lHandle As Long, sBuffer As String, sAddress As String)
+Public Sub OnText(sModule As String, sTopic As String, sText As String)
+  Select Case sTopic
+    Case "Drive"
+      Window.txtDrive.Text = sText
+    Case "Lamps"
+      Window.txtLamp.Text = sText
+    Case "Debug"
+      Window.lblDebug.Caption = sText
+  End Select
 End Sub
 
-Public Sub OnIncoming(lHandle As Long, sNewSocket As Long)
+Public Sub OnDaytonaEx(Data As Byte)
+  ' silently drop in feedback app
 End Sub
-
-Public Sub OnConnected(lHandle As Long)
-End Sub
-
-Public Sub OnConnectError(lHandle As Long, lError As Long)
-End Sub
-
-Public Sub OnClose(lHandle As Long)
-End Sub
-

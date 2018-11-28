@@ -10,6 +10,12 @@ Begin VB.Form Window
    LinkTopic       =   "Form1"
    ScaleHeight     =   855
    ScaleWidth      =   1455
+   Begin VB.Timer Timer 
+      Enabled         =   0   'False
+      Interval        =   4
+      Left            =   480
+      Top             =   0
+   End
    Begin VB.TextBox txtLamp 
       Alignment       =   2  'Center
       BeginProperty Font 
@@ -71,90 +77,33 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
-' internal buffer
-Private DriveData As Byte
-Private DriveReal As Byte
-Private LampsData As Byte
-
 Private Sub Form_DblClick()
   Form_Unload 0
 End Sub
 
 Private Sub Form_Load()
-  Dim SomeData As Byte
-
+  Window.Move 480, 0
   If ReadIni("drive.ini", "feedback", "hidden", "false") = "true" Then
-    Me.BackColor = RGB(255, 0, 0)
-    Me.Move 480, 0, 0, 0
-    Me.Hide
+    Window.Hide
   Else
-    Me.BackColor = RGB(255, 0, 0)
-    Me.Move 480, 0 ', 240, 240
-    Me.Show
+    Window.Show
   End If
   
-  Model3Mode = CBool(ReadIni("drive.ini", "feedback", "model3", "false"))
-  DebugMode = CBool(ReadIni("drive.ini", "feedback", "debug", "false"))
+  Feedback.Load
   
-  If DebugMode Then
-    Open App.Path & "\debug.txt" For Output As #1
-  End If
+  Feedback.FeedbackDebug = True
+  DriveTranslation.TranslationDebug = True
   
-  Me.BackColor = RGB(255, 255, 0)
-  
-  MAME_Online = False
-  M2EM_Online = False
-  
-  ' init mame hook
-  Call init_mame(ByVal 1, "Test", AddressOf mame_start, AddressOf mame_stop, AddressOf mame_copydata, AddressOf mame_updatestate)
-  
-  Do
-    DoEvents
-    Sleep 8
-    If MAME_Online Then
-      Profile = MAME_Profile
-      Debug.Print "MAME_Online", MAME_Profile
-      While MAME_Online
-        SomeData = Get_MAME_DriveData
-        ProcessDrive SomeData
-    
-        SomeData = Get_MAME_LampsData
-        ProcessLamps SomeData
-        
-        Sleep 2
-        DoEvents
-      Wend
-      SendDrive 0
-      SendLamps 0
-      Debug.Print "Offline"
-    ElseIf M2EM_Online Then
-      Profile = M2EM_Profile
-      Debug.Print "M2EM_Online", M2EM_Profile
-      While M2EM_Online
-        SomeData = Get_M2EM_DriveData
-        ProcessDrive SomeData
-        
-        SomeData = Get_M2EM_LampsData
-        ProcessLamps SomeData
-    
-        Sleep 2
-        DoEvents
-      Wend
-      SendDrive 0
-      SendLamps 0
-      Debug.Print "Offline"
-    Else
-      Check_M2EM
-    End If
-  Loop
+  Timer.Enabled = True
 End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
-  Call close_mame
-  If DebugMode Then
-    Close #1
-  End If
+  Feedback.Unload
   End
+End Sub
+
+Private Sub Timer_Timer()
+  Feedback.Timer
 End Sub
 
 Private Sub txtDrive_KeyPress(KeyAscii As Integer)
@@ -168,8 +117,7 @@ Private Sub txtDrive_KeyPress(KeyAscii As Integer)
       Err.Clear
       txtDrive.Text = "00"
     Else
-      DriveData = DummyData
-      SendDrive (DriveData)
+      OverrideDrive DummyData
     End If
   End If
 End Sub
@@ -185,42 +133,7 @@ Private Sub txtLamp_KeyPress(KeyAscii As Integer)
       Err.Clear
       txtLamp.Text = "00"
     Else
-      LampsData = DummyData
-      SendLamps LampsData
+      OverrideLamps DummyData
     End If
   End If
-End Sub
-
-Private Sub ProcessDrive(Data As Byte)
-  If Data <> DriveData Then
-    DriveData = Data
-    Debug.Print Hex(Data), GetTickCount
-    If DebugMode Then
-      Print #1, Hex(Data)
-    End If
-    If TranslateDrive(DriveReal, Data) Then
-      SendDrive DriveReal
-    End If
-  End If
-End Sub
-
-Private Sub SendDrive(Data As Byte)
-  If OpenDriveChannel Then
-    WriteDriveData 1, Data
-  End If
-  txtDrive.Text = LeadZero(Hex(Data), 2)
-End Sub
-
-Private Sub ProcessLamps(Data As Byte)
-  If Data <> LampsData Then
-    LampsData = Data
-    SendLamps LampsData
-  End If
-End Sub
-
-Private Sub SendLamps(Data As Byte)
-  If OpenDriveChannel Then
-    WriteDriveData 2, Data
-  End If
-  txtLamp.Text = LeadZero(Hex(Data), 2)
 End Sub

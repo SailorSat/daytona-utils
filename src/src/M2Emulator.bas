@@ -1,20 +1,37 @@
 Attribute VB_Name = "M2Emulator"
 Option Explicit
 
-Public M2EM_Online As Boolean
 Public M2EM_Profile As String
 
+Public M2EM_RAMBASE As Long
+Public M2EM_RAM2BASE As Long
+Public M2EM_BACKUPBASE As Long
+
+Private Handle As Long
 Private DriveOffset As Long
 Private LampOffset As Long
 
-Public Sub Check_M2EM()
-  If OpenMemoryModel2 Then
-    CheckProfile
+Public Function M2EM_Online() As Boolean
+  ' check if we got handle
+  If Handle = -1 Then
+    ' no handle, try to open process
+    M2EM_Online = OpenProcessMemoryModel2
+  Else
+    ' got handle, check if valid
+    Dim Result As Long
+    Dim Buffer As Byte
+    Result = ReadProcessMemory(Handle, M2EM_RAMBASE, Buffer, 1, 0)
+    If Result = 0 Then
+      CloseProcess
+      Handle = -1
+      M2EM_Online = False
+    Else
+      M2EM_Online = True
+    End If
   End If
-End Sub
+End Function
 
 Public Function Get_M2EM_DriveData() As Byte
-  M2EM_Online = OpenMemoryModel2
   Get_M2EM_DriveData = ReadByte(DriveOffset)
 End Function
 
@@ -22,47 +39,109 @@ Public Function Get_M2EM_LampsData() As Byte
   Get_M2EM_LampsData = ReadByte(LampOffset)
 End Function
 
-Private Sub CheckProfile()
-  ' check model 2
-  Dim EmulatorWindow As Long
-  M2EM_Profile = ""
+
+Private Function OpenProcessMemoryModel2() As Boolean
+  Dim Process As Long
+  Dim Module As Long
   
-  EmulatorWindow = FindWindowA(vbNullString, "Daytona USA (Saturn Ads)")
-  If EmulatorWindow Then
-    M2EM_Profile = "daytona"
-    DriveOffset = pRAMBASE + CUSTOM_DRIVE
-    LampOffset = pRAMBASE + CUSTOM_LAMP
-  End If
-    
-  EmulatorWindow = FindWindowA(vbNullString, "Indianapolis 500 (Rev A, Twin, Newer rev)")
-  If EmulatorWindow Then
-    M2EM_Profile = "indy500"
-    DriveOffset = pRAMBASE + &HEBF74
-    LampOffset = pRAMBASE + &H3C390
-  End If
-    
-  EmulatorWindow = FindWindowA(vbNullString, "Sega Touring Car Championship")
-  If EmulatorWindow Then
-    M2EM_Profile = "stcc"
-    DriveOffset = pRAM2BASE + &HB2E0&
-    LampOffset = pRAM2BASE + &HB2E4&
-  End If
-    
-  EmulatorWindow = FindWindowA(vbNullString, "Sega Touring Car Championship (Rev A)")
-  If EmulatorWindow Then
-    M2EM_Profile = "stcc"
-    DriveOffset = pRAM2BASE + &HB2E0&
-    LampOffset = pRAM2BASE + &HB2E4&
-  End If
-    
-  EmulatorWindow = FindWindowA(vbNullString, "Sega Rally Championship")
-  If EmulatorWindow Then
-    M2EM_Profile = "srallyc"
-    DriveOffset = pRAM2BASE + &H2049&
-    LampOffset = pRAM2BASE + &H204C&
+  OpenProcessMemoryModel2 = False
+  
+  Process = GetProcessByFilename("EMULATOR.EXE", 0)
+  If Process = -1 Then
+    Process = GetProcessByFilename("emulator_multicpu.exe", 0)
+    If Process = -1 Then
+      Exit Function
+    End If
   End If
   
-  If M2EM_Profile <> "" Then
-    M2EM_Online = True
+  Handle = OpenProcessID(Process)
+  If Handle = -1 Then
+    Exit Function
   End If
-End Sub
+  
+  Dim EmulatorEXE As Long
+  EmulatorEXE = GetModuleByFilename("EMULATOR.EXE", Process)
+  If EmulatorEXE = -1 Then
+    EmulatorEXE = GetModuleByFilename("emulator_multicpu.exe", Process)
+    If EmulatorEXE = -1 Then
+      CloseProcess
+      Exit Function
+    End If
+  End If
+  
+  Dim Offset1 As Long
+  Offset1 = ReadLong(EmulatorEXE + &H1AA888)
+  M2EM_RAMBASE = ReadLong(Offset1 + &H100&)
+  If M2EM_RAMBASE = 0 Then
+    CloseProcess
+    Exit Function
+  End If
+  
+  M2EM_RAM2BASE = ReadLong(Offset1 + &H108&)
+  If M2EM_RAM2BASE = 0 Then
+    CloseProcess
+    Exit Function
+  End If
+  
+  M2EM_BACKUPBASE = ReadLong(Offset1 + &H118&)
+  If M2EM_BACKUPBASE = 0 Then
+    CloseProcess
+    Exit Function
+  End If
+  
+  DriveOffset = EmulatorEXE + &H17285B
+  LampOffset = EmulatorEXE + &H174CF0
+  
+  If Not CheckProfile Then
+    CloseProcess
+    Exit Function
+  End If
+  
+  OpenProcessMemoryModel2 = True
+End Function
+
+
+Private Function CheckProfile() As Boolean
+  Dim Profile As String
+  Profile = StrConv(ReadString(&H19FCA6, 8), vbUnicode)
+  If InStr(1, Profile, Chr(0), vbBinaryCompare) > 0 Then
+    Profile = Left$(Profile, InStr(1, Profile, Chr(0), vbBinaryCompare) - 1)
+  End If
+
+  Select Case Profile
+    Case "daytona", "daytonase", "daytonas"
+      ' 2o Daytona USA
+      M2EM_Profile = "daytona"
+      LampOffset = M2EM_RAMBASE + CUSTOM_LAMP
+
+    Case "manxtt", "manxttc"
+      ' 2A ManxTT Superbike
+      M2EM_Profile = "manxtt"
+      
+    Case "motoraid"
+      ' 2A Motor Raid
+      M2EM_Profile = "motoraid"
+      
+    Case "srallyc"
+      ' 2A Sega Rally Championship
+      M2EM_Profile = "srallyc"
+    
+    Case "indy500", "indy500d", "indy500to"
+      ' Indianapolis 500
+      M2EM_Profile = "indy500"
+
+    Case "stcc", "stcca", "stccb"
+      ' Sega Touring Car Championship
+      M2EM_Profile = "stcc"
+
+    Case Else
+      M2EM_Profile = Profile
+      Debug.Print "unknown game", Profile
+  End Select
+  
+  If M2EM_Profile = "" Then
+    CheckProfile = False
+  Else
+    CheckProfile = True
+  End If
+End Function

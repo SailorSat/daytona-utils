@@ -19,7 +19,7 @@ Public Sub Main()
   Debug.Assert IsRunOnIDE
   
   If Not RunOnIDE Then
-    While Not OpenMemory
+    While Not M2EM_Online
       Sleep 500
     Wend
   End If

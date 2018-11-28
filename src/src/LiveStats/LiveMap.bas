@@ -36,7 +36,7 @@ Public Sub STATS_OnLoad()
   CurrentNode = 255
 
   Dim Index As Integer
-  For Index = 0 To 7
+  For Index = 0 To 8
     Window2.imgDistance(Index).Move 0, ScreenSizeY
     Window2.imgCar(Index).Move 0, ScreenSizeY
   Next
@@ -105,7 +105,7 @@ Public Sub STATS_OnRaceEnd()
   Window2.Refresh
   
   Dim Index As Integer
-  For Index = 0 To 7
+  For Index = 0 To 8
     Window2.imgDistance(Index).Move 0, ScreenSizeY
     Window2.imgCar(Index).Move 0, ScreenSizeY
   Next

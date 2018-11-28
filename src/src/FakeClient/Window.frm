@@ -1,6 +1,6 @@
 VERSION 5.00
 Begin VB.Form Window 
-   BorderStyle     =   4  'Festes Werkzeugfenster
+   BorderStyle     =   4  'Fixed ToolWindow
    Caption         =   "Form1"
    ClientHeight    =   1095
    ClientLeft      =   45
@@ -11,13 +11,13 @@ Begin VB.Form Window
    MinButton       =   0   'False
    ScaleHeight     =   1095
    ScaleWidth      =   2295
-   StartUpPosition =   3  'Windows-Standard
+   StartUpPosition =   3  'Windows Default
    Begin VB.Shape shStatus 
       BackColor       =   &H00000040&
-      BackStyle       =   1  'Undurchsichtig
+      BackStyle       =   1  'Opaque
       Height          =   375
       Left            =   120
-      Shape           =   4  'Gerundetes Rechteck
+      Shape           =   4  'Rounded Rectangle
       Top             =   120
       Width           =   375
    End

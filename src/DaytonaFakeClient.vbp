@@ -1,11 +1,10 @@
 Type=Exe
 Form=src\FakeClient\Window.frm
 Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#C:\Windows\SysWOW64\stdole2.tlb#OLE Automation
-Module=Winsock; src\Winsock\Winsock.bas
-Class=Socket; src\Winsock\Socket.cls
 Module=IniFiles; src\IniFiles.bas
 Module=CoreEvents; src\FakeClient\CoreEvents.bas
 Module=WindowsAPI; src\WindowsAPI.bas
+Module=Winsock; src\Winsock.bas
 IconForm="Window"
 Startup="Window"
 HelpFile=""

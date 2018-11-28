@@ -18,14 +18,26 @@ Private OutRun_Motor_Speed As Byte
 
 ' status flags
 Public MAME_Online As Boolean
-Public MAME_DriveData As Byte
-Public MAME_LampsData As Byte
 Public MAME_Profile As String
+
+Private DriveData As Byte
+Private LampsData As Byte
 
 ' api declares
 Public Declare Function init_mame Lib "mame" (ByVal id As Long, ByVal Name As String, ByVal MameStart As Long, ByVal MameStop As Long, ByVal MameCopyData As Long, ByVal UpdateState As Long) As Long
 Public Declare Function close_mame Lib "mame" () As Long
 Public Declare Function map_id_to_outname Lib "mame" (ByVal id As Long) As String
+
+
+Public Function Get_MAME_DriveData() As Byte
+  Get_MAME_DriveData = DriveData
+End Function
+
+
+Public Function Get_MAME_LampsData() As Byte
+  Get_MAME_LampsData = LampsData
+End Function
+
 
 ' internal handling for various games
 Public Sub mame_start_internal(Profile As String)
@@ -33,22 +45,14 @@ Public Sub mame_start_internal(Profile As String)
   MAME_Profile = Profile
   Select Case MAME_Profile
     Case "orunners", "outrun"
-      MAME_DriveData = &H7
-      MAME_LampsData = &H0
+      DriveData = &H7
+      LampsData = &H0
     Case Else
-      MAME_DriveData = &H0
-      MAME_LampsData = &H0
+      DriveData = &H0
+      LampsData = &H0
   End Select
   MAME_Online = True
 End Sub
-
-Public Function Get_MAME_DriveData() As Byte
-  Get_MAME_DriveData = MAME_DriveData
-End Function
-
-Public Function Get_MAME_LampsData() As Byte
-  Get_MAME_LampsData = MAME_LampsData
-End Function
 
 
 ' public hooks
@@ -72,7 +76,7 @@ Public Function mame_updatestate(ByVal id As Long, ByVal State As Long) As Long
   Dim Name As String
   Name = get_name_from_id(id, "")
   
-  Debug.Print "mame_updatestate", id, Hex(State), Name
+  'Debug.Print "mame_updatestate", id, Hex(State), Name
   
   Select Case MAME_Profile
     Case "harddriv", "racedriv"
@@ -85,11 +89,11 @@ Public Function mame_updatestate(ByVal id As Long, ByVal State As Long) As Long
       Select Case Name
         Case "digit0", "RawDrive"
           ' raw drive data
-          MAME_DriveData = State
+          DriveData = State
           
         Case "digit1", "RawLamps"
           ' raw lamp data
-          MAME_LampsData = State
+          LampsData = State
           
       End Select
   End Select
@@ -107,7 +111,7 @@ Public Sub HardDrivin(Name As String, State As Long)
           If HardDrivin_MotorNew = 0 Then
             If HardDrivin_MotorNew <> HardDrivin_MotorOld Then
               HardDrivin_MotorOld = HardDrivin_MotorNew
-              MAME_DriveData = &H10
+              DriveData = &H10
             End If
           End If
         ElseIf HardDrivin_MotorOffset = 1 Then
@@ -119,12 +123,12 @@ Public Sub HardDrivin(Name As String, State As Long)
             HardDrivin_MotorOld = HardDrivin_MotorNew
             If HardDrivin_MotorNew < -10 Then
               ' negative (turn left?)
-              MAME_DriveData = &H50 + ((HardDrivin_MotorNew * -1) / 12)
+              DriveData = &H50 + ((HardDrivin_MotorNew * -1) / 12)
             ElseIf HardDrivin_MotorNew > 10 Then
               ' positive (turn right?)
-              MAME_DriveData = &H60 + ((HardDrivin_MotorNew) / 12)
+              DriveData = &H60 + ((HardDrivin_MotorNew) / 12)
             Else
-              MAME_DriveData = &H10
+              DriveData = &H10
             End If
           End If
         End If
@@ -165,18 +169,18 @@ Public Sub OutRun(Name As String, State As Long)
         Mask = &H8
     End Select
     If State = 0 Then
-      MAME_LampsData = MAME_LampsData And (&HFF - Mask)
+      LampsData = LampsData And (&HFF - Mask)
     Else
-      MAME_LampsData = MAME_LampsData Or Mask
+      LampsData = LampsData Or Mask
     End If
   End If
   If OutRun_Motor_Direction = 0 Then
-    MAME_DriveData = &H30
+    DriveData = &H30
   Else
     If OutRun_Motor_Direction = 1 Then
-      MAME_DriveData = &H50 + OutRun_Motor_Speed
+      DriveData = &H50 + OutRun_Motor_Speed
     Else
-      MAME_DriveData = &H60 + OutRun_Motor_Speed
+      DriveData = &H60 + OutRun_Motor_Speed
     End If
   End If
 End Sub
@@ -184,9 +188,9 @@ End Sub
 Public Sub OutRunners(Name As String, State As Long)
   If Name = "MA_Steering_Wheel_motor" Then
     If State = 0 Then
-      MAME_DriveData = &H10
+      DriveData = &H10
     Else
-      MAME_DriveData = &H40
+      DriveData = &H40
     End If
   Else
     Dim Mask As Byte
@@ -205,9 +209,9 @@ Public Sub OutRunners(Name As String, State As Long)
         Mask = &H30
     End Select
     If State = 0 Then
-      MAME_LampsData = MAME_LampsData And (&HFF - Mask)
+      LampsData = LampsData And (&HFF - Mask)
     Else
-      MAME_LampsData = MAME_LampsData Or Mask
+      LampsData = LampsData Or Mask
     End If
 
   End If

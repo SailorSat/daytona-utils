@@ -185,7 +185,7 @@ Public Sub ProcessPackets(ServerPacket As DaytonaPacket, ClientPacket As Daytona
                   ' -= Point-to-Car =-
                   ' Turn to Point
                   Deg = Degrees(X2, Y2, X1, Y1) ' from POINT to CAR
-                  Yaw = ReadInteger(pRAMBASE + CAR_YAW)
+                  Yaw = ReadInteger(M2EM_RAMBASE + CAR_YAW)
                   Rot = (Deg - Yaw)
                   
                   ' Zoom out
@@ -199,7 +199,7 @@ Public Sub ProcessPackets(ServerPacket As DaytonaPacket, ClientPacket As Daytona
                   ' -= Car-to-Point =-
                   ' Turn to Point
                   Deg = Degrees(X1, Y1, X2, Y2) ' from CAR to POINT
-                  Yaw = ReadInteger(pRAMBASE + CAR_YAW)
+                  Yaw = ReadInteger(M2EM_RAMBASE + CAR_YAW)
                   Rot = (Deg - Yaw)
                   
                   ' Don't zoom
@@ -213,7 +213,7 @@ Public Sub ProcessPackets(ServerPacket As DaytonaPacket, ClientPacket As Daytona
                   ' -= Car-Rotation =-
                   ' Turn to Point
                   Deg = .Rotation
-                  Yaw = ReadInteger(pRAMBASE + CAR_YAW)
+                  Yaw = ReadInteger(M2EM_RAMBASE + CAR_YAW)
                   Rot = (Deg - Yaw)
                   
                   ' Use correct name and view
@@ -228,13 +228,13 @@ Public Sub ProcessPackets(ServerPacket As DaytonaPacket, ClientPacket As Daytona
     
     If FoundOne Then
       RtlMoveMemory RotI, Rot, 2
-      WriteInteger pRAMBASE + CAMERA_ROTATION, RotI
-      WriteLong pBACKUPBASE + &H350, ZPos
-      WriteByte pRAMBASE + View, ViewNo
+      WriteInteger M2EM_RAMBASE + CAMERA_ROTATION, RotI
+      WriteLong M2EM_BACKUPBASE + &H350, ZPos
+      WriteByte M2EM_RAMBASE + View, ViewNo
     Else
       ' Change View
-      WriteInteger pRAMBASE + CAMERA_ROTATION, 0
-      WriteByte pRAMBASE + View, ViewNo
+      WriteInteger M2EM_RAMBASE + CAMERA_ROTATION, 0
+      WriteByte M2EM_RAMBASE + View, ViewNo
     End If
   End If
 End Sub

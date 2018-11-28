@@ -7,7 +7,14 @@ Private Const SS_Connecting As Byte = 2
 Private Const SS_Connected As Byte = 3
 Private Const SS_Disconnecting As Byte = 4
 
-Private SocketList As New Collection
+Private Type SocketItem
+  Handle As Long
+  Status As Byte
+  ProtoF As Byte
+End Type
+
+Private SocketItem() As SocketItem
+Private SocketCount As Long
 
 Private Type LPWSADATA
   wVersion As Integer
@@ -45,12 +52,11 @@ Private Declare Function WSACleanup Lib "ws2_32.dll" () As Long
 Private Declare Function WSAIsBlocking Lib "ws2_32.dll" () As Long
 Private Declare Function WSACancelBlockingCall Lib "ws2_32.dll" () As Long
 
-Private Const BUFFER_SIZE = 4096
+Private Const BUFFER_SIZE  As Long = 4096&
+Private Const ADDRESS_SIZE As Long = 64&
 
-Private Const ADDRESS_SIZE = 64
-
-Private Const SOCKET_ERROR      As Long = -1
-Private Const SOCKET_VERSION_22 As Long = &H202
+Private Const SOCKET_ERROR      As Long = -1&
+Private Const SOCKET_VERSION_22 As Long = &H202&
 
 Private Const FD_READ    As Long = &H1&
 Private Const FD_WRITE   As Long = &H2&
@@ -76,7 +82,7 @@ Private Const SD_BOTH As Long = 2&
 
 Private Const SIZEOF_INT  As Long = 4&
 
-Private Const GWL_WNDPROC = (-4)
+Private Const GWL_WNDPROC As Long = -4&
 
 Private WSAWindowHandle As Long
 Private WSAData As LPWSADATA
@@ -123,13 +129,13 @@ Public Function SocketMessage(ByVal lHandle As Long, ByVal lParam As Long) As Lo
   SocketMessage = 0
   
   ',-= Ungültige/Unbekannte Sockets sofort schließen
-  lResult = ValidSocket(lHandle)
+  lResult = FindSocket(lHandle)
   If lResult = SOCKET_ERROR Then
     closesocket lHandle
     Exit Function
   End If
-  Dim oSocket As Socket
-  Set oSocket = SocketList.Item(lResult)
+  Dim oSocket As SocketItem
+  oSocket = SocketItem(lResult)
   
   ',-= Event und Fehler ermitteln
   lEvent = LoWord(lParam)
@@ -184,12 +190,12 @@ Public Function SocketMessage(ByVal lHandle As Long, ByVal lParam As Long) As Lo
       sAddress = Left$(sAddress, lAddress)
       
       ',-= neuen Socket erstellen
-      Dim sSocketNew As New Socket
-      Set sSocketNew = New Socket
-      sSocketNew.ProtoF = oSocket.ProtoF
-      sSocketNew.Status = SS_Connected
-      sSocketNew.Handle = lBuffer
-      SocketList.Add sSocketNew
+      Dim lSocketNew As Long
+      lSocketNew = AddSocket(lBuffer)
+      With SocketItem(lSocketNew)
+        .Status = SS_Connected
+        .ProtoF = oSocket.ProtoF
+      End With
       
       ',-= Event auslösen
       OnIncoming lHandle, lBuffer
@@ -218,13 +224,11 @@ End Function
 Public Function SendTCP(lHandle As Long, sBuffer As String)
   SendTCP = -1
   
-  Dim lResult As Long
-  Dim oSocket As Socket
-  lResult = ValidSocket(lHandle)
-  If lResult = SOCKET_ERROR Then Exit Function
-  Set oSocket = SocketList.Item(lResult)
+  Dim lSocket As Long
+  lSocket = FindSocket(lHandle)
+  If lSocket = SOCKET_ERROR Then Exit Function
   
-  If oSocket.ProtoF = SOCK_STREAM Then
+  If SocketItem(lSocket).ProtoF = SOCK_STREAM Then
     SendTCP = WSASendData(lHandle, sBuffer)
   End If
 End Function
@@ -232,13 +236,11 @@ End Function
 Public Function SendUDP(lHandle As Long, sBuffer As String, sAddress As String)
   SendUDP = -1
   
-  Dim lResult As Long
-  Dim oSocket As Socket
-  lResult = ValidSocket(lHandle)
-  If lResult = SOCKET_ERROR Then Exit Function
-  Set oSocket = SocketList.Item(lResult)
+  Dim lSocket As Long
+  lSocket = FindSocket(lHandle)
+  If lSocket = SOCKET_ERROR Then Exit Function
     
-  If oSocket.ProtoF = SOCK_DGRAM Then
+  If SocketItem(lSocket).ProtoF = SOCK_DGRAM Then
     SendUDP = WSASendDataTo(lHandle, sBuffer, sAddress)
   End If
 End Function
@@ -272,11 +274,12 @@ Public Function ConnectTCP(sAddress As String) As Long
 
   lResult = connect(lHandle, sAddress, Len(sAddress))
   If lResult = SOCKET_ERROR Then
-    Dim oSocket As New Socket
-    SocketList.Add oSocket
-    oSocket.Status = SS_Connecting
-    oSocket.ProtoF = SOCK_STREAM
-    oSocket.Handle = lHandle
+    Dim lSocket As Long
+    lSocket = AddSocket(lHandle)
+    With SocketItem(lSocket)
+      .ProtoF = SOCK_STREAM
+      .Status = SS_Connecting
+    End With
     ConnectTCP = lHandle
   Else
     closesocket lHandle
@@ -320,11 +323,12 @@ Public Function ListenTCP(sAddress As String) As Long
   End If
   
   ',-= Fertig
-  Dim oSocket As New Socket
-  SocketList.Add oSocket
-  oSocket.Status = SS_Listening
-  oSocket.ProtoF = SOCK_STREAM
-  oSocket.Handle = lHandle
+  Dim lSocket As Long
+  lSocket = AddSocket(lHandle)
+  With SocketItem(lSocket)
+    .ProtoF = SOCK_STREAM
+    .Status = SS_Listening
+  End With
   ListenTCP = lHandle
 End Function
 
@@ -363,29 +367,30 @@ Public Function ListenUDP(sAddress As String) As Long
   End If
       
   ' Fertig
-  Dim oSocket As New Socket
-  SocketList.Add oSocket
-  oSocket.Status = SS_Listening
-  oSocket.ProtoF = SOCK_DGRAM
-  oSocket.Handle = lHandle
+  Dim lSocket As Long
+  lSocket = AddSocket(lHandle)
+  With SocketItem(lSocket)
+    .ProtoF = SOCK_DGRAM
+    .Status = SS_Listening
+  End With
   ListenUDP = lHandle
 End Function
 
 Public Sub Disconnect(ByVal lHandle As Long)
-  If Not ValidSocket(lHandle) Then Exit Sub
+  If Not FindSocket(lHandle) Then Exit Sub
 
   Dim lResult As Long
-  Dim oSocket As Socket
-  lResult = ValidSocket(lHandle)
+  lResult = FindSocket(lHandle)
   If lResult = SOCKET_ERROR Then Exit Sub
-  Set oSocket = SocketList.Item("H" & lHandle)
   
-  If oSocket.Status = SS_Disconnecting Or oSocket.Status = SS_Listening Then
-    RemoveSocket lHandle
-  Else
-    oSocket.Status = SS_Disconnecting
-    shutdown lHandle, SD_BOTH
-  End If
+  With SocketItem(lResult)
+    If .Status = SS_Disconnecting Or .Status = SS_Listening Then
+      RemoveSocket lHandle
+    Else
+      .Status = SS_Disconnecting
+      shutdown lHandle, SD_BOTH
+    End If
+  End With
 End Sub
 
 Public Sub Load()
@@ -402,6 +407,10 @@ Public Sub Load()
   
   ',-= An WindowProc hängen
   OldWindowProc = SetWindowLongA(WSAWindowHandle, GWL_WNDPROC, AddressOf WindowProc)
+  
+  ',-= Liste erstellen
+  ReDim SocketItem(0)
+  SocketCount = -1
 End Sub
 
 Public Sub Unload()
@@ -425,7 +434,7 @@ Public Function WSABuildSocketAddress(sHost As String, lPort As Long) As String
   Dim lResult As Long
   
   ',-= sHost umwandeln
-  sAddress = String(ADDRESS_SIZE, 0)
+  sAddress = String$(ADDRESS_SIZE, 0)
   lAddress = ADDRESS_SIZE
   lResult = WSAStringToAddressA(sHost, AF_INET, 0, sAddress, lAddress)
   
@@ -467,59 +476,74 @@ Private Function WSASendDataTo(ByVal lHandle As Long, ByVal sBuffer As String, B
   End If
 End Function
 
-Private Function ValidSocket(lHandle As Long) As Long
-  ValidSocket = SOCKET_ERROR
+Private Function FindSocket(lHandle As Long) As Long
+  FindSocket = SOCKET_ERROR
   
-  Dim lSocket As Integer
-  Dim oSocket As Socket
-  For lSocket = 1 To SocketList.Count
-    Set oSocket = SocketList.Item(lSocket)
-    If oSocket.Handle = lHandle Then
-      ValidSocket = lSocket
+  ',-= Liste durchlaufen
+  Dim lSocket As Long
+  For lSocket = 0 To SocketCount
+    If SocketItem(lSocket).Handle = lHandle Then
+      FindSocket = lSocket
       Exit Function
     End If
   Next
 End Function
 
+Private Function AddSocket(ByVal lHandle As Long) As Long
+  AddSocket = SOCKET_ERROR
+  
+  ',-= Liste durchlaufen
+  Dim lSocket As Long
+  For lSocket = 0 To SocketCount
+    If SocketItem(lSocket).Handle = -1 Then
+      SocketItem(lSocket).Handle = lHandle
+      AddSocket = lSocket
+      Exit Function
+    End If
+  Next
+  
+  ',-= Liste vergrößern
+  SocketCount = SocketCount + 1
+  lSocket = SocketCount
+  If lSocket > UBound(SocketItem) Then
+    ReDim Preserve SocketItem(lSocket)
+  End If
+  SocketItem(lSocket).Handle = lHandle
+  AddSocket = lSocket
+End Function
+
 Private Sub RemoveSocket(ByVal lHandle As Long)
   Dim lSocket As Long
-  Dim oSocket As Socket
-  lSocket = ValidSocket(lHandle)
+  lSocket = FindSocket(lHandle)
   If lSocket = SOCKET_ERROR Then Exit Sub
-  Set oSocket = SocketList.Item(lSocket)
   
-  If Not (oSocket.Status = SS_Listening Or oSocket.Status = SS_Disconnecting Or oSocket.Status = SS_Connecting) Then
-    OnClose lHandle
-  End If
-  
-  closesocket lHandle
-  SocketList.Remove lSocket
+  With SocketItem(lSocket)
+    If Not (.Status = SS_Listening Or .Status = SS_Disconnecting Or .Status = SS_Connecting) Then
+      OnClose lHandle
+    End If
+    closesocket lHandle
+    .Handle = -1
+  End With
 End Sub
 
 ' ---
 
 ' --- Socket Events ---
 'public Sub OnReadTCP(lHandle As Long, sBuffer As String)
-'  Window.OnReadTCP lHandle, sBuffer
 'End Sub
 '
 'public Sub OnReadUDP(lHandle As Long, sBuffer As String, sAddress As String)
-'  Window.OnReadUDP lHandle, sBuffer, sAddress
 'End Sub
 '
 'public Sub OnIncoming(lHandle As Long, sNewSocket As Long)
-'  Window.OnIncoming lHandle, sNewSocket
 'End Sub
 '
 'public Sub OnConnected(lHandle As Long)
-'  Window.OnConnected lHandle
 'End Sub
 '
 'public Sub OnConnectError(lHandle As Long, lError As Long)
-'  Window.OnConnectError lHandle, lError
 'End Sub
 '
 'public Sub OnClose(lHandle As Long)
-'  Window.OnClose lHandle
 'End Sub
 

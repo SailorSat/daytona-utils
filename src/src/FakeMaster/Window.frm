@@ -87,6 +87,8 @@ Private NET_FlipFlop As Long
 
 Private NET_Resolution As Currency
 
+Private LastFrame As String
+
 Private Sub cmdGo_Click()
   Winsock.SendUDP UDP_Socket, SendFrame0, UDP_RemoteAddress
 End Sub
@@ -106,14 +108,7 @@ Private Sub Form_Load()
   
   NET_Delay = 3
   
-  Dim Performance1 As Currency, Performance2 As Currency, Performance3 As Currency
-  QueryPerformanceCounter Performance1
-  Sleep 1000
-  QueryPerformanceCounter Performance2
-  Sleep 1000
-  QueryPerformanceCounter Performance3
-  
-  NET_Resolution = ((Performance2 - Performance1) + (Performance3 - Performance2)) / 2
+  QueryPerformanceFrequency NET_Resolution
   Debug.Print "1000ms ~= " & NET_Resolution
 
   ' Init Winsock
@@ -143,6 +138,8 @@ Private Sub Form_Load()
     MsgBox "Something went wrong! #UDP_Socket", vbCritical Or vbOKOnly, Window.Caption
     Form_Unload 0
   End If
+  
+  FAKE_READY = True
 End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
@@ -152,15 +149,36 @@ End Sub
 
 Public Sub OnReadUDP(lHandle As Long, sBuffer As String, sAddress As String)
   If FAKE_READY Then
-    Sleep NET_Delay
-    DoEvents
+    'Sleep NET_Delay
+    'SleepHigh 0.017 '0.01667
+    If Mid(sBuffer, 5, 1) = Chr(2) Then
+      If LastFrame = Mid(sBuffer, 16, 1) Then
+        If LastFrame > Chr(0) Then
+          Debug.Print Hex(Asc(LastFrame))
+          Exit Sub
+        End If
+      End If
+      LastFrame = Mid(sBuffer, 16, 1)
+    End If
     Winsock.SendUDP UDP_Socket, sBuffer, UDP_RemoteAddress
     NET_Framerate = NET_Framerate + 1
+    DoEvents
+    Debug.Print HexDump(Left(sBuffer, 16))
   Else
     Winsock.SendUDP UDP_Socket, ParseFrame(sBuffer), UDP_RemoteAddress
   End If
 End Sub
 
+Public Sub SleepHigh(Delay As Currency)
+  'Sleep Delay
+  Dim Counter1 As Currency
+  Dim Counter2 As Currency
+  QueryPerformanceCounter Counter1
+  Counter2 = Counter1 + NET_Resolution * Delay
+  While Counter1 < Counter2
+    QueryPerformanceCounter Counter1
+  Wend
+End Sub
 Public Function ParseFrame(sBuffer As String) As String
   Dim lOffset As Long
   Dim lIndex As Long

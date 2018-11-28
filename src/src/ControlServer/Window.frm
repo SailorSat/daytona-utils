@@ -23,11 +23,11 @@ Begin VB.Form Window
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   1815
-      Left            =   240
-      TabIndex        =   8
-      Top             =   5160
-      Width           =   1935
+      Height          =   1575
+      Left            =   120
+      TabIndex        =   7
+      Top             =   5520
+      Width           =   1695
       Begin VB.OptionButton optRemote 
          Appearance      =   0  'Flat
          BackColor       =   &H00000080&
@@ -42,14 +42,14 @@ Begin VB.Form Window
             Strikethrough   =   0   'False
          EndProperty
          ForeColor       =   &H00FFFFFF&
-         Height          =   495
+         Height          =   375
          Index           =   1
          Left            =   240
          MaskColor       =   &H00FFFFFF&
          Style           =   1  'Graphical
-         TabIndex        =   10
-         Top             =   1080
-         Width           =   1455
+         TabIndex        =   9
+         Top             =   960
+         Width           =   1215
       End
       Begin VB.OptionButton optRemote 
          Appearance      =   0  'Flat
@@ -65,35 +65,16 @@ Begin VB.Form Window
             Strikethrough   =   0   'False
          EndProperty
          ForeColor       =   &H00FFFFFF&
-         Height          =   495
+         Height          =   375
          Index           =   0
          Left            =   240
          MaskColor       =   &H00FFFFFF&
          Style           =   1  'Graphical
-         TabIndex        =   9
+         TabIndex        =   8
          Top             =   360
          Value           =   -1  'True
-         Width           =   1455
+         Width           =   1215
       End
-   End
-   Begin VB.CommandButton cmdReboot 
-      BackColor       =   &H00800080&
-      Caption         =   "REBOOT"
-      BeginProperty Font 
-         Name            =   "Fixedsys"
-         Size            =   9
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   495
-      Left            =   480
-      Style           =   1  'Graphical
-      TabIndex        =   7
-      Top             =   4080
-      Width           =   1455
    End
    Begin VB.Timer Timer 
       Enabled         =   0   'False
@@ -114,13 +95,32 @@ Begin VB.Form Window
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   4695
-      Left            =   240
+      Height          =   3975
+      Left            =   120
       TabIndex        =   1
       Top             =   120
-      Width           =   1935
+      Width           =   1695
+      Begin VB.CommandButton cmdReboot 
+         BackColor       =   &H00C000C0&
+         Caption         =   "REBOOT"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Left            =   240
+         Style           =   1  'Graphical
+         TabIndex        =   39
+         Top             =   3360
+         Width           =   1215
+      End
       Begin VB.CommandButton cmdShutdown 
-         BackColor       =   &H00C00000&
+         BackColor       =   &H00C0C000&
          Caption         =   "SHUTDOWN"
          BeginProperty Font 
             Name            =   "Fixedsys"
@@ -131,12 +131,12 @@ Begin VB.Form Window
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Height          =   495
+         Height          =   375
          Left            =   240
          Style           =   1  'Graphical
          TabIndex        =   6
-         Top             =   3240
-         Width           =   1455
+         Top             =   2760
+         Width           =   1215
       End
       Begin VB.CommandButton cmdLock 
          BackColor       =   &H000000C0&
@@ -150,12 +150,12 @@ Begin VB.Form Window
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Height          =   495
+         Height          =   375
          Left            =   240
          Style           =   1  'Graphical
          TabIndex        =   5
-         Top             =   2520
-         Width           =   1455
+         Top             =   2160
+         Width           =   1215
       End
       Begin VB.CommandButton cmdRefresh 
          Appearance      =   0  'Flat
@@ -170,12 +170,12 @@ Begin VB.Form Window
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Height          =   495
+         Height          =   375
          Left            =   240
          Style           =   1  'Graphical
          TabIndex        =   4
          Top             =   360
-         Width           =   1455
+         Width           =   1215
       End
       Begin VB.CommandButton cmdStart 
          Appearance      =   0  'Flat
@@ -190,12 +190,12 @@ Begin VB.Form Window
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Height          =   495
+         Height          =   375
          Left            =   240
          Style           =   1  'Graphical
          TabIndex        =   3
-         Top             =   1080
-         Width           =   1455
+         Top             =   960
+         Width           =   1215
       End
       Begin VB.CommandButton cmdReset 
          BackColor       =   &H0000C0C0&
@@ -209,12 +209,12 @@ Begin VB.Form Window
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Height          =   495
+         Height          =   375
          Left            =   240
          Style           =   1  'Graphical
          TabIndex        =   2
-         Top             =   1800
-         Width           =   1455
+         Top             =   1560
+         Width           =   1215
       End
    End
    Begin VB.Frame fmStatus 
@@ -231,10 +231,20 @@ Begin VB.Form Window
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   1095
-      Left            =   2400
+      Left            =   2040
       TabIndex        =   0
       Top             =   120
-      Width           =   6975
+      Width           =   7455
+      Begin VB.Shape shStatus 
+         FillColor       =   &H00000080&
+         FillStyle       =   0  'Solid
+         Height          =   495
+         Index           =   8
+         Left            =   6960
+         Shape           =   4  'Rounded Rectangle
+         Top             =   360
+         Width           =   375
+      End
       Begin VB.Shape shControl 
          FillColor       =   &H00404040&
          FillStyle       =   0  'Solid
@@ -397,25 +407,149 @@ Begin VB.Form Window
       End
    End
    Begin VB.Frame fmTabPage 
-      BackColor       =   &H00008080&
-      BorderStyle     =   0  'None
-      Height          =   5535
-      Index           =   1
-      Left            =   2400
-      TabIndex        =   33
-      Top             =   1440
-      Visible         =   0   'False
-      Width           =   6975
-   End
-   Begin VB.Frame fmTabPage 
       BackColor       =   &H00404040&
       BorderStyle     =   0  'None
-      Height          =   5505
+      Height          =   5625
       Index           =   0
-      Left            =   2400
-      TabIndex        =   11
+      Left            =   2040
+      TabIndex        =   10
       Top             =   1440
-      Width           =   6975
+      Width           =   7455
+      Begin VB.Frame fmMusic 
+         BackColor       =   &H00404040&
+         Caption         =   "MUSIC"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00FFFFFF&
+         Height          =   3375
+         Left            =   5760
+         TabIndex        =   33
+         Top             =   0
+         Width           =   1695
+         Begin VB.OptionButton optMusic 
+            Appearance      =   0  'Flat
+            BackColor       =   &H00000080&
+            Caption         =   "4"
+            BeginProperty Font 
+               Name            =   "Fixedsys"
+               Size            =   9
+               Charset         =   0
+               Weight          =   400
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H00FFFFFF&
+            Height          =   375
+            Index           =   4
+            Left            =   240
+            MaskColor       =   &H00FFFFFF&
+            Style           =   1  'Graphical
+            TabIndex        =   38
+            Top             =   2760
+            Width           =   1215
+         End
+         Begin VB.OptionButton optMusic 
+            Appearance      =   0  'Flat
+            BackColor       =   &H00000080&
+            Caption         =   "3"
+            BeginProperty Font 
+               Name            =   "Fixedsys"
+               Size            =   9
+               Charset         =   0
+               Weight          =   400
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H00FFFFFF&
+            Height          =   375
+            Index           =   3
+            Left            =   240
+            MaskColor       =   &H00FFFFFF&
+            Style           =   1  'Graphical
+            TabIndex        =   37
+            Top             =   2160
+            Width           =   1215
+         End
+         Begin VB.OptionButton optMusic 
+            Appearance      =   0  'Flat
+            BackColor       =   &H00000080&
+            Caption         =   "2"
+            BeginProperty Font 
+               Name            =   "Fixedsys"
+               Size            =   9
+               Charset         =   0
+               Weight          =   400
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H00FFFFFF&
+            Height          =   375
+            Index           =   2
+            Left            =   240
+            MaskColor       =   &H00FFFFFF&
+            Style           =   1  'Graphical
+            TabIndex        =   36
+            Top             =   1560
+            Width           =   1215
+         End
+         Begin VB.OptionButton optMusic 
+            Appearance      =   0  'Flat
+            BackColor       =   &H00000080&
+            Caption         =   "1"
+            BeginProperty Font 
+               Name            =   "Fixedsys"
+               Size            =   9
+               Charset         =   0
+               Weight          =   400
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H00FFFFFF&
+            Height          =   375
+            Index           =   1
+            Left            =   240
+            MaskColor       =   &H00FFFFFF&
+            Style           =   1  'Graphical
+            TabIndex        =   35
+            Top             =   960
+            Width           =   1215
+         End
+         Begin VB.OptionButton optMusic 
+            Appearance      =   0  'Flat
+            BackColor       =   &H00000080&
+            Caption         =   "SELECT"
+            BeginProperty Font 
+               Name            =   "Fixedsys"
+               Size            =   9
+               Charset         =   0
+               Weight          =   400
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H00FFFFFF&
+            Height          =   375
+            Index           =   0
+            Left            =   240
+            MaskColor       =   &H00FFFFFF&
+            Style           =   1  'Graphical
+            TabIndex        =   34
+            Top             =   360
+            Value           =   -1  'True
+            Width           =   1215
+         End
+      End
       Begin VB.Frame fmStartup 
          BackColor       =   &H00404040&
          Caption         =   "STARTUP"
@@ -429,11 +563,11 @@ Begin VB.Form Window
             Strikethrough   =   0   'False
          EndProperty
          ForeColor       =   &H00FFFFFF&
-         Height          =   2535
-         Left            =   2880
-         TabIndex        =   29
+         Height          =   2175
+         Left            =   1920
+         TabIndex        =   28
          Top             =   0
-         Width           =   1935
+         Width           =   1695
          Begin VB.OptionButton optStartup 
             Appearance      =   0  'Flat
             BackColor       =   &H00000080&
@@ -448,15 +582,15 @@ Begin VB.Form Window
                Strikethrough   =   0   'False
             EndProperty
             ForeColor       =   &H00FFFFFF&
-            Height          =   495
+            Height          =   375
             Index           =   0
             Left            =   240
             MaskColor       =   &H00FFFFFF&
             Style           =   1  'Graphical
-            TabIndex        =   32
+            TabIndex        =   31
             Top             =   360
             Value           =   -1  'True
-            Width           =   1455
+            Width           =   1215
          End
          Begin VB.OptionButton optStartup 
             Appearance      =   0  'Flat
@@ -472,13 +606,13 @@ Begin VB.Form Window
                Strikethrough   =   0   'False
             EndProperty
             ForeColor       =   &H00FFFFFF&
-            Height          =   495
+            Height          =   375
             Index           =   1
             Left            =   240
             Style           =   1  'Graphical
-            TabIndex        =   31
-            Top             =   1080
-            Width           =   1455
+            TabIndex        =   30
+            Top             =   960
+            Width           =   1215
          End
          Begin VB.OptionButton optStartup 
             Appearance      =   0  'Flat
@@ -494,13 +628,13 @@ Begin VB.Form Window
                Strikethrough   =   0   'False
             EndProperty
             ForeColor       =   &H00FFFFFF&
-            Height          =   495
+            Height          =   375
             Index           =   2
             Left            =   240
             Style           =   1  'Graphical
-            TabIndex        =   30
-            Top             =   1800
-            Width           =   1455
+            TabIndex        =   29
+            Top             =   1560
+            Width           =   1215
          End
       End
       Begin VB.Frame fmTrack 
@@ -516,11 +650,11 @@ Begin VB.Form Window
             Strikethrough   =   0   'False
          EndProperty
          ForeColor       =   &H00FFFFFF&
-         Height          =   3255
-         Left            =   720
-         TabIndex        =   24
+         Height          =   2775
+         Left            =   0
+         TabIndex        =   23
          Top             =   0
-         Width           =   1935
+         Width           =   1695
          Begin VB.OptionButton optTrack 
             Appearance      =   0  'Flat
             BackColor       =   &H00000080&
@@ -535,15 +669,15 @@ Begin VB.Form Window
                Strikethrough   =   0   'False
             EndProperty
             ForeColor       =   &H00FFFFFF&
-            Height          =   495
+            Height          =   375
             Index           =   0
             Left            =   240
             MaskColor       =   &H00FFFFFF&
             Style           =   1  'Graphical
-            TabIndex        =   28
+            TabIndex        =   27
             Top             =   360
             Value           =   -1  'True
-            Width           =   1455
+            Width           =   1215
          End
          Begin VB.OptionButton optTrack 
             Appearance      =   0  'Flat
@@ -559,14 +693,14 @@ Begin VB.Form Window
                Strikethrough   =   0   'False
             EndProperty
             ForeColor       =   &H00FFFFFF&
-            Height          =   495
+            Height          =   375
             Index           =   1
             Left            =   240
             MaskColor       =   &H00FFFFFF&
             Style           =   1  'Graphical
-            TabIndex        =   27
-            Top             =   1080
-            Width           =   1455
+            TabIndex        =   26
+            Top             =   960
+            Width           =   1215
          End
          Begin VB.OptionButton optTrack 
             Appearance      =   0  'Flat
@@ -582,14 +716,14 @@ Begin VB.Form Window
                Strikethrough   =   0   'False
             EndProperty
             ForeColor       =   &H00FFFFFF&
-            Height          =   495
+            Height          =   375
             Index           =   2
             Left            =   240
             MaskColor       =   &H00FFFFFF&
             Style           =   1  'Graphical
-            TabIndex        =   26
-            Top             =   1800
-            Width           =   1455
+            TabIndex        =   25
+            Top             =   1560
+            Width           =   1215
          End
          Begin VB.OptionButton optTrack 
             Appearance      =   0  'Flat
@@ -605,14 +739,14 @@ Begin VB.Form Window
                Strikethrough   =   0   'False
             EndProperty
             ForeColor       =   &H00FFFFFF&
-            Height          =   495
+            Height          =   375
             Index           =   3
             Left            =   240
             MaskColor       =   &H00FFFFFF&
             Style           =   1  'Graphical
-            TabIndex        =   25
-            Top             =   2520
-            Width           =   1455
+            TabIndex        =   24
+            Top             =   2160
+            Width           =   1215
          End
       End
       Begin VB.Frame fmMode 
@@ -628,11 +762,11 @@ Begin VB.Form Window
             Strikethrough   =   0   'False
          EndProperty
          ForeColor       =   &H00FFFFFF&
-         Height          =   2535
-         Left            =   5040
-         TabIndex        =   20
+         Height          =   2175
+         Left            =   3840
+         TabIndex        =   19
          Top             =   0
-         Width           =   1935
+         Width           =   1695
          Begin VB.OptionButton optMode 
             Appearance      =   0  'Flat
             BackColor       =   &H00000080&
@@ -647,15 +781,15 @@ Begin VB.Form Window
                Strikethrough   =   0   'False
             EndProperty
             ForeColor       =   &H00FFFFFF&
-            Height          =   495
+            Height          =   375
             Index           =   0
             Left            =   240
             MaskColor       =   &H00FFFFFF&
             Style           =   1  'Graphical
-            TabIndex        =   23
+            TabIndex        =   22
             Top             =   360
             Value           =   -1  'True
-            Width           =   1455
+            Width           =   1215
          End
          Begin VB.OptionButton optMode 
             Appearance      =   0  'Flat
@@ -671,19 +805,19 @@ Begin VB.Form Window
                Strikethrough   =   0   'False
             EndProperty
             ForeColor       =   &H00FFFFFF&
-            Height          =   495
+            Height          =   375
             Index           =   1
             Left            =   240
             MaskColor       =   &H00FFFFFF&
             Style           =   1  'Graphical
-            TabIndex        =   22
-            Top             =   1080
-            Width           =   1455
+            TabIndex        =   21
+            Top             =   960
+            Width           =   1215
          End
          Begin VB.OptionButton optMode 
             Appearance      =   0  'Flat
             BackColor       =   &H00000080&
-            Caption         =   "TIME ATCK"
+            Caption         =   "TIMELAP"
             BeginProperty Font 
                Name            =   "Fixedsys"
                Size            =   9
@@ -694,14 +828,14 @@ Begin VB.Form Window
                Strikethrough   =   0   'False
             EndProperty
             ForeColor       =   &H00FFFFFF&
-            Height          =   495
+            Height          =   375
             Index           =   2
             Left            =   240
             MaskColor       =   &H00FFFFFF&
             Style           =   1  'Graphical
-            TabIndex        =   21
-            Top             =   1800
-            Width           =   1455
+            TabIndex        =   20
+            Top             =   1560
+            Width           =   1215
          End
       End
       Begin VB.Frame fmHandicap 
@@ -717,11 +851,11 @@ Begin VB.Form Window
             Strikethrough   =   0   'False
          EndProperty
          ForeColor       =   &H00FFFFFF&
-         Height          =   2535
-         Left            =   5040
-         TabIndex        =   16
-         Top             =   2760
-         Width           =   1935
+         Height          =   2175
+         Left            =   3840
+         TabIndex        =   15
+         Top             =   2400
+         Width           =   1695
          Begin VB.OptionButton optHandicap 
             Appearance      =   0  'Flat
             BackColor       =   &H00000080&
@@ -736,15 +870,15 @@ Begin VB.Form Window
                Strikethrough   =   0   'False
             EndProperty
             ForeColor       =   &H00FFFFFF&
-            Height          =   495
+            Height          =   375
             Index           =   0
             Left            =   240
             MaskColor       =   &H00FFFFFF&
             Style           =   1  'Graphical
-            TabIndex        =   19
+            TabIndex        =   18
             Top             =   360
             Value           =   -1  'True
-            Width           =   1455
+            Width           =   1215
          End
          Begin VB.OptionButton optHandicap 
             Appearance      =   0  'Flat
@@ -760,19 +894,19 @@ Begin VB.Form Window
                Strikethrough   =   0   'False
             EndProperty
             ForeColor       =   &H00FFFFFF&
-            Height          =   495
+            Height          =   375
             Index           =   1
             Left            =   240
             MaskColor       =   &H00FFFFFF&
             Style           =   1  'Graphical
-            TabIndex        =   18
-            Top             =   1080
-            Width           =   1455
+            TabIndex        =   17
+            Top             =   960
+            Width           =   1215
          End
          Begin VB.OptionButton optHandicap 
             Appearance      =   0  'Flat
             BackColor       =   &H00000080&
-            Caption         =   "REALISTIC"
+            Caption         =   "REAL"
             BeginProperty Font 
                Name            =   "Fixedsys"
                Size            =   9
@@ -783,14 +917,14 @@ Begin VB.Form Window
                Strikethrough   =   0   'False
             EndProperty
             ForeColor       =   &H00FFFFFF&
-            Height          =   495
+            Height          =   375
             Index           =   2
             Left            =   240
             MaskColor       =   &H00FFFFFF&
             Style           =   1  'Graphical
-            TabIndex        =   17
-            Top             =   1800
-            Width           =   1455
+            TabIndex        =   16
+            Top             =   1560
+            Width           =   1215
          End
       End
       Begin VB.Frame fmGears 
@@ -806,11 +940,11 @@ Begin VB.Form Window
             Strikethrough   =   0   'False
          EndProperty
          ForeColor       =   &H00FFFFFF&
-         Height          =   2535
-         Left            =   2880
-         TabIndex        =   12
-         Top             =   2760
-         Width           =   1935
+         Height          =   2175
+         Left            =   1920
+         TabIndex        =   11
+         Top             =   2400
+         Width           =   1695
          Begin VB.OptionButton optGears 
             Appearance      =   0  'Flat
             BackColor       =   &H00000080&
@@ -825,15 +959,15 @@ Begin VB.Form Window
                Strikethrough   =   0   'False
             EndProperty
             ForeColor       =   &H00FFFFFF&
-            Height          =   495
+            Height          =   375
             Index           =   0
             Left            =   240
             MaskColor       =   &H00FFFFFF&
             Style           =   1  'Graphical
-            TabIndex        =   15
+            TabIndex        =   14
             Top             =   360
             Value           =   -1  'True
-            Width           =   1455
+            Width           =   1215
          End
          Begin VB.OptionButton optGears 
             Appearance      =   0  'Flat
@@ -849,14 +983,14 @@ Begin VB.Form Window
                Strikethrough   =   0   'False
             EndProperty
             ForeColor       =   &H00FFFFFF&
-            Height          =   495
+            Height          =   375
             Index           =   1
             Left            =   240
             MaskColor       =   &H00FFFFFF&
             Style           =   1  'Graphical
-            TabIndex        =   14
-            Top             =   1080
-            Width           =   1455
+            TabIndex        =   13
+            Top             =   960
+            Width           =   1215
          End
          Begin VB.OptionButton optGears 
             Appearance      =   0  'Flat
@@ -872,16 +1006,27 @@ Begin VB.Form Window
                Strikethrough   =   0   'False
             EndProperty
             ForeColor       =   &H00FFFFFF&
-            Height          =   495
+            Height          =   375
             Index           =   2
             Left            =   240
             MaskColor       =   &H00FFFFFF&
             Style           =   1  'Graphical
-            TabIndex        =   13
-            Top             =   1800
-            Width           =   1455
+            TabIndex        =   12
+            Top             =   1560
+            Width           =   1215
          End
       End
+   End
+   Begin VB.Frame fmTabPage 
+      BackColor       =   &H00008080&
+      BorderStyle     =   0  'None
+      Height          =   5655
+      Index           =   1
+      Left            =   2040
+      TabIndex        =   32
+      Top             =   1440
+      Visible         =   0   'False
+      Width           =   7455
    End
 End
 Attribute VB_Name = "Window"
@@ -895,7 +1040,7 @@ Private UDP_LocalAddress_RX As String
 Private UDP_Socket_RX As Long
 
 Private UDP_RemoteAddress_RX(0 To 8) As String
-Private UDP_RemoteStatus(0 To 7) As Byte
+Private UDP_RemoteStatus(0 To 8) As Byte
 
 Private Sub cmdLock_Click()
   WindowLock.Show vbModal, Window
@@ -920,7 +1065,7 @@ Private Sub cmdRefresh_Click()
   Dim sBuffer As String
   
   Dim Index As Integer
-  For Index = 0 To 7
+  For Index = 0 To 8
     shStatus(Index).FillColor = &H80&
     baBuffer(2) = Index
     sBuffer = StrConv(baBuffer, vbUnicode)
@@ -1012,6 +1157,28 @@ Private Sub optMode_Click(Index As Integer)
       baBuffer(1) = CTRL_GAMEMODE_TIMEATCK
   End Select
   
+  Dim sBuffer As String
+  sBuffer = StrConv(baBuffer, vbUnicode)
+  
+  SendToClients sBuffer, CTRL_STATUS_ONLINE
+End Sub
+
+Private Sub optMusic_Click(Index As Integer)
+  Dim baBuffer(0 To 31) As Byte
+  baBuffer(0) = CTRL_CMD_MUSIC
+  Select Case Index
+    Case 0
+      baBuffer(1) = CTRL_MUSIC_SELECT
+    Case 1
+      baBuffer(1) = CTRL_MUSIC_1
+    Case 2
+      baBuffer(1) = CTRL_MUSIC_2
+    Case 3
+      baBuffer(1) = CTRL_MUSIC_3
+    Case 4
+      baBuffer(1) = CTRL_MUSIC_4
+  End Select
+
   Dim sBuffer As String
   sBuffer = StrConv(baBuffer, vbUnicode)
   
@@ -1135,8 +1302,9 @@ Public Sub OnReadUDP(lHandle As Long, sBuffer As String, sAddress As String)
       ' 2 = ex
       Dim Node As Byte
       Dim Val As Byte
-      Val = baBuffer(2) And &H3
       Node = GetNodeByAddress(sAddress)
+      If Node = 8 Then Exit Sub
+      Val = baBuffer(2) And &H3
       Select Case Val
         Case &H3
           ' not ready, not priority
@@ -1157,7 +1325,7 @@ End Sub
 
 Public Sub SendToClients(sBuffer As String, MinimumStatus As Byte)
   Dim Index As Integer
-  For Index = 0 To 7
+  For Index = 0 To 8
     If UDP_RemoteStatus(Index) >= MinimumStatus Then
       Winsock.SendUDP UDP_Socket_RX, sBuffer, UDP_RemoteAddress_RX(Index)
     End If
@@ -1170,7 +1338,7 @@ End Sub
 
 Private Function GetNodeByAddress(sAddress As String) As Byte
   Dim Index As Integer
-  For Index = 0 To 7
+  For Index = 0 To 8
     If UDP_RemoteAddress_RX(Index) = sAddress Then
       GetNodeByAddress = Index
       Exit Function

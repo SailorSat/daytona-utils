@@ -138,27 +138,45 @@ Begin VB.Form Window2
    Begin VB.CommandButton cmdActionPlus 
       Caption         =   "+"
       Height          =   255
-      Left            =   360
+      Left            =   1320
       TabIndex        =   1
-      Top             =   2040
+      Top             =   2400
       Visible         =   0   'False
       Width           =   255
    End
    Begin VB.CommandButton cmdActionMinus 
       Caption         =   "-"
       Height          =   255
-      Left            =   0
+      Left            =   960
       TabIndex        =   0
-      Top             =   2040
+      Top             =   2400
       Visible         =   0   'False
       Width           =   255
    End
    Begin VB.Image imgDistance 
       Appearance      =   0  'Flat
       Height          =   240
-      Index           =   0
+      Index           =   8
       Left            =   240
       Picture         =   "Window2.frx":6C47
+      Top             =   1920
+      Width           =   240
+   End
+   Begin VB.Image imgCar 
+      Appearance      =   0  'Flat
+      Height          =   240
+      Index           =   8
+      Left            =   0
+      Picture         =   "Window2.frx":6FCF
+      Top             =   1920
+      Width           =   240
+   End
+   Begin VB.Image imgDistance 
+      Appearance      =   0  'Flat
+      Height          =   240
+      Index           =   0
+      Left            =   240
+      Picture         =   "Window2.frx":7357
       Top             =   0
       Width           =   240
    End
@@ -167,7 +185,7 @@ Begin VB.Form Window2
       Height          =   240
       Index           =   1
       Left            =   240
-      Picture         =   "Window2.frx":6FC2
+      Picture         =   "Window2.frx":76D2
       Top             =   240
       Width           =   240
    End
@@ -176,7 +194,7 @@ Begin VB.Form Window2
       Height          =   240
       Index           =   2
       Left            =   240
-      Picture         =   "Window2.frx":7340
+      Picture         =   "Window2.frx":7A50
       Top             =   480
       Width           =   240
    End
@@ -185,7 +203,7 @@ Begin VB.Form Window2
       Height          =   240
       Index           =   3
       Left            =   240
-      Picture         =   "Window2.frx":76BC
+      Picture         =   "Window2.frx":7DCC
       Top             =   720
       Width           =   240
    End
@@ -194,7 +212,7 @@ Begin VB.Form Window2
       Height          =   240
       Index           =   4
       Left            =   240
-      Picture         =   "Window2.frx":7A38
+      Picture         =   "Window2.frx":8148
       Top             =   960
       Width           =   240
    End
@@ -203,7 +221,7 @@ Begin VB.Form Window2
       Height          =   240
       Index           =   5
       Left            =   240
-      Picture         =   "Window2.frx":7DB6
+      Picture         =   "Window2.frx":84C6
       Top             =   1200
       Width           =   240
    End
@@ -212,7 +230,7 @@ Begin VB.Form Window2
       Height          =   240
       Index           =   6
       Left            =   240
-      Picture         =   "Window2.frx":8132
+      Picture         =   "Window2.frx":8842
       Top             =   1440
       Width           =   240
    End
@@ -221,7 +239,7 @@ Begin VB.Form Window2
       Height          =   240
       Index           =   7
       Left            =   240
-      Picture         =   "Window2.frx":84AC
+      Picture         =   "Window2.frx":8BBC
       Top             =   1680
       Width           =   240
    End
@@ -241,7 +259,7 @@ Begin VB.Form Window2
       Height          =   240
       Index           =   0
       Left            =   0
-      Picture         =   "Window2.frx":882A
+      Picture         =   "Window2.frx":8F3A
       Top             =   0
       Width           =   240
    End
@@ -250,7 +268,7 @@ Begin VB.Form Window2
       Height          =   240
       Index           =   1
       Left            =   0
-      Picture         =   "Window2.frx":8BA5
+      Picture         =   "Window2.frx":92B5
       Top             =   240
       Width           =   240
    End
@@ -259,7 +277,7 @@ Begin VB.Form Window2
       Height          =   240
       Index           =   2
       Left            =   0
-      Picture         =   "Window2.frx":8F23
+      Picture         =   "Window2.frx":9633
       Top             =   480
       Width           =   240
    End
@@ -268,7 +286,7 @@ Begin VB.Form Window2
       Height          =   240
       Index           =   3
       Left            =   0
-      Picture         =   "Window2.frx":929F
+      Picture         =   "Window2.frx":99AF
       Top             =   720
       Width           =   240
    End
@@ -277,7 +295,7 @@ Begin VB.Form Window2
       Height          =   240
       Index           =   4
       Left            =   0
-      Picture         =   "Window2.frx":961B
+      Picture         =   "Window2.frx":9D2B
       Top             =   960
       Width           =   240
    End
@@ -286,7 +304,7 @@ Begin VB.Form Window2
       Height          =   240
       Index           =   5
       Left            =   0
-      Picture         =   "Window2.frx":9999
+      Picture         =   "Window2.frx":A0A9
       Top             =   1200
       Width           =   240
    End
@@ -295,7 +313,7 @@ Begin VB.Form Window2
       Height          =   240
       Index           =   6
       Left            =   0
-      Picture         =   "Window2.frx":9D15
+      Picture         =   "Window2.frx":A425
       Top             =   1440
       Width           =   240
    End
@@ -304,7 +322,7 @@ Begin VB.Form Window2
       Height          =   240
       Index           =   7
       Left            =   0
-      Picture         =   "Window2.frx":A08F
+      Picture         =   "Window2.frx":A79F
       Top             =   1680
       Width           =   240
    End

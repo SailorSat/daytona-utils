@@ -3,7 +3,7 @@ Option Explicit
 
 Public Function LeadZero(Data As String, Length As Integer) As String
   If Len(Data) < Length Then
-    LeadZero = String(Length - Len(Data), "0") & Data
+    LeadZero = String$(Length - Len(Data), "0") & Data
   Else
     LeadZero = Data
   End If
@@ -11,9 +11,17 @@ End Function
 
 Public Function LeadSpace(Data As String, Length As Integer) As String
   If Len(Data) < Length Then
-    LeadSpace = String(Length - Len(Data), " ") & Data
+    LeadSpace = String$(Length - Len(Data), " ") & Data
   Else
     LeadSpace = Data
+  End If
+End Function
+
+Public Function TailSpace(Data As String, Length As Integer) As String
+  If Len(Data) < Length Then
+    TailSpace = Data & String$(Length - Len(Data), " ")
+  Else
+    TailSpace = Data
   End If
 End Function
 
@@ -22,6 +30,6 @@ Public Function HexDump(sData As String) As String
   bData = StrConv(sData, vbFromUnicode)
   Dim Index As Integer
   For Index = 0 To UBound(bData)
-    HexDump = HexDump & LeadSpace(Hex(bData(Index)), 2) & " "
+    HexDump = HexDump & LeadZero(Hex(bData(Index)), 2) & " "
   Next
 End Function

@@ -125,7 +125,7 @@ Public Sub ProcessPackets(ServerPacket As DaytonaPacket, ClientPacket As Daytona
     Wend
     
     '<LOCATION NAME>
-    DrawFont 3, 2, 72, 88, CAMERA_Name(ReadByte(pRAMBASE + View))
+    DrawFont 3, 2, 72, 88, CAMERA_Name(ReadByte(M2EM_RAMBASE + View))
     
     '<current car>
     SrcX = 0

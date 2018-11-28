@@ -51,7 +51,7 @@ End Sub
 
 
 Public Sub CLIENT_OnTimer()
-  CLIENT_Hooked = OpenMemory
+  CLIENT_Hooked = M2EM_Online
 End Sub
 
 
@@ -104,7 +104,7 @@ Public Sub ProcessFrame(LastFrame As DaytonaFrame)
   Next
   
   Dim bGameState As Byte
-  bGameState = ReadByte(pRAMBASE + GAMESTATE)
+  bGameState = ReadByte(M2EM_RAMBASE + GAMESTATE)
   
   Dim bMasterState As Byte
   Dim bMasterNode As Byte
@@ -112,26 +112,26 @@ Public Sub ProcessFrame(LastFrame As DaytonaFrame)
   If iMasterCar >= 0 Then
     If bGameState < &H10 Then
       ' Enable tilemaps
-      WriteByte pRAMBASE + TILEMAPS, &H0
+      WriteByte M2EM_RAMBASE + TILEMAPS, &H0
     Else
       ' Disable tilemaps (thanks nuezz!)
-      WriteByte pRAMBASE + TILEMAPS, &H1
+      WriteByte M2EM_RAMBASE + TILEMAPS, &H1
     End If
     
     ' Disable hud elements (thanks nuezz!)
-    WriteInteger pRAMBASE + HUD_OFFSET_X, &H600
+    WriteInteger M2EM_RAMBASE + HUD_OFFSET_X, &H600
     
     ' Disable setup map (thanks nuezz!)
-    WriteByte pRAMBASE + SETUP_MAP, &H0
+    WriteByte M2EM_RAMBASE + SETUP_MAP, &H0
     
     ' Disable setup selectors (thanks nuezz!)
-    WriteByte pRAMBASE + SETUP_SELECTORS, &H0
+    WriteByte M2EM_RAMBASE + SETUP_SELECTORS, &H0
     
     ' Disable setup cars (thanks nuezz!)
-    WriteByte pRAMBASE + SETUP_CARS, &H0
+    WriteByte M2EM_RAMBASE + SETUP_CARS, &H0
     
     ' Disable panorama attract (thanks nuezz!)
-    WriteByte pRAMBASE + ATTRACT_MODE, &H1
+    WriteByte M2EM_RAMBASE + ATTRACT_MODE, &H1
     
     If bGameState > &H2 Then
       ' once network up...
@@ -147,7 +147,7 @@ Public Sub ProcessFrame(LastFrame As DaytonaFrame)
         Case Is > &H12&
           If CoinLock Then
             CoinLock = False
-            WriteByte pRAMBASE + CUSTOM_MASK, &HFF
+            WriteByte M2EM_RAMBASE + CUSTOM_MASK, &HFF
           End If
         Case Is = &H12&
           ' car no. 1
@@ -156,7 +156,7 @@ Public Sub ProcessFrame(LastFrame As DaytonaFrame)
               ' auto coin up
               If Not CoinLock Then
                 CoinLock = True
-                WriteByte pRAMBASE + CUSTOM_MASK, &HF5
+                WriteByte M2EM_RAMBASE + CUSTOM_MASK, &HF5
               End If
             End If
           End If
@@ -173,26 +173,26 @@ Public Sub ProcessFrame(LastFrame As DaytonaFrame)
         End If
         
         ' Set Laps to 255 to avoid live client finishing the race
-        WriteByte pRAMBASE + LAPS_TOTAL, &HFF
+        WriteByte M2EM_RAMBASE + LAPS_TOTAL, &HFF
         
         ' Y
-        WriteSingle pRAMBASE + CAR_Y, LastFrame.Packet(iSlaveCar).x05C_CarY
+        WriteSingle M2EM_RAMBASE + CAR_Y, LastFrame.Packet(iSlaveCar).x05C_CarY
         
         ' X
-        WriteSingle pRAMBASE + CAR_X, LastFrame.Packet(iSlaveCar).x064_CarX
+        WriteSingle M2EM_RAMBASE + CAR_X, LastFrame.Packet(iSlaveCar).x064_CarX
         
         ' Speed
-        WriteSingle pRAMBASE + CAR_SPEED, LastFrame.Packet(iSlaveCar).x074_CarSpeed
+        WriteSingle M2EM_RAMBASE + CAR_SPEED, LastFrame.Packet(iSlaveCar).x074_CarSpeed
         
         ' YAW
-        WriteInteger pRAMBASE + CAR_YAW, LastFrame.Packet(iSlaveCar).x08E_CarYaw
+        WriteInteger M2EM_RAMBASE + CAR_YAW, LastFrame.Packet(iSlaveCar).x08E_CarYaw
         
         ' CarNo / Icon
-        WriteByte pRAMBASE + CAR_ICON, LastFrame.Packet(iSlaveCar).x0D4_CarNumber
+        WriteByte M2EM_RAMBASE + CAR_ICON, LastFrame.Packet(iSlaveCar).x0D4_CarNumber
       
         ' Car Model (and Number)
-        WriteLong pRAMBASE + CAR_MODEL_BODY, CarToModel(LastFrame.Packet(iSlaveCar).x0D4_CarNumber)
-        WriteLong pRAMBASE + CAR_MODEL_NUMBER, 0
+        WriteLong M2EM_RAMBASE + CAR_MODEL_BODY, CarToModel(LastFrame.Packet(iSlaveCar).x0D4_CarNumber)
+        WriteLong M2EM_RAMBASE + CAR_MODEL_NUMBER, 0
         
         ' Process Camera Stuff
         LiveCamera.ProcessPackets LastFrame.Packet(iServerCar), LastFrame.Packet(iSlaveCar)
@@ -204,19 +204,19 @@ Public Sub ProcessFrame(LastFrame As DaytonaFrame)
         If CLIENT_LastCarNo <> CLIENT_CarNo Then
           If CLIENT_TableHack Then
             ' restore table
-            WriteByte pRAMBASE + CAR_NODE + (CLIENT_TableIndex * &H300&), CLIENT_LastNode
-            WriteByte pRAMBASE + CAR_ICON + (CLIENT_TableIndex * &H300&), CLIENT_LastCarNo
+            WriteByte M2EM_RAMBASE + CAR_NODE + (CLIENT_TableIndex * &H300&), CLIENT_LastNode
+            WriteByte M2EM_RAMBASE + CAR_ICON + (CLIENT_TableIndex * &H300&), CLIENT_LastCarNo
             CLIENT_TableHack = False
           End If
           If Not CLIENT_TableHack Then
             CLIENT_LastCarNo = CLIENT_CarNo
             ' manipulate table
             For iIndex = 1 To 7
-              If ReadByte(pRAMBASE + CAR_ICON + (iIndex * &H300&)) = CLIENT_CarNo Then
+              If ReadByte(M2EM_RAMBASE + CAR_ICON + (iIndex * &H300&)) = CLIENT_CarNo Then
                 CLIENT_TableIndex = iIndex
-                CLIENT_LastNode = ReadByte(pRAMBASE + CAR_NODE + (iIndex * &H300&))
+                CLIENT_LastNode = ReadByte(M2EM_RAMBASE + CAR_NODE + (iIndex * &H300&))
                 CLIENT_TableHack = True
-                WriteByte pRAMBASE + CAR_NODE + (iIndex * &H300&), ReadByte(pRAMBASE + CAR_NODE)
+                WriteByte M2EM_RAMBASE + CAR_NODE + (iIndex * &H300&), ReadByte(M2EM_RAMBASE + CAR_NODE)
               End If
             Next
           End If

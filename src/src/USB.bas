@@ -5,7 +5,6 @@ Private mDriveHandle As Long
 Private mDriveBuffer(0 To 3) As Byte
 
 Public Function OpenDriveChannel() As Boolean
-  If mDriveHandle = 0 Then mDriveHandle = -1
   If mDriveHandle = -1 Then
     mDriveHandle = OpenUSB(0, &HCA3, &H3CFC, &H1, &H4)
     If mDriveHandle = -1 Then
@@ -15,10 +14,11 @@ Public Function OpenDriveChannel() As Boolean
   OpenDriveChannel = True
 End Function
 
-Public Function CloseDriveChannel()
+Public Function CloseDriveChannel() As Long
   If mDriveHandle <> -1 Then
     CloseHandle mDriveHandle
     mDriveHandle = -1
+    CloseDriveChannel = mDriveHandle
   End If
 End Function
 
@@ -83,7 +83,7 @@ Private Function OpenUSB(Index As Integer, VendorID As Integer, ProductID As Int
       Result = SetupDiGetDeviceInterfaceDetailA(DeviceInfoSet, MyDeviceInterfaceData, VarPtr(DetailDataBuffer(0)), DetailData, Needed, 0)
       
       Dim DevicePathName As String
-      DevicePathName = Mid(StrConv(DetailDataBuffer, vbUnicode), 5, Needed - 5)
+      DevicePathName = Mid$(StrConv(DetailDataBuffer, vbUnicode), 5, Needed - 5)
       
       Dim Security As SECURITY_ATTRIBUTES
       Security.lpSecurityDescriptor = 0
@@ -93,14 +93,13 @@ Private Function OpenUSB(Index As Integer, VendorID As Integer, ProductID As Int
       Dim HIDHandle As Long
       HIDHandle = CreateFileA(DevicePathName, GENERIC_READ Or GENERIC_WRITE, (FILE_SHARE_READ Or FILE_SHARE_WRITE), VarPtr(Security), OPEN_EXISTING, 0&, 0)
       If HIDHandle <> -1 Then
-      
-       Dim DeviceAttributes As HIDD_ATTRIBUTES
-       DeviceAttributes.Size = LenB(DeviceAttributes)
-       Result = HidD_GetAttributes(HIDHandle, DeviceAttributes)
-       
-       If Result = 0 Then
-         CloseHandle HIDHandle
-       Else
+        Dim DeviceAttributes As HIDD_ATTRIBUTES
+        DeviceAttributes.Size = LenB(DeviceAttributes)
+        Result = HidD_GetAttributes(HIDHandle, DeviceAttributes)
+        
+        If Result = 0 Then
+          CloseHandle HIDHandle
+        Else
           ' check vendorid and productid
           If DeviceAttributes.VendorID = VendorID Then
             If DeviceAttributes.ProductID = ProductID Then
@@ -113,8 +112,8 @@ Private Function OpenUSB(Index As Integer, VendorID As Integer, ProductID As Int
               If Capabilities.UsagePage = UsagePage Then
                 If Capabilities.Usage = Usage Then
                   OpenUSB = HIDHandle
-                  Exit Function
                   Result = HidD_FreePreparsedData(PreparsedData)
+                  Exit Function
                 End If
               End If
               
