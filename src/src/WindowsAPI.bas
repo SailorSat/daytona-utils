@@ -276,6 +276,46 @@ Public Declare Function QueryPerformanceFrequency Lib "kernel32.dll" (lpFrequenc
 Public Declare Function QueryPerformanceCounter Lib "kernel32.dll" (lpPerformanceCount As Any) As Long
 
 
+' ---
+' Resolution
+Public Const CDS_UPDATEREGISTRY = &H1
+
+Public Const CCHDEVICENAME = 32
+Public Const CCHFORMNAME = 32
+
+Public Type DEVMODE
+  dmDeviceName As String * CCHDEVICENAME
+  dmSpecVersion As Integer
+  dmDriverVersion As Integer
+  dmSize As Integer
+  dmDriverExtra As Integer
+  dmFields As Long
+  dmOrientation As Integer
+  dmPaperSize As Integer
+  dmPaperLength As Integer
+  dmPaperWidth As Integer
+  dmScale As Integer
+  dmCopies As Integer
+  dmDefaultSource As Integer
+  dmPrintQuality As Integer
+  dmColor As Integer
+  dmDuplex As Integer
+  dmYResolution As Integer
+  dmTTOption As Integer
+  dmCollate As Integer
+  dmFormName As String * CCHFORMNAME
+  dmUnusedPadding As Integer
+  dmBitsPerPel As Integer
+  dmPelsWidth As Long
+  dmPelsHeight As Long
+  dmDisplayFlags As Long
+  dmDisplayFrequency As Long
+End Type
+
+Public Declare Function EnumDisplaySettingsA Lib "user32.dll" (ByVal lpszDeviceName As String, ByVal iModeNum As Long, lpDevMode As Any) As Boolean
+Public Declare Function ChangeDisplaySettingsExA Lib "user32.dll" (ByVal lpszDeviceName As String, lpDevMode As Any, ByVal hWnd As Long, ByVal dwFlags As Long, ByVal lParam As Long) As Long
+
+
 Public Function GetErrorString(ByVal LastError As Long) As String
   'Returns the error message for the last error.
   'Adapted from Dan Appleman's "Win32 API Puzzle Book"

@@ -1,5 +1,5 @@
 Type=Exe
-Reference=*\G{E1211242-8E94-11D1-8808-00C04FC2C603}#1.0#0#..\..\..\Windows\SysWow64\dx8vb.dll#DirectX 8 for Visual Basic Type Library
+Reference=*\G{E1211242-8E94-11D1-8808-00C04FC2C603}#1.0#0#C:\WINDOWS\SysWow64\dx8vb.dll#DirectX 8 for Visual Basic Type Library
 Module=IniFiles; src\IniFiles.bas
 Module=WindowsAPI; src\WindowsAPI.bas
 Module=Core; src\Loader\Core.bas
@@ -17,6 +17,7 @@ Module=Feedback; src\Feedback.bas
 Module=Utilities; src\Utilities.bas
 Module=MameInterop; src\MameInterop.bas
 Module=Lagfix; src\Lagfix.bas
+Module=Resolution; src\Resolution.bas
 Startup="Sub Main"
 HelpFile=""
 NoControlUpgrade=1

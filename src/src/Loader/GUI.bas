@@ -7,6 +7,24 @@ Public ScreenZoomX As Long
 Public ScreenZoomY As Long
 
 Sub Load()
+  ' Try to switch resolution
+  Dim UseSwitchResolution As Boolean
+  Dim Display As String
+  Dim Width As Long
+  Dim Height As Long
+  Dim Bits As Long
+  Dim Refresh As Long
+  
+  UseSwitchResolution = CBool(ReadIni("loader.ini", "gui", "enabled", "false"))
+  If UseSwitchResolution Then
+    Display = ReadIni("loader.ini", "gui", "Display", "\\.\DISPLAY1")
+    Width = CLng(ReadIni("loader.ini", "gui", "Width", "496"))
+    Height = CLng(ReadIni("loader.ini", "gui", "Height", "384"))
+    Bits = CLng(ReadIni("loader.ini", "gui", "Bits", "32"))
+    Refresh = CLng(ReadIni("loader.ini", "gui", "Refresh", "60"))
+    SwitchResolution Display, Width, Height, Bits, Refresh
+  End If
+
   ' Check Resolution and calculate zoom
   If RunOnIDE Then
     ScreenSizeX = 496

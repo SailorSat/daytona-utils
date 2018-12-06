@@ -3,7 +3,6 @@ Option Explicit
 
 Public M2EM_Profile As String
 
-Public M2EM_ROMNAME As Long
 Public M2EM_RAMBASE As Long
 Public M2EM_RAM2BASE As Long
 Public M2EM_BACKUPBASE As Long
@@ -109,12 +108,6 @@ Private Function CheckProfile() As Boolean
   Profile = StrConv(ReadString(ProfileOffset, 8), vbUnicode)
   If InStr(1, Profile, Chr(0), vbBinaryCompare) > 0 Then
     Profile = Left$(Profile, InStr(1, Profile, Chr(0), vbBinaryCompare) - 1)
-  End If
-  If Profile = "" Then
-    Profile = StrConv(ReadString(&H19FCA6, 8), vbUnicode)
-    If InStr(1, Profile, Chr(0), vbBinaryCompare) > 0 Then
-      Profile = Left$(Profile, InStr(1, Profile, Chr(0), vbBinaryCompare) - 1)
-    End If
   End If
 
   Select Case Profile
