@@ -1,12 +1,12 @@
 Attribute VB_Name = "Lagfix"
 Option Explicit
 
-Private UDP_LocalAddress_RX As String
-Private UDP_LocalAddress_TX As String
-Private UDP_RemoteAddress_RX As String
-Private UDP_RemoteAddress_TX As String
-Private UDP_Socket_RX As Long
-Private UDP_Socket_TX As Long
+Private UDP_Address_NetworkRX As String
+Private UDP_Address_NetworkTX As String
+Private UDP_Address_EmulatorRX As String
+Private UDP_Address_EmulatorTX As String
+Private UDP_Socket_Network As Long
+Private UDP_Socket_Emulator As Long
 
 Private STATS_Enabled As Boolean
 Private STATS_RemoteAddress As String
@@ -36,29 +36,24 @@ Public Sub Load()
     Print #LOG_FileHandle, "-- START @ " & Date & " " & Time
   End If
   
-  ' Local-RX (lagfix)
-  Host = ReadIni("lagfix.ini", "rx", "LocalHost", "127.0.0.1")
-  Port = CLng(ReadIni("lagfix.ini", "rx", "LocalPort", "15611"))
-  UDP_LocalAddress_RX = Winsock.WSABuildSocketAddress(Host, Port)
-  Debug.Print "rx1", Host, Port
+  ' Network-RX (where we listen)
+  Host = ReadIni("lagfix.ini", "network", "localhost", "127.0.0.1")
+  Port = CLng(ReadIni("lagfix.ini", "network", "localport", "15611"))
+  UDP_Address_NetworkRX = Winsock.WSABuildSocketAddress(Host, Port)
   
-  ' Remote-RX (emulator)
-  Host = ReadIni("lagfix.ini", "rx", "EmulatorHost", "127.0.0.1")
-  Port = CLng(ReadIni("lagfix.ini", "rx", "EmulatorPort", "15612"))
-  UDP_RemoteAddress_RX = Winsock.WSABuildSocketAddress(Host, Port)
-  Debug.Print "rx2", Host, Port
-
-  ' Local-TX (lagfix)
-  Host = ReadIni("lagfix.ini", "tx", "LocalHost", "127.0.0.1")
-  Port = CLng(ReadIni("lagfix.ini", "tx", "LocalPort", "15613"))
-  UDP_LocalAddress_TX = Winsock.WSABuildSocketAddress(Host, Port)
-  Debug.Print "tx1", Host, Port
+  ' Network-TX (where we send to)
+  Host = ReadIni("lagfix.ini", "network", "remotehost", "127.0.0.1")
+  Port = CLng(ReadIni("lagfix.ini", "network", "remoteport", "15611"))
+  UDP_Address_NetworkTX = Winsock.WSABuildSocketAddress(Host, Port)
   
-  ' Remote-RX (Emulator)
-  Host = ReadIni("lagfix.ini", "tx", "RemoteHost", "127.0.0.1")
-  Port = CLng(ReadIni("lagfix.ini", "tx", "RemotePort", "15611"))
-  UDP_RemoteAddress_TX = Winsock.WSABuildSocketAddress(Host, Port)
-  Debug.Print "tx2", Host, Port
+  ' Emulator-RX (where m2em sends to)
+  Host = ReadIni("lagfix.ini", "emulator", "host", "127.0.0.1")
+  Port = CLng(ReadIni("lagfix.ini", "emulator", "localport", "15613"))
+  UDP_Address_EmulatorRX = Winsock.WSABuildSocketAddress(Host, Port)
+  
+  ' Emulator-TX (where m2em listens)
+  Port = CLng(ReadIni("lagfix.ini", "emulator", "remoteport", "15612"))
+  UDP_Address_EmulatorTX = Winsock.WSABuildSocketAddress(Host, Port)
 
   ' Stats (if enabled)
   Host = ReadIni("lagfix.ini", "stats", "RemoteHost", "127.0.0.1")
@@ -69,25 +64,25 @@ Public Sub Load()
   ' DELAY fix (if enabled)
   STALL_Enabled = CBool(ReadIni("lagfix.ini", "rx", "StallDetection", "false"))
   
-  If UDP_LocalAddress_RX = "" Or UDP_RemoteAddress_RX = "" Then
+  If UDP_Address_NetworkRX = "" Or UDP_Address_EmulatorRX = "" Then
     MsgBox "Something went wrong! #ADDR_RX", vbCritical Or vbOKOnly, App.Title
     OnUnload
   End If
   
-  If UDP_LocalAddress_TX = "" Or UDP_RemoteAddress_TX = "" Then
+  If UDP_Address_EmulatorTX = "" Or UDP_Address_NetworkTX = "" Then
     MsgBox "Something went wrong! #ADDR_TX", vbCritical Or vbOKOnly, App.Title
     OnUnload
   End If
   
-  UDP_Socket_RX = Winsock.ListenUDP(UDP_LocalAddress_RX)
-  If UDP_Socket_RX = -1 Then
-    MsgBox "Something went wrong! #SOCK_RX", vbCritical Or vbOKOnly, App.Title
+  UDP_Socket_Network = Winsock.ListenUDP(UDP_Address_NetworkRX)
+  If UDP_Socket_Network = -1 Then
+    MsgBox "Something went wrong! #SOCK_NET", vbCritical Or vbOKOnly, App.Title
     OnUnload
   End If
   
-  UDP_Socket_TX = Winsock.ListenUDP(UDP_LocalAddress_TX)
-  If UDP_Socket_TX = -1 Then
-    MsgBox "Something went wrong! #SOCK_TX", vbCritical Or vbOKOnly, App.Title
+  UDP_Socket_Emulator = Winsock.ListenUDP(UDP_Address_EmulatorRX)
+  If UDP_Socket_Emulator = -1 Then
+    MsgBox "Something went wrong! #SOCK_EMU", vbCritical Or vbOKOnly, App.Title
     OnUnload
   End If
   
@@ -110,8 +105,8 @@ Public Sub Unload()
   If LOG_Enabled Then
     Close #LOG_FileHandle
   End If
-  Winsock.Disconnect UDP_Socket_RX
-  Winsock.Disconnect UDP_Socket_TX
+  Winsock.Disconnect UDP_Socket_Network
+  Winsock.Disconnect UDP_Socket_Emulator
 End Sub
 
 Public Sub Timer()
@@ -119,7 +114,7 @@ Public Sub Timer()
   If LAG_Enabled Then
     ' if waited long enough
     If GetTickCount - LAG_Tick >= 64 Then
-      Winsock.SendUDP UDP_Socket_RX, LAG_Packet, UDP_RemoteAddress_RX
+      Winsock.SendUDP UDP_Socket_Emulator, LAG_Packet, UDP_Address_EmulatorTX
       LAG_Tick = GetTickCount
     
       If LOG_Enabled Then
@@ -130,7 +125,7 @@ Public Sub Timer()
   ElseIf (STALL_Enabled And LINK_Enabled) Then
     ' if waited long enough
     If GetTickCount - STALL_Tick >= 128 Then
-      Winsock.SendUDP UDP_Socket_RX, LAG_Packet, UDP_RemoteAddress_RX
+      Winsock.SendUDP UDP_Socket_Network, LAG_Packet, UDP_Address_NetworkTX
       STALL_Tick = GetTickCount
       
       If LOG_Enabled Then
@@ -143,14 +138,14 @@ End Sub
 
 Public Sub ReadUDP(lSocket As Long, sBuffer As String, sAddress As String)
   Dim sDummy As String
-  If lSocket = UDP_Socket_RX Then
-    ' incoming, send to emulator
+  If lSocket = UDP_Socket_Network Then
+    ' incoming, send to emulator (and stats if enabled)
     While Len(sBuffer) >= 3589
       sDummy = Left$(sBuffer, 3589)
       sBuffer = Mid$(sBuffer, 3590)
-      Winsock.SendUDP UDP_Socket_RX, sDummy, UDP_RemoteAddress_RX
+      Winsock.SendUDP UDP_Socket_Emulator, sDummy, UDP_Address_EmulatorTX
       If STATS_Enabled Then
-        Winsock.SendUDP UDP_Socket_RX, sDummy, STATS_RemoteAddress
+        Winsock.SendUDP UDP_Socket_Network, sDummy, STATS_RemoteAddress
       End If
     Wend
     
@@ -159,12 +154,12 @@ Public Sub ReadUDP(lSocket As Long, sBuffer As String, sAddress As String)
     LAG_Tick = GetTickCount
     LAG_Packet = sDummy
     LAG_Enabled = LINK_Enabled
-  ElseIf lSocket = UDP_Socket_TX Then
+  ElseIf lSocket = UDP_Socket_Emulator Then
     ' outgoing, send to next unit
     While Len(sBuffer) >= 3589
       sDummy = Left$(sBuffer, 3589)
       sBuffer = Mid$(sBuffer, 3590)
-      Winsock.SendUDP UDP_Socket_TX, sDummy, UDP_RemoteAddress_TX
+      Winsock.SendUDP UDP_Socket_Network, sDummy, UDP_Address_NetworkTX
     Wend
 
     STALL_Tick = GetTickCount
