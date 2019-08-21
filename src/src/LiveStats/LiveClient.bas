@@ -82,24 +82,26 @@ End Sub
 
 
 Public Sub ProcessFrame(LastFrame As DaytonaFrame)
-  Dim iMasterCar As Integer
-  Dim iSlaveCar As Integer
-  Dim iServerCar As Integer
-  iMasterCar = -1
-  iSlaveCar = -1
-  iServerCar = -1
+  Dim lCount As Long
+  Dim lMasterCar As Long
+  Dim lSlaveCar As Long
+  Dim lServerCar As Long
+  lCount = STATS_Players - 1
+  lMasterCar = -1
+  lSlaveCar = -1
+  lServerCar = -1
   
-  Dim iIndex As Integer
-  For iIndex = 0 To 7
-    If LastFrame.Packet(iIndex).x0D4_CarNumber = 0 Then
-      iMasterCar = iIndex
-      iIndex = 8
+  Dim lIndex As Long
+  For lIndex = 0 To lCount
+    If LastFrame.Packet(lIndex).x0D4_CarNumber = 0 Then
+      lMasterCar = lIndex
+      lIndex = 8
     End If
   Next
-  For iIndex = 0 To 7
-    If LastFrame.Packet(iIndex).x0D4_CarNumber = CLIENT_CarNo Then
-      iSlaveCar = iIndex
-      iIndex = 8
+  For lIndex = 0 To lCount
+    If LastFrame.Packet(lIndex).x0D4_CarNumber = CLIENT_CarNo Then
+      lSlaveCar = lIndex
+      lIndex = 8
     End If
   Next
   
@@ -109,7 +111,7 @@ Public Sub ProcessFrame(LastFrame As DaytonaFrame)
   Dim bMasterState As Byte
   Dim bMasterNode As Byte
   Dim bReplacementNode As Byte
-  If iMasterCar >= 0 Then
+  If lMasterCar >= 0 Then
     If bGameState < &H10 Then
       ' Enable tilemaps
       WriteByte M2EM_RAMBASE + TILEMAPS, &H0
@@ -135,12 +137,12 @@ Public Sub ProcessFrame(LastFrame As DaytonaFrame)
     
     If bGameState > &H2 Then
       ' once network up...
-      bMasterNode = LastFrame.Packet(iMasterCar).x018_MasterNode
-      bMasterState = LastFrame.Packet(iMasterCar).x01B_RemoteGameState
-      For iIndex = 0 To 7
-        If LastFrame.Packet(iIndex).x00C_LocalNode = bMasterNode Then
-          iServerCar = iIndex
-          iIndex = 8
+      bMasterNode = LastFrame.Packet(lMasterCar).x018_MasterNode
+      bMasterState = LastFrame.Packet(lMasterCar).x01B_RemoteGameState
+      For lIndex = 0 To lCount
+        If LastFrame.Packet(lIndex).x00C_LocalNode = bMasterNode Then
+          lServerCar = lIndex
+          lIndex = 8
         End If
       Next
       Select Case bMasterState
@@ -151,7 +153,7 @@ Public Sub ProcessFrame(LastFrame As DaytonaFrame)
           End If
         Case Is = &H12&
           ' car no. 1
-          If Not bMasterNode = LastFrame.Packet(iMasterCar).x00C_LocalNode Then
+          If Not bMasterNode = LastFrame.Packet(lMasterCar).x00C_LocalNode Then
             If Not bGameState = &H12& Then
               ' auto coin up
               If Not CoinLock Then
@@ -166,7 +168,7 @@ Public Sub ProcessFrame(LastFrame As DaytonaFrame)
         If bMasterState = &H16 Or bMasterState = &H15 Or bMasterState = &H14 Or bMasterState = &H13 Then
           If Not Ingame Then
             Ingame = True
-            OnRaceStart LastFrame.Packet(iMasterCar).x017_CourseActive, bMasterNode, LastFrame.Packet(iServerCar).x00B_NodeCount
+            OnRaceStart LastFrame.Packet(lMasterCar).x017_CourseActive, bMasterNode, LastFrame.Packet(lServerCar).x00B_NodeCount
             CLIENT_CarNo = 0
             CLIENT_ViewNo = 3
           End If
@@ -176,29 +178,29 @@ Public Sub ProcessFrame(LastFrame As DaytonaFrame)
         WriteByte M2EM_RAMBASE + LAPS_TOTAL, &HFF
         
         ' Y
-        WriteSingle M2EM_RAMBASE + CAR_Y, LastFrame.Packet(iSlaveCar).x05C_CarY
+        WriteSingle M2EM_RAMBASE + CAR_Y, LastFrame.Packet(lSlaveCar).x05C_CarY
         
         ' X
-        WriteSingle M2EM_RAMBASE + CAR_X, LastFrame.Packet(iSlaveCar).x064_CarX
+        WriteSingle M2EM_RAMBASE + CAR_X, LastFrame.Packet(lSlaveCar).x064_CarX
         
         ' Speed
-        WriteSingle M2EM_RAMBASE + CAR_SPEED, LastFrame.Packet(iSlaveCar).x074_CarSpeed
+        WriteSingle M2EM_RAMBASE + CAR_SPEED, LastFrame.Packet(lSlaveCar).x074_CarSpeed
         
         ' YAW
-        WriteInteger M2EM_RAMBASE + CAR_YAW, LastFrame.Packet(iSlaveCar).x08E_CarYaw
+        WriteInteger M2EM_RAMBASE + CAR_YAW, LastFrame.Packet(lSlaveCar).x08E_CarYaw
         
         ' CarNo / Icon
-        WriteByte M2EM_RAMBASE + CAR_ICON, LastFrame.Packet(iSlaveCar).x0D4_CarNumber
+        WriteByte M2EM_RAMBASE + CAR_ICON, LastFrame.Packet(lSlaveCar).x0D4_CarNumber
       
         ' Car Model (and Number)
-        WriteLong M2EM_RAMBASE + CAR_MODEL_BODY, CarToModel(LastFrame.Packet(iSlaveCar).x0D4_CarNumber)
+        WriteLong M2EM_RAMBASE + CAR_MODEL_BODY, CarToModel(LastFrame.Packet(lSlaveCar).x0D4_CarNumber)
         WriteLong M2EM_RAMBASE + CAR_MODEL_NUMBER, 0
         
         ' Process Camera Stuff
-        LiveCamera.ProcessPackets LastFrame.Packet(iServerCar), LastFrame.Packet(iSlaveCar)
+        LiveCamera.ProcessPackets LastFrame.Packet(lServerCar), LastFrame.Packet(lSlaveCar)
         
         ' Update Overlay (if enabled)
-        LiveOverlay.ProcessPackets LastFrame.Packet(iServerCar), LastFrame.Packet(iSlaveCar)
+        LiveOverlay.ProcessPackets LastFrame.Packet(lServerCar), LastFrame.Packet(lSlaveCar)
 
         ' Replace cars if needed
         If CLIENT_LastCarNo <> CLIENT_CarNo Then
@@ -211,12 +213,12 @@ Public Sub ProcessFrame(LastFrame As DaytonaFrame)
           If Not CLIENT_TableHack Then
             CLIENT_LastCarNo = CLIENT_CarNo
             ' manipulate table
-            For iIndex = 1 To 7
-              If ReadByte(M2EM_RAMBASE + CAR_ICON + (iIndex * &H300&)) = CLIENT_CarNo Then
-                CLIENT_TableIndex = iIndex
-                CLIENT_LastNode = ReadByte(M2EM_RAMBASE + CAR_NODE + (iIndex * &H300&))
+            For lIndex = 1 To lCount
+              If ReadByte(M2EM_RAMBASE + CAR_ICON + (lIndex * &H300&)) = CLIENT_CarNo Then
+                CLIENT_TableIndex = lIndex
+                CLIENT_LastNode = ReadByte(M2EM_RAMBASE + CAR_NODE + (lIndex * &H300&))
                 CLIENT_TableHack = True
-                WriteByte M2EM_RAMBASE + CAR_NODE + (iIndex * &H300&), ReadByte(M2EM_RAMBASE + CAR_NODE)
+                WriteByte M2EM_RAMBASE + CAR_NODE + (lIndex * &H300&), ReadByte(M2EM_RAMBASE + CAR_NODE)
               End If
             Next
           End If
@@ -233,6 +235,9 @@ End Sub
 
 
 Private Function ProcessFakeFrame(sBuffer As String) As String
+  ' check if stats online
+  If Not STATS_Online Then Exit Function
+  
   Dim lIndex As Long
   
   ' convert from wide-string to byte array
@@ -243,40 +248,29 @@ Private Function ProcessFakeFrame(sBuffer As String) As String
   Select Case baBuffer(4)
     Case 0
       ' type 0 packet
-      ' add 7 cabs, set count to 8
-      baBuffer(&H5) = 8   ' Player Count
-      
-      baBuffer(&HC) = 2   ' Cab #2
-      baBuffer(&H12) = 3  ' Cab #3
-      baBuffer(&H18) = 4  ' Cab #4
-      baBuffer(&H1E) = 5  ' Cab #5
-      baBuffer(&H24) = 6  ' Cab #6
-      baBuffer(&H2A) = 7  ' Cab #7
-      baBuffer(&H30) = 8  ' Cab #8
-      
+      ' add missing cabs, set count to STATS_Players
+      baBuffer(&H5) = STATS_Players             ' total
+      For lIndex = 1 To STATS_Players - 1
+        baBuffer(&H5 + lIndex * 6 + 0) = 0
+        baBuffer(&H5 + lIndex * 6 + 1) = lIndex ' cab ##
+      Next
       CLIENT_OnLinkDown
       
     Case 1
       ' type 1 packet
       ' count up ids
-      baBuffer(&H5) = 8   ' Player Count
-      baBuffer(&H6) = 9   ' Next Node
-      
-      baBuffer(&HC) = 8   ' Cab #2
-      baBuffer(&H12) = 7  ' Cab #3
-      baBuffer(&H18) = 6  ' Cab #4
-      baBuffer(&H1E) = 5  ' Cab #5
-      baBuffer(&H24) = 4  ' Cab #6
-      baBuffer(&H2A) = 3  ' Cab #7
-      baBuffer(&H30) = 2  ' Cab #8
-      baBuffer(&H36) = 1  ' Cab #1
-      
+      baBuffer(&H5) = STATS_Players                                 ' total
+      baBuffer(&H6) = STATS_Players + 1                             ' next node (total + 1)
+      For lIndex = 1 To STATS_Players + 1
+        baBuffer(&H5 + lIndex * 6 + 0) = 0
+        baBuffer(&H5 + lIndex * 6 + 1) = STATS_Players + 1 - lIndex ' cab ##
+      Next
+     
     Case 2
       ' type 2 packet
       If baBuffer(&H1A) >= &H80 Then
         ' sync phase done!
         CLIENT_OnLinkUp
-        ProcessFakeFrame = ""
         Exit Function
       Else
         ' do nothing and wait...

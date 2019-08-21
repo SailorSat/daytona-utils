@@ -6,6 +6,12 @@ Private MapOffset(0 To 15) As Long
 Public STATS_LocalAddress As String
 Public STATS_Socket As Long
 
+Public STATS_Online As Boolean
+Public STATS_Players As Long
+
+Public STATS_CarToNode(0 To 7) As Long
+Public STATS_NodeToCar(1 To 8) As Long
+
 Private STATS_FlipFlop As Byte
 
 Private CurrentTrack As Byte
@@ -49,21 +55,49 @@ Public Sub STATS_OnLoad()
   MapOffset(5) = ScreenSizeY / 2 - 10
   
   STATS_FlipFlop = 0
+  
+  STATS_Online = False
+  STATS_Players = 0
 End Sub
 
 
 Public Sub STATS_OnReadUDP(lHandle As Long, sBuffer As String, sAddress As String)
   Dim LastFrame As DaytonaFrame
-  Dim Index As Integer
+  Dim Index As Long
   Dim Packet As DaytonaPacket
   
   Set LastFrame = ParseFrame(sBuffer)
   If Not LastFrame Is Nothing Then
+    If Not STATS_Online Then
+      If LastFrame.Status = 2 And LastFrame.Packet(0).x016_LocalGameState > 0 Then
+        Dim FoundCar(0 To 7) As Boolean, LocalCar As Byte
+        STATS_Players = 0
+        For Index = 0 To 7
+          Set Packet = LastFrame.Packet(Index)
+          LocalCar = Packet.x0D4_CarNumber
+          If FoundCar(LocalCar) Then
+            Index = 8
+          Else
+            FoundCar(LocalCar) = True
+            STATS_Players = STATS_Players + 1
+          End If
+        Next
+        
+        For Index = 0 To STATS_Players - 1
+          LocalCar = STATS_Players - Index + 1
+          If LocalCar > STATS_Players Then LocalCar = 1
+          STATS_CarToNode(Index) = LocalCar
+          STATS_NodeToCar(LocalCar) = Index
+        Next
+      
+        STATS_Online = True
+      End If
+    End If
     If CurrentTrack < 3 Then
       If STATS_FlipFlop > 0 Then
         STATS_FlipFlop = STATS_FlipFlop - 1
       Else
-        For Index = 0 To 7
+        For Index = 0 To STATS_Players - 1
           Set Packet = LastFrame.Packet(Index)
           If Packet.x00C_LocalNode = CurrentNode Or Packet.x018_MasterNode = CurrentNode Then
             If Packet.x016_LocalGameState = &H14 Or Packet.x01B_RemoteGameState = &H14 Or Packet.x016_LocalGameState = &H16 Or Packet.x01B_RemoteGameState = &H16 Then
@@ -72,7 +106,7 @@ Public Sub STATS_OnReadUDP(lHandle As Long, sBuffer As String, sAddress As Strin
             End If
           End If
         Next
-        STATS_FlipFlop = 0
+        STATS_FlipFlop = 1
       End If
     End If
     If CLIENT_Online Then

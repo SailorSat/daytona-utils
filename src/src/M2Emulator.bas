@@ -23,8 +23,7 @@ Public Function M2EM_Online() As Boolean
     Dim Buffer As Byte
     Result = ReadProcessMemory(Handle, M2EM_RAMBASE, Buffer, 1, 0)
     If Result = 0 Then
-      CloseProcess
-      Handle = -1
+      Handle = CloseProcess
       M2EM_Online = False
     Else
       M2EM_Online = True

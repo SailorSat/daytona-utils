@@ -89,13 +89,13 @@ Begin VB.Form Window2
       BorderStyle     =   0  'None
       ForeColor       =   &H80000008&
       Height          =   7200
-      Left            =   6240
+      Left            =   3600
       Picture         =   "Window2.frx":3318
       ScaleHeight     =   480
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   640
       TabIndex        =   5
-      Top             =   3840
+      Top             =   3360
       Visible         =   0   'False
       Width           =   9600
    End

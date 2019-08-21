@@ -19,34 +19,34 @@ Private paPacket(0 To 7) As DaytonaPacket
 
 Private Sub Class_Initialize()
   ReDim baBuffer(0 To 4)
-  Dim iCount As Integer
-  For iCount = 0 To 7
-    Set paPacket(iCount) = New DaytonaPacket
+  Dim lCount As Long
+  For lCount = 0 To 7
+    Set paPacket(lCount) = New DaytonaPacket
   Next
 End Sub
 
 Public Property Get Buffer() As String
-  Dim iCount As Integer
+  Dim lCount As Long
   Buffer = StrConv(baBuffer, vbUnicode)
-  For iCount = 0 To 7
-    Buffer = Buffer & paPacket(iCount).Buffer
+  For lCount = 0 To 7
+    Buffer = Buffer & paPacket(lCount).Buffer
   Next
 End Property
 
 Public Property Let Buffer(ByVal sBuffer As String)
-  Dim iCount As Integer
-  Dim iOffset As Integer
+  Dim lCount As Long
+  Dim lOffset As Long
   baBuffer = StrConv(Mid(sBuffer, 1, 5), vbFromUnicode)
-  For iCount = 0 To 7
-    iOffset = 6 + (iCount * 448)
-    paPacket(iCount).Buffer = Mid(sBuffer, iOffset, 448)
+  For lCount = 0 To 7
+    lOffset = 6 + (lCount * 448)
+    paPacket(lCount).Buffer = Mid(sBuffer, lOffset, 448)
   Next
 End Property
 
 ' ---------------------------------------------------------------------------- '
 
-Public Function Packet(iIndex As Integer) As DaytonaPacket
-  Set Packet = paPacket(iIndex)
+Public Function Packet(lIndex As Long) As DaytonaPacket
+  Set Packet = paPacket(lIndex)
 End Function
 
 Public Property Get Status() As Byte

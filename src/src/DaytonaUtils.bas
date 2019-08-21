@@ -2,50 +2,6 @@ Attribute VB_Name = "DaytonaUtils"
 Option Explicit
 
 
-Public Function CarToNode(Car As Byte) As Byte
-  Select Case Car
-    Case 0
-      CarToNode = 1
-    Case 1
-      CarToNode = 8
-    Case 2
-      CarToNode = 7
-    Case 3
-      CarToNode = 6
-    Case 4
-      CarToNode = 5
-    Case 5
-      CarToNode = 4
-    Case 6
-      CarToNode = 3
-    Case 7
-      CarToNode = 2
-  End Select
-End Function
-
-
-Public Function NodeToCar(Node As Byte) As Byte
-  Select Case Node
-    Case 1
-      NodeToCar = 0
-    Case 8
-      NodeToCar = 1
-    Case 7
-      NodeToCar = 2
-    Case 6
-      NodeToCar = 3
-    Case 5
-      NodeToCar = 4
-    Case 4
-      NodeToCar = 5
-    Case 3
-      NodeToCar = 6
-    Case 2
-      NodeToCar = 7
-  End Select
-End Function
-
-
 Public Function DistanceToLap(CurrentTrack As Byte, Distance As Integer) As String
   If Distance > &HF000 Then
     DistanceToLap = "1"

@@ -2,6 +2,7 @@ Attribute VB_Name = "LiveOverlay"
 Option Explicit
 
 Private OverlayOffset(0 To 15) As Long
+Private OverlayTrack(0 To 3) As Long
 
 Public OVERLAY_FlipFlop As Boolean
 Public OVERLAY_Enabled As Boolean
@@ -28,6 +29,10 @@ Public Sub OVERLAY_OnLoad()
   OverlayOffset(13) = ScreenSizeY - 40
   OverlayOffset(14) = ScreenSizeY - 35
   
+  OverlayTrack(0) = 400
+  OverlayTrack(1) = 416
+  OverlayTrack(2) = 432
+  OverlayTrack(3) = 448
 End Sub
 
 
@@ -55,7 +60,7 @@ End Sub
 
 Public Sub OVERLAY_OnRaceStart(Track As Byte, Node As Byte, Players As Byte)
   Dim Offset As Integer
-  Dim Index As Integer
+  Dim Index As Long
   
   If Not OVERLAY_Enabled Then
     OVERLAY_Enabled = True
@@ -63,7 +68,7 @@ Public Sub OVERLAY_OnRaceStart(Track As Byte, Node As Byte, Players As Byte)
     ' FROM
     BitBlt Window.hdc, 56, 72, 32, 8, Window.pbVFormula.hdc, 0, 48, vbSrcCopy
     ' <TRACK>
-    BitBlt Window.hdc, OverlayOffset(0), 120, 64, 16, Window.pbVFormula.hdc, 0, 400 + (CInt(Track) * 16), vbSrcCopy
+    BitBlt Window.hdc, OverlayOffset(0), 120, 64, 16, Window.pbVFormula.hdc, 0, OverlayTrack(Track), vbSrcCopy
     
     ' TIME
     BitBlt Window.hdc, OverlayOffset(1), 12, 31, 9, Window.pbVFormula.hdc, 0, 64, vbSrcCopy
@@ -97,6 +102,7 @@ End Sub
 
 
 Public Sub ProcessPackets(ServerPacket As DaytonaPacket, ClientPacket As DaytonaPacket)
+  On Error Resume Next
   If OVERLAY_Enabled Then
     Dim SrcX As Integer
     Dim SrcY As Integer
@@ -119,7 +125,7 @@ Public Sub ProcessPackets(ServerPacket As DaytonaPacket, ClientPacket As Daytona
     SrcY = ScreenSizeY - 32
     While Rank > 0
       Rank = Rank - 1
-      SrcX = NodeToCar(Ranking(Rank))
+      SrcX = STATS_NodeToCar(Ranking(Rank))
       BitBlt Window.hdc, 32, SrcY, 96, 24, Window.pbVFormula.hdc, 0, 144 + (SrcX * 32), vbSrcCopy
       SrcY = SrcY - 24
     Wend
@@ -129,7 +135,7 @@ Public Sub ProcessPackets(ServerPacket As DaytonaPacket, ClientPacket As Daytona
     
     '<current car>
     SrcX = 0
-    SrcY = 144 + CInt(ClientPacket.x0D4_CarNumber) * 32
+    SrcY = 144 + CLng(ClientPacket.x0D4_CarNumber) * 32
     BitBlt Window.hdc, OverlayOffset(2), OverlayOffset(9), 96, 24, Window.pbVFormula.hdc, SrcX, SrcY, vbSrcCopy
     DrawFont 4, 3, OverlayOffset(7), OverlayOffset(8), CStr(ClientPacket.x0D4_CarNumber + 1)
   
@@ -137,8 +143,8 @@ Public Sub ProcessPackets(ServerPacket As DaytonaPacket, ClientPacket As Daytona
     DrawFont 4, 2, OverlayOffset(10), 24, " " & CStr(ServerPacket.x028_TimeLeft \ 64) & " "
     
     '<current rank>
-    DrawFont 4, 3, OverlayOffset(7), OverlayOffset(11), LeadSpace(CStr(NodeRank(CarToNode(ClientPacket.x0D4_CarNumber)) + 1), 3)
-    Select Case NodeRank(CarToNode(ClientPacket.x0D4_CarNumber))
+    DrawFont 4, 3, OverlayOffset(7), OverlayOffset(11), LeadSpace(CStr(NodeRank(STATS_CarToNode(ClientPacket.x0D4_CarNumber)) + 1), 3)
+    Select Case NodeRank(STATS_CarToNode(ClientPacket.x0D4_CarNumber))
       Case 0
         'ST
         BitBlt Window.hdc, OverlayOffset(7), OverlayOffset(4), 16, 16, Window.pbVFormula.hdc, 64, 64, vbSrcCopy
@@ -165,18 +171,26 @@ Public Sub ProcessPackets(ServerPacket As DaytonaPacket, ClientPacket As Daytona
     ' AUTO SWITCH CAR
     If OVERLAY_FrameCounter = 0 Then
       OVERLAY_FrameCounter = 960
-      If OVERLAY_Players = 8 Then
-        SrcX = NodeToCar(Ranking(1))
+      If OVERLAY_Players > 1 Then
+        SrcX = STATS_NodeToCar(Ranking(1))
         If CLIENT_CarNo = SrcX Then
-          SrcX = NodeToCar(Ranking(2))
+          If OVERLAY_Players > 2 Then
+            SrcX = STATS_NodeToCar(Ranking(2))
+          Else
+            SrcX = STATS_NodeToCar(Ranking(0))
+          End If
         End If
         CLIENT_CarNo = SrcX
       End If
     Else
       OVERLAY_FrameCounter = OVERLAY_FrameCounter - 1
     End If
-    
   End If
+  If Err Then
+    'Stop
+    Err.Clear
+  End If
+  On Error GoTo 0
 End Sub
 
 

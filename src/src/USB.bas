@@ -125,4 +125,5 @@ Private Function OpenUSB(Index As Integer, VendorID As Integer, ProductID As Int
       End If
     End If
   Wend
+  SetupDiDestroyDeviceInfoList DeviceInfoSet
 End Function

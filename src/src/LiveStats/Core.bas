@@ -29,7 +29,7 @@ Public Sub Main()
   ScreenSizeY = Screen.Height / Screen.TwipsPerPixelY
   
   If RunOnIDE Then
-    ScreenSizeX = 512
+    ScreenSizeX = 496
     ScreenSizeY = 384
   End If
   
