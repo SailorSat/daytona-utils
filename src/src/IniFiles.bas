@@ -4,7 +4,8 @@ Option Explicit
 Public Function ReadIni(Filename As String, Section As String, Key As String, Default As String) As String
   Dim Result As Long
   Dim Temp As String * 1024
-  Result = GetPrivateProfileStringA(Section, Key, Default, Temp, Len(Temp), App.Path & "\" & Filename)
+  If Mid(Filename, 2, 1) <> ":" Then Filename = App.Path & "\" & Filename
+  Result = GetPrivateProfileStringA(Section, Key, Default, Temp, Len(Temp), Filename)
   ReadIni = Left$(Temp, Result)
 End Function
 

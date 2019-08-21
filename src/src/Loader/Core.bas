@@ -96,11 +96,20 @@ Public Sub Main()
   ' done
   GUI.DisableAlwaysOnTop
   
-  ' start the emulation
+  ' setup the emulation
   Dim Path As String, File As String, Parameters As String
   Path = ReadIni("loader.ini", "emulator", "Path", "D:\m2emulator")
   File = ReadIni("loader.ini", "emulator", "File", "emulator_multicpu.exe")
   Parameters = ReadIni("loader.ini", "emulator", "Parameters", "daytonas")
+  
+  If UseLagFix Then
+    WriteIni Path & "\m2network.ini", "Network", "NextIP", ReadIni("lagfix.ini", "emulator", "host", "127.0.0.1")
+    WriteIni Path & "\m2network.ini", "Network", "RxPort", ReadIni("lagfix.ini", "emulator", "remoteport", "15612")
+    WriteIni Path & "\m2network.ini", "Network", "NextPort", ReadIni("lagfix.ini", "emulator", "localport", "15613")
+    WriteIni Path & "\m2network.ini", "Network", "FrameSync", "1"
+  End If
+  
+  ' setup the emulation
   ShellExecuteA Window.hWnd, "open", Path & "\" & File, Parameters, Path, SW_SHOWNORMAL
 End Sub
 
