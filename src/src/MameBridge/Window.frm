@@ -88,8 +88,8 @@ Private Sub Form_Load()
     Form_Unload 0
   End If
   
-  Host = ReadIni("fakemaster.ini", "mame", "RemoteHost", "127.0.0.1")
-  Port = CLng(ReadIni("fakemaster.ini", "mame", "RemotePort", "15112"))
+  Host = ReadIni("mamebridge.ini", "mame", "RemoteHost", "127.0.0.1")
+  Port = CLng(ReadIni("mamebridge.ini", "mame", "RemotePort", "15112"))
   TCP_RemoteAddress = Winsock.WSABuildSocketAddress(Host, Port)
   If TCP_RemoteAddress = "" Then
     MsgBox "Something went wrong! #TCP_RemoteAddress", vbCritical Or vbOKOnly, Window.Caption

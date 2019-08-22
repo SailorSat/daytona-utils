@@ -2,4 +2,4 @@ IniFiles = 78, 78, 1549, 485,
 WindowsAPI = 0, 0, 0, 0, C
 CoreEvents = 78, 78, 1457, 506, 
 Window = 52, 52, 1431, 480, Z, 26, 26, 1405, 454, C
-Winsock = 0, 0, 0, 0, C
+Winsock = 104, 104, 1645, 541, 
