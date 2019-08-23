@@ -185,6 +185,7 @@ Public Function Translate_MAME_to_M2EM(sBuffer As String) As String
     Case &HFE
       ' 0xFE - link size
       baBuffer(4) = 1
+      baBuffer(6) = 2
       Translate_MAME_to_M2EM = StrConv(baBuffer, vbUnicode)
     Case &HFC
       ' 0xFC - vsync
@@ -208,7 +209,6 @@ Public Function Translate_M2EM_to_MAME(sBuffer As String) As String
       ' 0x00 - link id
       baBuffer(0) = &HFF
       FAKE_Size = baBuffer(1)
-      Debug.Print "received link size: " & FAKE_Size
       Translate_M2EM_to_MAME = StrConv(baBuffer, vbUnicode)
     Case &H1
       ' 0x01 - link size

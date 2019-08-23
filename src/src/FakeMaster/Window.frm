@@ -2,49 +2,20 @@ VERSION 5.00
 Begin VB.Form Window 
    BorderStyle     =   4  'Fixed ToolWindow
    Caption         =   "Form1"
-   ClientHeight    =   1095
+   ClientHeight    =   585
    ClientLeft      =   45
    ClientTop       =   285
-   ClientWidth     =   2295
+   ClientWidth     =   1785
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   1095
-   ScaleWidth      =   2295
+   ScaleHeight     =   585
+   ScaleWidth      =   1785
    StartUpPosition =   3  'Windows Default
-   Begin VB.CommandButton Command2 
-      Caption         =   "+"
-      Height          =   255
-      Left            =   1680
-      TabIndex        =   3
-      Top             =   600
-      Width           =   255
-   End
-   Begin VB.CommandButton Command1 
-      Caption         =   "-"
-      Height          =   255
-      Left            =   1320
-      TabIndex        =   2
-      Top             =   600
-      Width           =   255
-   End
-   Begin VB.CheckBox Check1 
-      Caption         =   "Check1"
-      Height          =   255
-      Left            =   1800
-      TabIndex        =   1
-      Top             =   120
-      Width           =   255
-   End
-   Begin VB.Timer Timer16 
-      Interval        =   16
-      Left            =   600
-      Top             =   600
-   End
    Begin VB.Timer Timer 
       Interval        =   1000
-      Left            =   120
-      Top             =   600
+      Left            =   1800
+      Top             =   120
    End
    Begin VB.CommandButton cmdGo 
       Caption         =   "Go!"
@@ -89,27 +60,27 @@ Private NET_Resolution As Currency
 
 Private LastFrame As String
 
+Private hEventTimer As Long
+
+Private Counter1 As Currency
+Private Counter2 As Currency
+
+
 Private Sub cmdGo_Click()
   Winsock.SendUDP UDP_Socket, SendFrame0, UDP_RemoteAddress
 End Sub
 
-Private Sub Command1_Click()
-  NET_Delay = NET_Delay - 1
-  If NET_Delay = 0 Then NET_Delay = 1
-End Sub
-
-Private Sub Command2_Click()
-  NET_Delay = NET_Delay + 1
-End Sub
 
 Private Sub Form_Load()
   Me.Show
   DoEvents
   
-  NET_Delay = 3
+  NET_Delay = 17
   
   QueryPerformanceFrequency NET_Resolution
   Debug.Print "1000ms ~= " & NET_Resolution
+  NET_Resolution = NET_Resolution / 57 'target fps of 58
+  Debug.Print "time per frame ~= " & NET_Resolution
 
   ' Init Winsock
   Winsock.Load
@@ -118,7 +89,7 @@ Private Sub Form_Load()
   Dim Port As Long
   
   Host = ReadIni("fakemaster.ini", "network", "LocalHost", "127.0.0.1")
-  Port = CLng(ReadIni("fakemaster.ini", "network", "LocalPort", "7000"))
+  Port = CLng(ReadIni("fakemaster.ini", "network", "LocalPort", "7001"))
   UDP_LocalAddress = Winsock.WSABuildSocketAddress(Host, Port)
   If UDP_LocalAddress = "" Then
     MsgBox "Something went wrong! #UDP_LocalAddress", vbCritical Or vbOKOnly, Window.Caption
@@ -126,7 +97,7 @@ Private Sub Form_Load()
   End If
   
   Host = ReadIni("fakemaster.ini", "network", "RemoteHost", "127.0.0.1")
-  Port = CLng(ReadIni("fakemaster.ini", "network", "RemotePort", "7002"))
+  Port = CLng(ReadIni("fakemaster.ini", "network", "RemotePort", "7000"))
   UDP_RemoteAddress = Winsock.WSABuildSocketAddress(Host, Port)
   If UDP_RemoteAddress = "" Then
     MsgBox "Something went wrong! #UDP_RemoteAddress", vbCritical Or vbOKOnly, Window.Caption
@@ -140,34 +111,31 @@ Private Sub Form_Load()
   End If
   
   FAKE_READY = True
+  
+  UDP_Buffer = ""
 End Sub
+
 
 Private Sub Form_Unload(Cancel As Integer)
   Winsock.Unload
   End
 End Sub
 
+
 Public Sub OnReadUDP(lHandle As Long, sBuffer As String, sAddress As String)
   If FAKE_READY Then
-    'Sleep NET_Delay
-    'SleepHigh 0.017 '0.01667
-    If Mid(sBuffer, 5, 1) = Chr(2) Then
-      If LastFrame = Mid(sBuffer, 16, 1) Then
-        If LastFrame > Chr(0) Then
-          Debug.Print Hex(Asc(LastFrame))
-          Exit Sub
-        End If
-      End If
-      LastFrame = Mid(sBuffer, 16, 1)
-    End If
+    While Counter1 < Counter2
+      QueryPerformanceCounter Counter1
+    Wend
     Winsock.SendUDP UDP_Socket, sBuffer, UDP_RemoteAddress
+    QueryPerformanceCounter Counter1
+    Counter2 = Counter1 + NET_Resolution
     NET_Framerate = NET_Framerate + 1
-    DoEvents
-    Debug.Print HexDump(Left(sBuffer, 16))
   Else
     Winsock.SendUDP UDP_Socket, ParseFrame(sBuffer), UDP_RemoteAddress
   End If
 End Sub
+
 
 Public Sub SleepHigh(Delay As Currency)
   'Sleep Delay
@@ -179,6 +147,8 @@ Public Sub SleepHigh(Delay As Currency)
     QueryPerformanceCounter Counter1
   Wend
 End Sub
+
+
 Public Function ParseFrame(sBuffer As String) As String
   Dim lOffset As Long
   Dim lIndex As Long
@@ -210,6 +180,7 @@ Public Function ParseFrame(sBuffer As String) As String
   End Select
 End Function
 
+
 Public Function SendFrame0() As String
   FAKE_READY = False
   
@@ -226,7 +197,10 @@ Public Function SendFrame0() As String
   SendFrame0 = StrConv(baBuffer, vbUnicode)
 End Function
 
+
 Public Function SendFrame1(Size As Byte) As String
+  Debug.Print Size
+  
   Dim baBuffer() As Byte
   baBuffer() = StrConv(String(3589, Chr(0)), vbFromUnicode)
 
@@ -240,6 +214,7 @@ Public Function SendFrame1(Size As Byte) As String
   baBuffer(6) = 2
   SendFrame1 = StrConv(baBuffer, vbUnicode)
 End Function
+
 
 Public Function SendFrame2() As String
   FAKE_READY = True
@@ -256,17 +231,8 @@ Public Function SendFrame2() As String
   SendFrame2 = StrConv(baBuffer, vbUnicode)
 End Function
 
+
 Private Sub Timer_Timer()
-  Me.Caption = NET_Framerate & " - " & NET_Delay
-  If Check1.Value Then
-    If NET_Framerate > 60 Then
-      NET_Delay = NET_Delay + 1
-      If NET_Delay > 20 Then NET_Delay = 20
-    End If
-    If NET_Framerate < 56 Then
-      NET_Delay = NET_Delay - 1
-      If NET_Delay < 10 Then NET_Delay = 10
-    End If
-  End If
+  Me.Caption = NET_Framerate
   NET_Framerate = 0
 End Sub

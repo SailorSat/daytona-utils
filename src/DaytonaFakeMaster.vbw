@@ -1,6 +1,6 @@
 Window = 44, 44, 743, 311, Z, 22, 22, 721, 289, C
 IniFiles = 0, 0, 0, 0, C
-CoreEvents = 0, 0, 0, 0, C
+CoreEvents = 0, 0, 1541, 437, 
 WindowsAPI = 0, 0, 0, 0, C
 Utilities = 0, 0, 0, 0, C
-Winsock = 0, 0, 0, 0, C
+Winsock = 182, 182, 1723, 619, 

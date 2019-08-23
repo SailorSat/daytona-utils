@@ -5,20 +5,28 @@ Option Explicit
 ' Generics
 
 Public Declare Function GetTickCount Lib "kernel32.dll" () As Long
-
-Public Declare Function timeGetTime Lib "winmm.dll" () As Long
-Public Declare Function timeBeginPeriod Lib "winmm.dll" (ByVal uPeriod As Long) As Long
-
 Public Declare Function CloseHandle Lib "kernel32.dll" (ByVal hObject As Long) As Long
-
-Public Declare Sub Sleep Lib "kernel32.dll" (ByVal dwMilliseconds As Long)
-
 Public Declare Sub RtlMoveMemory Lib "kernel32.dll" (Destination As Any, Source As Any, ByVal Length As Long)
+
 
 ' ---
 ' IniFiles
 Public Declare Function GetPrivateProfileStringA Lib "kernel32.dll" (ByVal lpApplicationName As String, ByVal lpKeyName As Any, ByVal lpDefault As String, ByVal lpReturnedString As String, ByVal nSize As Long, ByVal lpFileName As String) As Long
 Public Declare Function WritePrivateProfileStringA Lib "kernel32.dll" (ByVal lpApplicationName As String, ByVal lpKeyName As Any, ByVal lpString As Any, ByVal lpFileName As String) As Long
+
+
+' ---
+' Timer
+Public Declare Function timeGetTime Lib "winmm.dll" () As Long
+Public Declare Function timeBeginPeriod Lib "winmm.dll" (ByVal uPeriod As Long) As Long
+
+Public Declare Sub Sleep Lib "kernel32.dll" (ByVal dwMilliseconds As Long)
+
+Public Declare Function SetTimer Lib "user32.dll" (ByVal hWnd As Long, ByVal nIDEvent As Long, ByVal uElapse As Long, ByVal lpTimerFunc As Long) As Long
+Public Declare Function KillTimer Lib "user32.dll" (ByVal hWnd As Long, ByVal nIDEvent As Long) As Long
+
+Public Const WM_TIMER = &H113
+
 
 ' ---
 ' ProcessMemory
