@@ -186,7 +186,7 @@ Private Function TranslateDrive_M2(ByRef OldData As Byte, ByVal NewData As Byte)
       End If
       Exit Function
       
-    Case "daytona2", "dayto2pe", "scud", "scuda", "lemans24"
+    Case "daytona2", "dayto2pe", "scud", "scuda", "scudau", "lemans24"
       CmdForce = NewData And &HF
       CmdGroup = NewData And &HF0
       Debug.Print Hex(NewData) 'CmdGroup, CmdForce

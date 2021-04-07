@@ -79,7 +79,7 @@ Private Sub Form_Load()
   
   QueryPerformanceFrequency NET_Resolution
   Debug.Print "1000ms ~= " & NET_Resolution
-  NET_Resolution = NET_Resolution / 57 'target fps of 58
+  NET_Resolution = NET_Resolution / 58 'target fps of 58
   Debug.Print "time per frame ~= " & NET_Resolution
 
   ' Init Winsock

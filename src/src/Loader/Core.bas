@@ -148,6 +148,7 @@ Public Sub WheelCheck()
     Sleep 500
     Set DirectInputEnumeration = DirectInput.GetDIDevices(DI8DEVCLASS_GAMECTRL, DIEDFL_ATTACHEDONLY)
   Wend
+  DrawFont "                ", 24, 40, vbWhite
   Set DirectInputEnumeration = Nothing
   Set DirectInput = Nothing
   Set DirectX = Nothing
