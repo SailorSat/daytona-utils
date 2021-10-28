@@ -67,17 +67,20 @@ End Sub
 Public Sub CLIENT_OnLinkDown()
   If CLIENT_Online Then
     CLIENT_Online = False
+    Debug.Print "CLIENT_OnLinkDown"
   End If
 End Sub
 
 Public Sub CLIENT_OnLinkUp()
   If Not CLIENT_Online Then
     CLIENT_Online = True
+    Debug.Print "OnLinkUp", STATS_Players
   End If
 End Sub
 
 
 Public Sub CLIENT_OnRaceEnd()
+  Debug.Print "OnRaceEnd"
 End Sub
 
 
@@ -149,7 +152,8 @@ Public Sub ProcessFrame(LastFrame As DaytonaFrame)
         Case Is > &H12&
           If CoinLock Then
             CoinLock = False
-            WriteByte M2EM_RAMBASE + CUSTOM_MASK, &HFF
+            WriteLong M2EM_RAMBASE + CUSTOM_MASK, &HFFFF&
+            Debug.Print Time, "disable coin lock"
           End If
         Case Is = &H12&
           ' car no. 1
@@ -158,7 +162,8 @@ Public Sub ProcessFrame(LastFrame As DaytonaFrame)
               ' auto coin up
               If Not CoinLock Then
                 CoinLock = True
-                WriteByte M2EM_RAMBASE + CUSTOM_MASK, &HF5
+                WriteLong M2EM_RAMBASE + CUSTOM_MASK, &HF7FF&
+                Debug.Print Time, "enable coin lock"
               End If
             End If
           End If
@@ -171,6 +176,7 @@ Public Sub ProcessFrame(LastFrame As DaytonaFrame)
             OnRaceStart LastFrame.Packet(lMasterCar).x017_CourseActive, bMasterNode, LastFrame.Packet(lServerCar).x00B_NodeCount
             CLIENT_CarNo = 0
             CLIENT_ViewNo = 3
+            Debug.Print "ingame..."
           End If
         End If
         
@@ -227,6 +233,7 @@ Public Sub ProcessFrame(LastFrame As DaytonaFrame)
         If Ingame Then
           Ingame = False
           OnRaceEnd
+          Debug.Print "no longer ingame..."
         End If
       End If
     End If
