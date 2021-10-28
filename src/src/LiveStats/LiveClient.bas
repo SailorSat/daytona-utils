@@ -108,9 +108,10 @@ Public Sub ProcessFrame(LastFrame As DaytonaFrame)
     End If
   Next
   
-  Dim bGameState As Byte
+  Dim bGameState As Byte, bSetupState As Byte
   bGameState = ReadByte(M2EM_RAMBASE + GAMESTATE)
-  
+  bSetupState = ReadByte(M2EM_RAMBASE + SETUP_STATE)
+
   Dim bMasterState As Byte
   Dim bMasterNode As Byte
   Dim bReplacementNode As Byte
@@ -162,7 +163,7 @@ Public Sub ProcessFrame(LastFrame As DaytonaFrame)
               ' auto coin up
               If Not CoinLock Then
                 CoinLock = True
-                WriteLong M2EM_RAMBASE + CUSTOM_MASK, &HF7FF&
+                WriteLong M2EM_RAMBASE + CUSTOM_MASK, &HF5FF&
                 Debug.Print Time, "enable coin lock"
               End If
             End If
