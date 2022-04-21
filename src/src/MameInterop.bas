@@ -110,6 +110,7 @@ Public Sub HardDrivin(Name As String, State As Long)
           HardDrivin_MotorNew = State And &H1F
           If HardDrivin_MotorNew = 0 Then
             If HardDrivin_MotorNew <> HardDrivin_MotorOld Then
+              ''Debug.Print HardDrivin_MotorNew
               HardDrivin_MotorOld = HardDrivin_MotorNew
               DriveData = &H10
             End If
@@ -120,14 +121,16 @@ Public Sub HardDrivin(Name As String, State As Long)
             HardDrivin_MotorNew = HardDrivin_MotorNew * -1
           End If
           If HardDrivin_MotorNew <> HardDrivin_MotorOld Then
+            ''Debug.Print HardDrivin_MotorNew
             HardDrivin_MotorOld = HardDrivin_MotorNew
-            If HardDrivin_MotorNew < -10 Then
+            If HardDrivin_MotorNew < 0 Then
               ' negative (turn left?)
               DriveData = &H50 + ((HardDrivin_MotorNew * -1) / 12)
-            ElseIf HardDrivin_MotorNew > 10 Then
+            ElseIf HardDrivin_MotorNew > 0 Then
               ' positive (turn right?)
               DriveData = &H60 + ((HardDrivin_MotorNew) / 12)
             Else
+              ' zero (stop)
               DriveData = &H10
             End If
           End If
