@@ -10,6 +10,24 @@ Begin VB.Form Window
    LinkTopic       =   "Form1"
    ScaleHeight     =   855
    ScaleWidth      =   1455
+   Begin VB.TextBox txtPwm 
+      Alignment       =   2  'Center
+      BeginProperty Font 
+         Name            =   "Fixedsys"
+         Size            =   9
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   285
+      Left            =   600
+      TabIndex        =   3
+      Text            =   "00"
+      Top             =   120
+      Width           =   375
+   End
    Begin VB.Timer Timer 
       Enabled         =   0   'False
       Interval        =   4
@@ -134,6 +152,22 @@ Private Sub txtLamp_KeyPress(KeyAscii As Integer)
       txtLamp.Text = "00"
     Else
       OverrideLamps DummyData
+    End If
+  End If
+End Sub
+
+Private Sub txtPwm_KeyPress(KeyAscii As Integer)
+  If KeyAscii = 13 Then
+    KeyAscii = 0
+    Dim DummyData As Byte
+    On Error Resume Next
+    DummyData = CByte("&H" & txtPwm)
+    On Error GoTo 0
+    If Err Then
+      Err.Clear
+      txtPwm.Text = "00"
+    Else
+      OverridePwm DummyData
     End If
   End If
 End Sub

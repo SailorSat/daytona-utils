@@ -20,7 +20,7 @@ Begin VB.Form Window
    ScaleWidth      =   1360
    Begin VB.Timer Timer 
       Enabled         =   0   'False
-      Interval        =   4
+      Interval        =   2
       Left            =   0
       Top             =   120
    End

@@ -1,7 +1,7 @@
 Attribute VB_Name = "ControlClient"
 Option Explicit
 
-Private SystemPath As String
+Public SystemPath As String
 
 Private UDP_LocalAddress As String
 Private UDP_RemoteAddress As String
@@ -21,6 +21,7 @@ Private OPT_GameMode As Byte
 Private OPT_Handicap As Byte
 Private OPT_Music As Byte
 
+Private CTRL_Node As Byte
 Private CTRL_Ex As Byte
 
 Private FlipFlop As Boolean
@@ -193,8 +194,8 @@ Public Sub OnDriveEx(Data As Byte)
     Dim baBuffer() As Byte
     ReDim baBuffer(0 To 31)
     baBuffer(0) = CTRL_CMD_EX
-    baBuffer(1) = ReadByte(M2EM_RAMBASE + CAR_NODE)
-    baBuffer(2) = CTRL_Ex
+    baBuffer(1) = CTRL_Ex
+    baBuffer(2) = CTRL_Node
     
     Dim sBuffer As String
     sBuffer = StrConv(baBuffer, vbUnicode)
@@ -212,6 +213,7 @@ Public Sub ReadUDP(lHandle As Long, sBuffer As String, sAddress As String)
   baBuffer = StrConv(sBuffer, vbFromUnicode)
   Select Case baBuffer(0)
     Case CTRL_CMD_PING
+      CTRL_Node = baBuffer(2)
       If MEM_Open Then
         If MEM_GameState > &H9 Then
           baBuffer(1) = CTRL_STATUS_INGAME
@@ -272,6 +274,8 @@ Public Sub ReadUDP(lHandle As Long, sBuffer As String, sAddress As String)
     Case CTRL_CMD_REBOOT
       ShellExecuteA Window.hWnd, "open", SystemPath & "\shutdown.exe", "-r -f -t 0 -c SHUTDOWN", SystemPath, SW_HIDE
   
+    Case CTRL_CMD_LOADER_PROFILE
+      OnProfile Replace(Mid(StrConv(baBuffer, vbUnicode), 2), Chr(0), "")
   End Select
 End Sub
 

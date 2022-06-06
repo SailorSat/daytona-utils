@@ -109,6 +109,22 @@ Public Sub Unload()
   Winsock.Disconnect UDP_Socket_Emulator
 End Sub
 
+Public Sub OverrideTX(Host As String, Port As Long)
+  Dim UDP_Address_OverrideTX As String
+    
+  ' check fallback
+  If Host = "" Then Host = ReadIni("lagfix.ini", "network", "remotehost", "127.0.0.1")
+  If Port = 0 Then Port = CLng(ReadIni("lagfix.ini", "network", "remoteport", "15611"))
+  
+  UDP_Address_OverrideTX = Winsock.WSABuildSocketAddress(Host, Port)
+  If UDP_Address_OverrideTX = "" Or UDP_Address_NetworkTX = "" Then
+    MsgBox "Something went wrong! #ADDR_TX", vbCritical Or vbOKOnly, App.Title
+    OnUnload
+  End If
+
+  UDP_Address_NetworkTX = UDP_Address_OverrideTX
+End Sub
+
 Public Sub Timer()
   ' LAG if enabled
   If LAG_Enabled Then

@@ -11,6 +11,8 @@ Public Sub OnText(sModule As String, sTopic As String, sText As String)
       Window.txtDrive.Text = sText
     Case "Lamps"
       Window.txtLamp.Text = sText
+    Case "Pwm"
+      Window.txtPwm.Text = sText
     Case "Debug"
       Window.lblDebug.Caption = sText
   End Select

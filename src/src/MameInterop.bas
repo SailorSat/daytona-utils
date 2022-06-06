@@ -22,6 +22,7 @@ Public MAME_Profile As String
 
 Private DriveData As Byte
 Private LampsData As Byte
+Private PwmData As Byte
 
 ' api declares
 Public Declare Function init_mame Lib "mame" (ByVal id As Long, ByVal Name As String, ByVal MameStart As Long, ByVal MameStop As Long, ByVal MameCopyData As Long, ByVal UpdateState As Long) As Long
@@ -39,6 +40,11 @@ Public Function Get_MAME_LampsData() As Byte
 End Function
 
 
+Public Function Get_MAME_PwmData() As Byte
+  Get_MAME_PwmData = PwmData
+End Function
+
+
 ' internal handling for various games
 Public Sub mame_start_internal(Profile As String)
   Debug.Print "mame_start_internal", Profile
@@ -50,6 +56,7 @@ Public Sub mame_start_internal(Profile As String)
     Case Else
       DriveData = &H0
       LampsData = &H0
+      PwmData = &H0
   End Select
   MAME_Online = True
 End Sub
@@ -110,9 +117,9 @@ Public Sub HardDrivin(Name As String, State As Long)
           HardDrivin_MotorNew = State And &H1F
           If HardDrivin_MotorNew = 0 Then
             If HardDrivin_MotorNew <> HardDrivin_MotorOld Then
-              ''Debug.Print HardDrivin_MotorNew
               HardDrivin_MotorOld = HardDrivin_MotorNew
               DriveData = &H10
+              PwmData = &H0
             End If
           End If
         ElseIf HardDrivin_MotorOffset = 1 Then
@@ -121,17 +128,18 @@ Public Sub HardDrivin(Name As String, State As Long)
             HardDrivin_MotorNew = HardDrivin_MotorNew * -1
           End If
           If HardDrivin_MotorNew <> HardDrivin_MotorOld Then
-            ''Debug.Print HardDrivin_MotorNew
             HardDrivin_MotorOld = HardDrivin_MotorNew
             If HardDrivin_MotorNew < 0 Then
               ' negative (turn left?)
               DriveData = &H50 + ((HardDrivin_MotorNew * -1) / 12)
+              PwmData = Abs(HardDrivin_MotorNew)
             ElseIf HardDrivin_MotorNew > 0 Then
               ' positive (turn right?)
               DriveData = &H60 + ((HardDrivin_MotorNew) / 12)
+              PwmData = &H80 Or Abs(HardDrivin_MotorNew)
             Else
-              ' zero (stop)
               DriveData = &H10
+              PwmData = &H0
             End If
           End If
         End If

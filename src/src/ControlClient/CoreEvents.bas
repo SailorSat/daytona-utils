@@ -24,3 +24,6 @@ End Sub
 Public Sub OnClose(lHandle As Long)
 End Sub
 
+Public Sub OnProfile(sProfile As String)
+  ' ignored on stand alone client
+End Sub

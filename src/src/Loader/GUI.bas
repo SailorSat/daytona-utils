@@ -17,12 +17,19 @@ Sub Load()
   
   UseSwitchResolution = CBool(ReadIni("loader.ini", "gui", "enabled", "false"))
   If UseSwitchResolution Then
+    Sleep 500
+    DoEvents
+    
     Display = ReadIni("loader.ini", "gui", "Display", "\\.\DISPLAY1")
     Width = CLng(ReadIni("loader.ini", "gui", "Width", "496"))
     Height = CLng(ReadIni("loader.ini", "gui", "Height", "384"))
     Bits = CLng(ReadIni("loader.ini", "gui", "Bits", "32"))
     Refresh = CLng(ReadIni("loader.ini", "gui", "Refresh", "60"))
+    
     SwitchResolution Display, Width, Height, Bits, Refresh
+    
+    Sleep 500
+    DoEvents
   End If
 
   ' Check Resolution and calculate zoom
@@ -30,8 +37,13 @@ Sub Load()
     ScreenSizeX = 496
     ScreenSizeY = 384
   Else
-    ScreenSizeX = Screen.Width / Screen.TwipsPerPixelX
-    ScreenSizeY = Screen.Height / Screen.TwipsPerPixelY
+    If UseSwitchResolution Then
+      ScreenSizeX = Width
+      ScreenSizeY = Height
+    Else
+      ScreenSizeX = Screen.Width / Screen.TwipsPerPixelX
+      ScreenSizeY = Screen.Height / Screen.TwipsPerPixelY
+    End If
   End If
   ScreenZoomX = ScreenSizeX / 496
   ScreenZoomY = ScreenSizeY / 384

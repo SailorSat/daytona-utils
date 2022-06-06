@@ -9,9 +9,11 @@ Public Sub OnLoad()
   STATS_OnLoad
   CLIENT_OnLoad
   CAMERA_OnLoad
+  CONTROL_OnLoad
 End Sub
 
 Public Sub OnUnload()
+  CONTROL_OnUnload
   WINSOCK_OnUnload
   End
 End Sub
@@ -33,6 +35,8 @@ Public Sub OnReadUDP(lHandle As Long, sBuffer As String, sAddress As String)
     STATS_OnReadUDP lHandle, sBuffer, sAddress
   ElseIf lHandle = CLIENT_Socket Then
     CLIENT_OnReadUDP lHandle, sBuffer, sAddress
+  Else
+    CONTROL_OnReadUDP lHandle, sBuffer, sAddress
   End If
 End Sub
 

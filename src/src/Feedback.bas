@@ -7,6 +7,7 @@ Public FeedbackDebug As Boolean
 Private DriveData As Byte
 Private DriveReal As Byte
 Private LampsData As Byte
+Private PwmData As Byte
 
 Public Sub Load()
   Dim SomeData As Byte
@@ -28,13 +29,19 @@ Public Sub Timer()
     Profile = MAME_Profile
     ProcessDrive Get_MAME_DriveData
     ProcessLamps Get_MAME_LampsData
+    ProcessPwm Get_MAME_PwmData
+    If FeedbackDebug Then OnText "Feedback", "Debug", "MAME"
   ElseIf M2EM_Online Then
     Profile = M2EM_Profile
     ProcessDrive Get_M2EM_DriveData
     ProcessLamps Get_M2EM_LampsData
+    ProcessPwm 0
+    If FeedbackDebug Then OnText "Feedback", "Debug", "M2EM"
   Else
-    OverrideDrive 0
-    OverrideLamps 0
+    ProcessDrive 0
+    ProcessLamps 0
+    ProcessPwm 0
+    If FeedbackDebug Then OnText "Feedback", "Debug", "NONE"
   End If
 End Sub
 
@@ -76,5 +83,24 @@ Public Sub SendLamps(Data As Byte)
     WriteDriveData 2, Data
   End If
   If FeedbackDebug Then OnText "Feedback", "Lamps", LeadZero(Hex(Data), 2)
+End Sub
+
+Public Sub ProcessPwm(Data As Byte)
+  If Data <> PwmData Then
+    PwmData = Data
+    SendPwm PwmData
+  End If
+End Sub
+
+Public Sub OverridePwm(Data As Byte)
+  PwmData = Data
+  SendPwm PwmData
+End Sub
+
+Public Sub SendPwm(Data As Byte)
+  If OpenDriveChannel Then
+    WriteDriveData 3, Data
+  End If
+  If FeedbackDebug Then OnText "Feedback", "Pwm", LeadZero(Hex(Data), 2)
 End Sub
 

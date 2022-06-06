@@ -1,4 +1,4 @@
-IniFiles = 88, 88, 1380, 580, 
+IniFiles = 88, 88, 1380, 580, Z
 Window = 176, 176, 1468, 668, , 154, 154, 1446, 646, C
 CoreEvents = 198, 198, 1490, 690, 
 NetworkParser = 0, 0, 1292, 492, 
@@ -16,5 +16,7 @@ DaytonaMath = 176, 176, 1468, 644,
 LiveCamera = 198, 198, 674, 658, 
 DaytonaUtils = 198, 198, 674, 658, 
 Core = 0, 0, 1292, 491, 
-M2Emulator = 78, 78, 1532, 570, 
-Winsock = 104, 104, 1575, 511, 
+M2Emulator = 78, 78, 1370, 570, 
+Winsock = 0, 0, 0, 0, C
+LiveControl = 22, 22, 756, 319, 
+ControlConstants = 44, 44, 778, 341, 

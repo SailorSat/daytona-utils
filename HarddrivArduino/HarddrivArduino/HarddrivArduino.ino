@@ -65,7 +65,7 @@ void loop() {
         // 3 - pwm timer command
         bool ccw = val & 0x80;
         byte frc = val & 0x7F;
-        analogWrite(2, frc);
+        analogWrite(2, frc * 2);
         digitalWrite(3, ccw);
         break;
     }
@@ -92,6 +92,9 @@ void setupPins(void) {
   // lamps connected on port K (analog pins 08-15)
   DDRK = 0xFF;
   PORTK = 0x00;
+
+  // PWM frequency ~4kHz
+  TCCR3B = TCCR3B & B11111000 | B00000010;
 }
 
 void setupSerial() {

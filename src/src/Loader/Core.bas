@@ -8,6 +8,9 @@ Private UseControlClient As Boolean
 Private UseFeedback As Boolean
 Private UseLagFix As Boolean
 Private UseWheelCheck As Boolean
+Private UseProfile As Boolean
+
+Private CurrentProfile As String
 
 Global RunOnIDE As Boolean
 
@@ -35,6 +38,7 @@ Public Sub Main()
   UseFeedback = CBool(ReadIni("loader.ini", "feedback", "enabled", "false"))
   UseLagFix = CBool(ReadIni("loader.ini", "lagfix", "enabled", "false"))
   UseWheelCheck = CBool(ReadIni("loader.ini", "wheelcheck", "enabled", "false"))
+  UseProfile = CBool(ReadIni("loader.ini", "profile", "enabled", "false"))
 
   ' draw primary gui
   GUI.EnableAlwaysOnTop
@@ -65,6 +69,10 @@ Public Sub Main()
   Else
     DrawFont "OFF", Row2, 13, vbRed
   End If
+  If UseProfile Then
+    DrawFont "PROFILE", Row1, 17, vbWhite
+    DrawFont "...", Row2, 17, vbYellow
+  End If
   Sleep 500
   
   ' do the actual network check
@@ -76,8 +84,13 @@ Public Sub Main()
   ' load (not yet) optional stuff
   If UseControlClient Then ControlClient.Load
   Sleep 500
-  If UseFeedback Then Feedback.Load
+  
+  If UseFeedback Then
+    Feedback.Load
+    FeedbackDebug = CBool(ReadIni("loader.ini", "feedback", "debug", "false"))
+  End If
   Sleep 500
+  
   If UseLagFix Then Lagfix.Load
   Sleep 500
   
@@ -96,21 +109,20 @@ Public Sub Main()
   ' done
   GUI.DisableAlwaysOnTop
   
-  ' setup the emulation
+  ' start the emulation
   Dim Path As String, File As String, Parameters As String
-  Path = ReadIni("loader.ini", "emulator", "Path", "D:\m2emulator")
-  File = ReadIni("loader.ini", "emulator", "File", "emulator_multicpu.exe")
-  Parameters = ReadIni("loader.ini", "emulator", "Parameters", "daytonas")
-  
-  If UseLagFix Then
-    WriteIni Path & "\m2network.ini", "Network", "NextIP", ReadIni("lagfix.ini", "emulator", "host", "127.0.0.1")
-    WriteIni Path & "\m2network.ini", "Network", "RxPort", ReadIni("lagfix.ini", "emulator", "remoteport", "15612")
-    WriteIni Path & "\m2network.ini", "Network", "NextPort", ReadIni("lagfix.ini", "emulator", "localport", "15613")
-    WriteIni Path & "\m2network.ini", "Network", "FrameSync", "1"
+  If UseProfile Then
+    Parameters = ReadIni("loader.ini", "profile", "default", "daytona")
+    OnProfile Parameters
+  Else
+    ' legacy emulator
+    Path = ReadIni("loader.ini", "emulator", "Path", "D:\m2emulator")
+    File = ReadIni("loader.ini", "emulator", "File", "emulator_multicpu.exe")
+    Parameters = ReadIni("loader.ini", "emulator", "Parameters", "daytonas")
+    ShellExecuteA Window.hWnd, "open", Path & "\" & File, Parameters, Path, SW_SHOWMAXIMIZED
   End If
   
-  ' setup the emulation
-  ShellExecuteA Window.hWnd, "open", Path & "\" & File, Parameters, Path, SW_SHOWNORMAL
+  Debug.Print "done."
 End Sub
 
 Public Sub NetworkCheck(UDP_LocalAddress As String)
@@ -148,7 +160,6 @@ Public Sub WheelCheck()
     Sleep 500
     Set DirectInputEnumeration = DirectInput.GetDIDevices(DI8DEVCLASS_GAMECTRL, DIEDFL_ATTACHEDONLY)
   Wend
-  DrawFont "                ", 24, 40, vbWhite
   Set DirectInputEnumeration = Nothing
   Set DirectInput = Nothing
   Set DirectX = Nothing
@@ -188,6 +199,8 @@ Public Sub OnStatus(sModule As String, lStatus As Long, sStatus As String)
       SrcY = 9
     Case "LagFix"
       SrcY = 11
+    Case "Profile"
+      SrcY = 17
   End Select
   DrawFont TailSpace(UCase(sStatus), 8), SrcX, SrcY, lStatus
   
@@ -209,8 +222,12 @@ Public Sub OnText(sModule As String, sTopic As String, sText As String)
           SrcX = Row2 + 11
           Length = 2
           Color = vbMagenta
-        Case "Debug"
+        Case "Pwm"
           SrcX = Row2 + 14
+          Length = 2
+          Color = vbRed
+        Case "Debug"
+          SrcX = Row2 + 17
           Length = 8
       End Select
   End Select
@@ -219,6 +236,40 @@ Public Sub OnText(sModule As String, sTopic As String, sText As String)
   Debug.Print "OnText", sModule, sTopic, sText
 End Sub
 
+Public Sub OnProfile(sProfile As String)
+  If Not UseProfile Then Exit Sub
+  
+  If CurrentProfile <> sProfile Then
+    Dim Path As String, File As String, Parameters As String, Key As String, Host As String, Port As Long
+    Key = "profile-" & CurrentProfile
+    File = ReadIni("loader.ini", Key, "File", "")
+
+    ' kill old emulator (based on filename)
+    If File <> "" Then
+      ShellExecuteA Window.hWnd, "open", SystemPath & "\taskkill.exe", "/IM " & File & " /T", SystemPath, SW_HIDE
+      Sleep 500
+      ShellExecuteA Window.hWnd, "open", SystemPath & "\taskkill.exe", "/IM " & File & " /T /F", SystemPath, SW_HIDE
+      Sleep 500
+    End If
+    
+    CurrentProfile = sProfile
+    Key = "profile-" & CurrentProfile
+    
+    ' override lagfix config
+    Host = ReadIni("loader.ini", Key, "remotehost", "")
+    Port = CLng(ReadIni("loader.ini", Key, "remoteport", "0"))
+    Lagfix.OverrideTX Host, Port
+    
+    Path = ReadIni("loader.ini", Key, "Path", "D:\m2emulator")
+    File = ReadIni("loader.ini", Key, "File", "emulator_multicpu.exe")
+    Parameters = ReadIni("loader.ini", Key, "Parameters", "daytonas")
+    ShellExecuteA Window.hWnd, "open", Path & "\" & File, Parameters, Path, SW_SHOWMAXIMIZED
+   
+    OnStatus "Profile", vbGreen, CurrentProfile
+  End If
+
+  Debug.Print "OnProfile", sProfile
+End Sub
 
 ' feedback events
 Public Sub OnDaytonaEx(Data As Byte)

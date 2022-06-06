@@ -8,6 +8,7 @@ Public Declare Function GetTickCount Lib "kernel32.dll" () As Long
 Public Declare Function CloseHandle Lib "kernel32.dll" (ByVal hObject As Long) As Long
 Public Declare Sub RtlMoveMemory Lib "kernel32.dll" (Destination As Any, Source As Any, ByVal Length As Long)
 
+Public Declare Function SetFocus Lib "user32.dll" (ByVal hWnd As Long) As Long
 
 ' ---
 ' IniFiles
