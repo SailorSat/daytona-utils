@@ -50,7 +50,7 @@ Public Sub mame_start_internal(Profile As String)
   Debug.Print "mame_start_internal", Profile
   MAME_Profile = Profile
   Select Case MAME_Profile
-    Case "orunners", "outrun"
+    Case "orunners", "outrun" ', "crusnusa", "crusnwld", "crusnexo", "sfrush", "sfrushrk", "sf2049"
       DriveData = &H7
       LampsData = &H0
     Case Else
@@ -83,7 +83,9 @@ Public Function mame_updatestate(ByVal id As Long, ByVal State As Long) As Long
   Dim Name As String
   Name = get_name_from_id(id, "")
   
-  'Debug.Print "mame_updatestate", id, Hex(State), Name
+  If Left(Name, 6) = "cpuled" Then Exit Function
+  
+  Debug.Print "mame_updatestate", id, Hex(State), Name
   
   Select Case MAME_Profile
     Case "harddriv", "racedriv"
@@ -92,6 +94,16 @@ Public Function mame_updatestate(ByVal id As Long, ByVal State As Long) As Long
       OutRun Name, State
     Case "orunners"
       OutRunners Name, State
+      
+    Case "crusnusa", "crusnwld", "crusnexo"
+      Crusn Name, State
+    
+    Case "sfrush", "sfrushrk"
+      SFRush Name, State
+      
+    Case "sf2049"
+      SFRush2049 Name, State
+    
     Case Else
       Select Case Name
         Case "digit0", "RawDrive"
@@ -196,6 +208,166 @@ Public Sub OutRun(Name As String, State As Long)
   End If
 End Sub
 
+Public Sub Crusn(Name As String, State As Long)
+'  lamp0 start 0/1
+'  wheel ? 90-ff = left? 10-7f = right 0x/8x = center
+'  lamp1 view1 0/1
+'  lamp2 view2 0/1
+'  lamp3 view3 0/1
+  If Name = "wheel" Then
+    Dim Cmd As Byte
+    Dim Force As Byte
+    If State > &H7F Then
+      ' 80-ff = left / ccw
+      Cmd = &H50
+      Force = 3& - ((State - &H80&) \ &H10&)
+    Else
+      ' 00-7f = right / cw
+      Cmd = &H60
+      Force = State \ &H10&
+    End If
+    If Force = 0 Then
+      DriveData = &H30
+    Else
+      DriveData = Cmd Or Force
+    End If
+  Else
+    Dim Mask As Byte
+    Select Case Name
+      Case "lamp0"
+        '&H04 - start lamp
+        Mask = &H4
+      Case "lamp1"
+        '&H08 - red lamp
+        Mask = &H8
+      Case "lamp2"
+        '&H10 - blue lamp
+        Mask = &H10
+      Case "lamp3"
+        '&H20 - yellow lamp
+        Mask = &H20
+    End Select
+    If State = 0 Then
+      LampsData = LampsData And (&HFF - Mask)
+    Else
+      LampsData = LampsData Or Mask
+    End If
+  End If
+End Sub
+
+Public Sub SFRush(Name As String, State As Long)
+'  lamp9 winner
+'  lamp8 leader
+'  lamp7 view1
+'  lamp6 view2
+'  lamp5 view3
+'  lamp4 music
+'  lamp3 abort / start
+'  wheel ? 90-ff = left? 10-7f = right 0x/8x = center
+  If Name = "wheel" Then
+    Dim Cmd As Byte
+    Dim Force As Byte
+    If State > &H7F Then
+      ' 80-ff = left / ccw
+      Cmd = &H50
+      Force = 7& - ((State - &H80&) \ &H10&)
+    Else
+      ' 00-7f = right / cw
+      Cmd = &H60
+      Force = State \ &H10&
+    End If
+    If Force = 0 Then
+      DriveData = &H30
+    Else
+      DriveData = Cmd Or Force
+    End If
+  Else
+    Dim Mask As Byte
+    Select Case Name
+      Case "lamp8"
+        '&H80 - leader lamp
+        Mask = &H80
+      Case "lamp7"
+        '&H08 - red lamp
+        Mask = &H8
+      Case "lamp6"
+        '&H10 - blue lamp
+        Mask = &H10
+      Case "lamp5"
+        '&H20 - yellow lamp
+        Mask = &H20
+      Case "lamp4"
+        '&H40 - green lamp
+        Mask = &H40
+      Case "lamp3"
+        '&H04 - start lamp
+        Mask = &H4
+    End Select
+    If State = 0 Then
+      LampsData = LampsData And (&HFF - Mask)
+    Else
+      LampsData = LampsData Or Mask
+    End If
+  End If
+End Sub
+
+Public Sub SFRush2049(Name As String, State As Long)
+'  lamp8 leader
+'  lamp0 start
+'  lamp1 view1
+'  lamp2 view2
+'  lamp3 view3
+'  lamp5 music
+'  wheel ? 90-ff = left? 10-7f = right 0x/8x = center
+'      90-ff might be reversed
+
+  If Name = "wheel" Then
+    Dim Cmd As Byte
+    Dim Force As Byte
+    If State > &H7F Then
+      ' 80-ff = left / ccw
+      Cmd = &H50
+      Force = 7& - ((State - &H80&) \ &H10&)
+    Else
+      ' 00-7f = right / cw
+      Cmd = &H60
+      Force = State \ &H10&
+    End If
+    If Force = 0 Then
+      DriveData = &H30
+    Else
+      DriveData = Cmd Or Force
+    End If
+  Else
+    Dim Mask As Byte
+    Select Case Name
+      Case "lamp8"
+        '&H80 - leader lamp
+        Mask = &H80
+      Case "lamp1"
+        '&H08 - red lamp
+        Mask = &H8
+      Case "lamp2"
+        '&H10 - blue lamp
+        Mask = &H10
+      Case "lamp3"
+        '&H20 - yellow lamp
+        Mask = &H20
+      Case "lamp5"
+        '&H40 - green lamp
+        Mask = &H40
+      Case "lamp0"
+        '&H04 - start lamp
+        Mask = &H4
+    End Select
+    If State = 0 Then
+      LampsData = LampsData And (&HFF - Mask)
+    Else
+      LampsData = LampsData Or Mask
+    End If
+  End If
+End Sub
+
 Public Sub OutRunners(Name As String, State As Long)
   If Name = "MA_Steering_Wheel_motor" Then
     If State = 0 Then
@@ -224,7 +396,6 @@ Public Sub OutRunners(Name As String, State As Long)
     Else
       LampsData = LampsData Or Mask
     End If
-
   End If
 End Sub
 
@@ -258,12 +429,12 @@ Public Function get_name_from_id(id As Long, Name As String) As String
   get_name_from_id = idStr
 End Function
 
-Public Function decode_force_feedback_command(cmd As Long)
+Public Function decode_force_feedback_command(Cmd As Long)
   Static page As Long
   Dim major As Long
   Dim minor As Long
-  major = cmd And &HF0
-  minor = cmd And &HF
+  major = Cmd And &HF0
+  minor = Cmd And &HF
   
   Select Case major
     Case &H0
@@ -350,7 +521,7 @@ Public Function decode_force_feedback_command(cmd As Long)
       ' 0 = lowest
       ' F = highest
     Case Else
-      Debug.Print Hex(page), Hex(cmd)
+      Debug.Print Hex(page), Hex(Cmd)
   End Select
   
   'If major <> &H80 Then Debug.Print Hex(page), Hex(cmd)

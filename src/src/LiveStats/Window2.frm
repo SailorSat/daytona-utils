@@ -32,7 +32,7 @@ Begin VB.Form Window2
       ScaleHeight     =   384
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   640
-      TabIndex        =   8
+      TabIndex        =   4
       Top             =   1080
       Visible         =   0   'False
       Width           =   9600
@@ -54,7 +54,7 @@ Begin VB.Form Window2
       ScaleHeight     =   384
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   640
-      TabIndex        =   7
+      TabIndex        =   3
       Top             =   7560
       Visible         =   0   'False
       Width           =   9600
@@ -76,7 +76,7 @@ Begin VB.Form Window2
       ScaleHeight     =   384
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   640
-      TabIndex        =   6
+      TabIndex        =   2
       Top             =   7680
       Visible         =   0   'False
       Width           =   9600
@@ -94,7 +94,7 @@ Begin VB.Form Window2
       ScaleHeight     =   480
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   640
-      TabIndex        =   5
+      TabIndex        =   1
       Top             =   3360
       Visible         =   0   'False
       Width           =   9600
@@ -112,46 +112,10 @@ Begin VB.Form Window2
       ScaleHeight     =   48
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   683
-      TabIndex        =   4
+      TabIndex        =   0
       Top             =   1800
       Visible         =   0   'False
       Width           =   10245
-   End
-   Begin VB.CommandButton cmdViewPlus 
-      Caption         =   "+"
-      Height          =   255
-      Left            =   1320
-      TabIndex        =   3
-      Top             =   2040
-      Visible         =   0   'False
-      Width           =   255
-   End
-   Begin VB.CommandButton cmdViewMinus 
-      Caption         =   "-"
-      Height          =   255
-      Left            =   960
-      TabIndex        =   2
-      Top             =   2040
-      Visible         =   0   'False
-      Width           =   255
-   End
-   Begin VB.CommandButton cmdActionPlus 
-      Caption         =   "+"
-      Height          =   255
-      Left            =   1320
-      TabIndex        =   1
-      Top             =   2400
-      Visible         =   0   'False
-      Width           =   255
-   End
-   Begin VB.CommandButton cmdActionMinus 
-      Caption         =   "-"
-      Height          =   255
-      Left            =   960
-      TabIndex        =   0
-      Top             =   2400
-      Visible         =   0   'False
-      Width           =   255
    End
    Begin VB.Image imgDistance 
       Appearance      =   0  'Flat
@@ -357,28 +321,4 @@ End Sub
 
 Private Sub Form_DblClick()
   OnUnload
-End Sub
-
-Private Sub cmdActionMinus_Click()
-  If CLIENT_CarNo > 0 Then
-    CLIENT_CarNo = CLIENT_CarNo - 1
-  End If
-End Sub
-
-Private Sub cmdActionPlus_Click()
-  If CLIENT_CarNo < 7 Then
-    CLIENT_CarNo = CLIENT_CarNo + 1
-  End If
-End Sub
-
-Private Sub cmdViewMinus_Click()
-  If CLIENT_ViewNo > 0 Then
-    CLIENT_ViewNo = CLIENT_ViewNo - 1
-  End If
-End Sub
-
-Private Sub cmdViewPlus_Click()
-  If CLIENT_ViewNo < 15 Then
-    CLIENT_ViewNo = CLIENT_ViewNo + 1
-  End If
 End Sub

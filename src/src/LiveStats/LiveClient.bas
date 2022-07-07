@@ -163,7 +163,7 @@ Public Sub ProcessFrame(LastFrame As DaytonaFrame)
               ' auto coin up
               If Not CoinLock Then
                 CoinLock = True
-                WriteLong M2EM_RAMBASE + CUSTOM_MASK, &HF5FF&
+                WriteLong M2EM_RAMBASE + CUSTOM_MASK, &HF7FF& '&HF5FF&
                 Debug.Print Time, "enable coin lock"
               End If
             End If

@@ -202,7 +202,7 @@ Public Sub OnStatus(sModule As String, lStatus As Long, sStatus As String)
     Case "Profile"
       SrcY = 17
   End Select
-  DrawFont TailSpace(UCase(sStatus), 8), SrcX, SrcY, lStatus
+  DrawFont TailSpace(UCase(sStatus), 12), SrcX, SrcY, lStatus
   
   Debug.Print "OnStatus", sModule, lStatus, sStatus
 End Sub
@@ -269,6 +269,9 @@ Public Sub OnProfile(sProfile As String)
   End If
 
   Debug.Print "OnProfile", sProfile
+  
+  ' Move Mouse
+  SetCursorPos Screen.Width / Screen.TwipsPerPixelX, Screen.Height / Screen.TwipsPerPixelY
 End Sub
 
 ' feedback events
