@@ -521,6 +521,48 @@ Begin VB.Form Window
       Width           =   7455
       Begin VB.CommandButton cmdProfile 
          Appearance      =   0  'Flat
+         BackColor       =   &H0000C000&
+         Caption         =   "S.F. Rush"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Index           =   20
+         Left            =   4440
+         Style           =   1  'Graphical
+         TabIndex        =   70
+         Top             =   2520
+         Width           =   2055
+      End
+      Begin VB.CommandButton cmdProfile 
+         Appearance      =   0  'Flat
+         BackColor       =   &H0000C000&
+         Caption         =   "California Speed"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Index           =   19
+         Left            =   4440
+         Style           =   1  'Graphical
+         TabIndex        =   69
+         Top             =   2040
+         Width           =   2055
+      End
+      Begin VB.CommandButton cmdProfile 
+         Appearance      =   0  'Flat
          BackColor       =   &H0000C0C0&
          Caption         =   "SHOWCASE #2"
          BeginProperty Font 
@@ -534,11 +576,11 @@ Begin VB.Form Window
          EndProperty
          Height          =   375
          Index           =   18
-         Left            =   3960
+         Left            =   4440
          Style           =   1  'Graphical
          TabIndex        =   68
          Top             =   4920
-         Width           =   1815
+         Width           =   2055
       End
       Begin VB.CommandButton cmdProfile 
          Appearance      =   0  'Flat
@@ -555,11 +597,11 @@ Begin VB.Form Window
          EndProperty
          Height          =   375
          Index           =   17
-         Left            =   3960
+         Left            =   4440
          Style           =   1  'Graphical
          TabIndex        =   67
          Top             =   4440
-         Width           =   1815
+         Width           =   2055
       End
       Begin VB.CommandButton cmdProfile 
          Appearance      =   0  'Flat
@@ -580,7 +622,7 @@ Begin VB.Form Window
          Style           =   1  'Graphical
          TabIndex        =   66
          Top             =   4920
-         Width           =   1815
+         Width           =   2055
       End
       Begin VB.CommandButton cmdProfile 
          Appearance      =   0  'Flat
@@ -601,7 +643,7 @@ Begin VB.Form Window
          Style           =   1  'Graphical
          TabIndex        =   65
          Top             =   4440
-         Width           =   1815
+         Width           =   2055
       End
       Begin VB.CommandButton cmdProfile 
          Appearance      =   0  'Flat
@@ -622,7 +664,7 @@ Begin VB.Form Window
          Style           =   1  'Graphical
          TabIndex        =   64
          Top             =   3960
-         Width           =   1815
+         Width           =   2055
       End
       Begin VB.CommandButton cmdProfile 
          Appearance      =   0  'Flat
@@ -639,11 +681,11 @@ Begin VB.Form Window
          EndProperty
          Height          =   375
          Index           =   13
-         Left            =   2040
+         Left            =   2280
          Style           =   1  'Graphical
          TabIndex        =   63
          Top             =   2520
-         Width           =   1815
+         Width           =   2055
       End
       Begin VB.CommandButton cmdProfile 
          Appearance      =   0  'Flat
@@ -660,11 +702,11 @@ Begin VB.Form Window
          EndProperty
          Height          =   375
          Index           =   12
-         Left            =   2040
+         Left            =   2280
          Style           =   1  'Graphical
          TabIndex        =   62
          Top             =   2040
-         Width           =   1815
+         Width           =   2055
       End
       Begin VB.CommandButton cmdProfile 
          Appearance      =   0  'Flat
@@ -685,7 +727,7 @@ Begin VB.Form Window
          Style           =   1  'Graphical
          TabIndex        =   53
          Top             =   3000
-         Width           =   1815
+         Width           =   2055
       End
       Begin VB.CommandButton cmdProfile 
          Appearance      =   0  'Flat
@@ -706,7 +748,7 @@ Begin VB.Form Window
          Style           =   1  'Graphical
          TabIndex        =   52
          Top             =   2520
-         Width           =   1815
+         Width           =   2055
       End
       Begin VB.CommandButton cmdProfile 
          Appearance      =   0  'Flat
@@ -727,7 +769,7 @@ Begin VB.Form Window
          Style           =   1  'Graphical
          TabIndex        =   51
          Top             =   2040
-         Width           =   1815
+         Width           =   2055
       End
       Begin VB.CommandButton cmdProfile 
          Appearance      =   0  'Flat
@@ -744,11 +786,11 @@ Begin VB.Form Window
          EndProperty
          Height          =   375
          Index           =   7
-         Left            =   3960
+         Left            =   4440
          Style           =   1  'Graphical
          TabIndex        =   50
          Top             =   1080
-         Width           =   1815
+         Width           =   2055
       End
       Begin VB.CommandButton cmdProfile 
          Appearance      =   0  'Flat
@@ -765,11 +807,11 @@ Begin VB.Form Window
          EndProperty
          Height          =   375
          Index           =   8
-         Left            =   3960
+         Left            =   4440
          Style           =   1  'Graphical
          TabIndex        =   49
          Top             =   1560
-         Width           =   1815
+         Width           =   2055
       End
       Begin VB.CommandButton cmdProfile 
          Appearance      =   0  'Flat
@@ -786,11 +828,11 @@ Begin VB.Form Window
          EndProperty
          Height          =   375
          Index           =   6
-         Left            =   3960
+         Left            =   4440
          Style           =   1  'Graphical
          TabIndex        =   48
          Top             =   600
-         Width           =   1815
+         Width           =   2055
       End
       Begin VB.CommandButton cmdProfile 
          Appearance      =   0  'Flat
@@ -807,11 +849,11 @@ Begin VB.Form Window
          EndProperty
          Height          =   375
          Index           =   5
-         Left            =   3960
+         Left            =   4440
          Style           =   1  'Graphical
          TabIndex        =   47
          Top             =   120
-         Width           =   1815
+         Width           =   2055
       End
       Begin VB.CommandButton cmdProfile 
          Appearance      =   0  'Flat
@@ -828,11 +870,11 @@ Begin VB.Form Window
          EndProperty
          Height          =   375
          Index           =   4
-         Left            =   2040
+         Left            =   2280
          Style           =   1  'Graphical
          TabIndex        =   46
          Top             =   600
-         Width           =   1815
+         Width           =   2055
       End
       Begin VB.CommandButton cmdProfile 
          Appearance      =   0  'Flat
@@ -849,11 +891,11 @@ Begin VB.Form Window
          EndProperty
          Height          =   375
          Index           =   3
-         Left            =   2040
+         Left            =   2280
          Style           =   1  'Graphical
          TabIndex        =   45
          Top             =   120
-         Width           =   1815
+         Width           =   2055
       End
       Begin VB.CommandButton cmdProfile 
          Appearance      =   0  'Flat
@@ -874,7 +916,7 @@ Begin VB.Form Window
          Style           =   1  'Graphical
          TabIndex        =   44
          Top             =   1080
-         Width           =   1815
+         Width           =   2055
       End
       Begin VB.CommandButton cmdProfile 
          Appearance      =   0  'Flat
@@ -895,7 +937,7 @@ Begin VB.Form Window
          Style           =   1  'Graphical
          TabIndex        =   43
          Top             =   600
-         Width           =   1815
+         Width           =   2055
       End
       Begin VB.CommandButton cmdProfile 
          Appearance      =   0  'Flat
@@ -916,7 +958,7 @@ Begin VB.Form Window
          Style           =   1  'Graphical
          TabIndex        =   42
          Top             =   120
-         Width           =   1815
+         Width           =   2055
       End
    End
    Begin VB.Frame fmTabPage 
@@ -1758,6 +1800,10 @@ Private Sub cmdProfile_Click(Index As Integer)
       bsBuffer = StrConv("scross", vbFromUnicode)
     Case 8
       bsBuffer = StrConv("orunners", vbFromUnicode)
+    Case 19
+      bsBuffer = StrConv("calspeed", vbFromUnicode)
+    Case 20
+      bsBuffer = StrConv("sfrush", vbFromUnicode)
       
     Case 9
       bsBuffer = StrConv("daytona2", vbFromUnicode)

@@ -1,0 +1,33 @@
+crusnusa	crusnwld	crusnexo
+	lamp0	start	0/1
+	wheel	?	90-ff = left?	10-7f = right 0x/8x = center
+	lamp1	view1	0/1
+	lamp2	view2	0/1
+	lamp3	view3	0/1
+sfrush	sfrushrk
+	lamp9	winner
+	lamp8	leader
+	lamp7	view1
+	lamp6	view2
+	lamp5	view3
+	lamp4	music
+	lamp3	abort/start
+	wheel	?	90-ff = left?	10-7f = right 0x/8x = center
+sf2049
+	lamp8	leader
+	lamp0	start
+	lamp1	view1
+	lamp2	view2
+	lamp3	view3
+	lamp5	music
+	wheel	?	90-ff = left?	10-7f = right 0x/8x = center
+			90-ff might be reversed
+
+cartfury / ridgerac / ridgera2 / raverace
+	nothing yet :(
+
+cybrcycc
+	mcuout1		#1
+	mcuout2		#2
+	mcuout3		#3
+	mcuout9		view / start
