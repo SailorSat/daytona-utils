@@ -1,6 +1,6 @@
 IniFiles = 208, 208, 1500, 700, 
 WindowsAPI = 0, 0, 1292, 492, 
-Core = 78, 78, 1370, 570, Z
+Core = 78, 78, 1370, 570, 
 GUI = 104, 104, 1396, 596, 
 Window = 208, 208, 1500, 670, , 182, 182, 1218, 644, C
 ControlClient = 52, 52, 1344, 544, 
@@ -13,6 +13,6 @@ DaytonaOffsets = 104, 104, 1396, 596,
 ControlConstants = 156, 156, 1448, 618, 
 Feedback = 26, 26, 1318, 518, 
 Utilities = 182, 182, 1474, 674, 
-MameInterop = 208, 208, 1500, 700, 
+MameInterop = 208, 208, 1500, 700, Z
 Lagfix = 0, 0, 1292, 492, 
 Resolution = 110, 110, 844, 407, 

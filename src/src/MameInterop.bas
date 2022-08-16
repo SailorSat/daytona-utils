@@ -215,22 +215,22 @@ Public Sub Crusn(Name As String, State As Long)
 '  lamp2 view2 0/1
 '  lamp3 view3 0/1
   If Name = "wheel" Then
-    Dim Cmd As Byte
-    Dim Force As Byte
-    If State > &H7F Then
-      ' 80-ff = left / ccw
-      Cmd = &H50
-      Force = 3& - ((State - &H80&) \ &H10&)
-    Else
-      ' 00-7f = right / cw
-      Cmd = &H60
-      Force = State \ &H10&
-    End If
-    If Force = 0 Then
+'    Dim Cmd As Byte
+'    Dim Force As Byte
+'    If State > &H7F Then
+'      ' 80-ff = left / ccw
+'      Cmd = &H50
+'      Force = 3& - ((State - &H80&) \ &H10&)
+'    Else
+'      ' 00-7f = right / cw
+'      Cmd = &H60
+'      Force = State \ &H10&
+'    End If
+'    If Force = 0 Then
       DriveData = &H30
-    Else
-      DriveData = Cmd Or Force
-    End If
+'    Else
+'      DriveData = Cmd Or Force
+'    End If
   Else
     Dim Mask As Byte
     Select Case Name
