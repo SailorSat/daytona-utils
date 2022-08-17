@@ -25,6 +25,7 @@ Public Function M2EM_Online() As Boolean
     If Result = 0 Then
       CloseProcess
       Handle = -1
+      M2EM_Profile = ""
       M2EM_Online = False
     Else
       M2EM_Online = True

@@ -1,7 +1,7 @@
-IniFiles = -346, 150, 306, 612, Z
+IniFiles = -346, 150, 306, 612, 
 DaytonaOffsets = 85, 390, 640, 780, 
-CoreEvents = 555, 390, 1110, 780, C
-Window = 0, 1, 652, 493, , 0, 390, 817, 780, C
+CoreEvents = 555, 390, 1110, 780, 
+Window = 0, 1, 652, 493, Z, 0, 390, 817, 780, C
 ControlConstants = 0, 0, 652, 386, 
 WindowLock = 0, 0, 0, 0, C, 22, 22, 327, 255, C
 WindowsAPI = 130, 130, 782, 536, 

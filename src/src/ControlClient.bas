@@ -11,6 +11,7 @@ Private MEM_Open As Boolean
 Private MEM_Mask As Long
 Private MEM_GameState As Byte
 Private MEM_SetupState As Byte
+Private MEM_ControlStatus As Byte
 
 Private OPT_Reset As Byte
 Private OPT_Startup As Byte
@@ -65,124 +66,249 @@ Public Sub Timer()
       MEM_Open = True
     End If
   Else
-    If MEM_Open Then
-      OnStatus "ControlClient", vbYellow, "ready"
-      MEM_Open = False
+    If M3EM_Online Then
+      If Not MEM_Open Then
+        OnStatus "ControlClient", vbGreen, "online"
+        MEM_Open = True
+      End If
+    Else
+      If MEM_Open Then
+        OnStatus "ControlClient", vbYellow, "ready"
+        MEM_Open = False
+      End If
+    End If
+  End If
+
+  If MEM_Open Then
+    If M2EM_Profile = "daytona" Then
+      OnTimer_Daytona
+    ElseIf M3EM_Profile = "daytona2" Then
+      OnTimer_Daytona2
+    ElseIf M3EM_Profile = "scud" Then
+      OnTimer_Scud
+    End If
+  End If
+End Sub
+
+Private Sub OnTimer_Daytona()
+  MEM_GameState = ReadByte(M2EM_RAMBASE + GAMESTATE)
+  MEM_SetupState = ReadByte(M2EM_RAMBASE + SETUP_STATE)
+  MEM_Mask = &HFFFF&
+  
+  If MEM_GameState >= &H10 Then
+    MEM_ControlStatus = CTRL_STATUS_INGAME
+  Else
+    MEM_ControlStatus = CTRL_STATUS_ONLINE
+  End If
+
+  ' attract mode
+  If MEM_GameState < &H10 Then
+    ' remote start
+    If OPT_Start = 1 Then
+      OPT_Start = 0
+      MEM_Mask = MEM_Mask And &HF7FF&
+    End If
+    
+    ' remote reset
+    If OPT_Reset = 1 Then
+      OPT_Reset = 0
     End If
   End If
   
-  If MEM_Open Then
-    If M2EM_Profile = "daytona" Then
-      MEM_GameState = ReadByte(M2EM_RAMBASE + GAMESTATE)
-      MEM_SetupState = ReadByte(M2EM_RAMBASE + SETUP_STATE)
-      MEM_Mask = &HFFFF&
-      
-      ' attract mode
-      If MEM_GameState < &H10 Then
-        ' remote start
-        If OPT_Start = 1 Then
-          OPT_Start = 0
-          MEM_Mask = MEM_Mask And &HF7FF&
-        End If
-        
-        ' remote reset
-        If OPT_Reset = 1 Then
-          OPT_Reset = 0
-        End If
+  ' join screen
+  If MEM_GameState = &H10 Then
+    ' auto startup
+    If OPT_Startup = CTRL_STARTUP_AUTO Then
+      FlipFlop = Not FlipFlop
+      If FlipFlop Then
+        MEM_Mask = MEM_Mask And &HF7FF&
       End If
+    End If
+  End If
+  
+  ' setup screen
+  If MEM_GameState = &H12 Then
+    ' extended startup
+    If OPT_Startup = CTRL_STARTUP_EXTEND Then
+      MEM_Mask = MEM_Mask And &H7FFF&
+    End If
+    
+    ' track selection
+    If MEM_SetupState = 1 Then
+      ' OPT_Track
+      Select Case OPT_Track
+        Case CTRL_TRACK_BEGINNER
+          MEM_Mask = MEM_Mask And &HFDFF&
+        Case CTRL_TRACK_ADVANCED
+          MEM_Mask = MEM_Mask And &HFBFF&
+        Case CTRL_TRACK_EXPERT
+          MEM_Mask = MEM_Mask And &HF9FF&
+      End Select
       
-      ' join screen
-      If MEM_GameState = &H10 Then
-        ' auto startup
-        If OPT_Startup = CTRL_STARTUP_AUTO Then
-          FlipFlop = Not FlipFlop
-          If FlipFlop Then
-            MEM_Mask = MEM_Mask And &HF7FF&
-          End If
-        End If
+      ' force handicap
+      If OPT_Handicap = CTRL_HANDICAP_REAL Then
+        MEM_Mask = MEM_Mask And &HFE1F&
       End If
-      
-      ' setup screen
-      If MEM_GameState = &H12 Then
-        ' extended startup
-        If OPT_Startup = CTRL_STARTUP_EXTEND Then
-          MEM_Mask = MEM_Mask And &H7FFF&
-        End If
-        
-        ' track selection
-        If MEM_SetupState = 1 Then
-          ' OPT_Track
-          Select Case OPT_Track
-            Case CTRL_TRACK_BEGINNER
-              MEM_Mask = MEM_Mask And &HFDFF&
-            Case CTRL_TRACK_ADVANCED
-              MEM_Mask = MEM_Mask And &HFBFF&
-            Case CTRL_TRACK_EXPERT
-              MEM_Mask = MEM_Mask And &HF9FF&
-          End Select
-          
-          ' force handicap
-          If OPT_Handicap = CTRL_HANDICAP_REAL Then
-            MEM_Mask = MEM_Mask And &HFE1F&
-          End If
-        End If
-        
-        ' gear selection
-        If MEM_SetupState = 5 Then
-          ' force time attack
-          If OPT_GameMode = CTRL_GAMEMODE_TIMEATCK Then
-            MEM_Mask = MEM_Mask And &HFFEF&
-          End If
-        End If
-        
-        If MEM_SetupState = 7 Then
-          ' force gamemode
-          Select Case OPT_Handicap
-            Case CTRL_HANDICAP_ARCADE
-              WriteByte M2EM_RAMBASE + HANDICAP, 0
-            Case CTRL_HANDICAP_REAL
-              WriteByte M2EM_RAMBASE + HANDICAP, 1
-          End Select
-          
-          ' force gamemode
-          Select Case OPT_GameMode
-            Case CTRL_GAMEMODE_NORMAL
-              WriteByte M2EM_RAMBASE + GAME_MODE, 0
-            Case CTRL_GAMEMODE_TIMEATCK
-              WriteByte M2EM_RAMBASE + GAME_MODE, 1
-          End Select
-          
-          ' force gears
-          Select Case OPT_Gears
-            Case CTRL_GEARS_AUTO
-              WriteByte M2EM_RAMBASE + CAR_GEAR_MODE, 0
-            Case CTRL_GEARS_MANUAL
-              WriteByte M2EM_RAMBASE + CAR_GEAR_MODE, 1
-          End Select
-          
-          Select Case OPT_Music
-            Case CTRL_MUSIC_1
-              MEM_Mask = MEM_Mask And &HFFDF&
-            Case CTRL_MUSIC_2
-              MEM_Mask = MEM_Mask And &HFFBF&
-            Case CTRL_MUSIC_3
-              MEM_Mask = MEM_Mask And &HFF7F&
-            Case CTRL_MUSIC_4
-              MEM_Mask = MEM_Mask And &HFEFF&
-          End Select
-        End If
+    End If
+    
+    ' gear selection
+    If MEM_SetupState = 5 Then
+      ' force time attack
+      If OPT_GameMode = CTRL_GAMEMODE_TIMEATCK Then
+        MEM_Mask = MEM_Mask And &HFFEF&
       End If
+    End If
+    
+    If MEM_SetupState = 7 Then
+      ' force gamemode
+      Select Case OPT_Handicap
+        Case CTRL_HANDICAP_ARCADE
+          WriteByte M2EM_RAMBASE + HANDICAP, 0
+        Case CTRL_HANDICAP_REAL
+          WriteByte M2EM_RAMBASE + HANDICAP, 1
+      End Select
       
-      ' ingame
-      If MEM_GameState = &H16 Then
-        ' remote reset
-        If OPT_Reset = 1 Then
-          OPT_Reset = 0
-          WriteLong M2EM_RAMBASE + TIME_LEFT, &H100&
-        End If
+      ' force gamemode
+      Select Case OPT_GameMode
+        Case CTRL_GAMEMODE_NORMAL
+          WriteByte M2EM_RAMBASE + GAME_MODE, 0
+        Case CTRL_GAMEMODE_TIMEATCK
+          WriteByte M2EM_RAMBASE + GAME_MODE, 1
+      End Select
+      
+      ' force gears
+      Select Case OPT_Gears
+        Case CTRL_GEARS_AUTO
+          WriteByte M2EM_RAMBASE + CAR_GEAR_MODE, 0
+        Case CTRL_GEARS_MANUAL
+          WriteByte M2EM_RAMBASE + CAR_GEAR_MODE, 1
+      End Select
+      
+      Select Case OPT_Music
+        Case CTRL_MUSIC_1
+          MEM_Mask = MEM_Mask And &HFFDF&
+        Case CTRL_MUSIC_2
+          MEM_Mask = MEM_Mask And &HFFBF&
+        Case CTRL_MUSIC_3
+          MEM_Mask = MEM_Mask And &HFF7F&
+        Case CTRL_MUSIC_4
+          MEM_Mask = MEM_Mask And &HFEFF&
+      End Select
+    End If
+  End If
+  
+  ' ingame
+  If MEM_GameState = &H16 Then
+    ' remote reset
+    If OPT_Reset = 1 Then
+      OPT_Reset = 0
+      WriteLong M2EM_RAMBASE + TIME_LEFT, &H100&
+    End If
+  End If
+  
+  WriteLong M2EM_RAMBASE + CUSTOM_MASK, MEM_Mask
+End Sub
+
+Private Sub OnTimer_Daytona2()
+  Dim Offset As LARGE_INTEGER
+  Offset.highpart = M3EM_RAMBASE.highpart
+  
+  Offset.lowpart = M3EM_RAMBASE.lowpart + &H105007
+  MEM_GameState = ReadByte64(Offset)
+  
+  Offset.lowpart = M3EM_RAMBASE.lowpart + &H105005
+  MEM_SetupState = ReadByte(M2EM_RAMBASE + SETUP_STATE)
+  
+  If MEM_GameState >= &HB Then
+    MEM_ControlStatus = CTRL_STATUS_INGAME
+  Else
+    MEM_ControlStatus = CTRL_STATUS_ONLINE
+  End If
+
+  ' attract mode
+  If MEM_GameState < &HB Then
+    ' remote start
+    If OPT_Start = 1 Then
+      OPT_Start = 0
+      M3EM_SendServiceB
+    End If
+    
+    ' remote reset
+    If OPT_Reset = 1 Then
+      OPT_Reset = 0
+    End If
+  End If
+  
+  ' join screen
+  If MEM_GameState = &HB Then
+    ' auto startup
+    If OPT_Startup = CTRL_STARTUP_AUTO Then
+      FlipFlop = Not FlipFlop
+      If FlipFlop Then
+        M3EM_SendServiceB
       End If
-      
-      WriteLong M2EM_RAMBASE + CUSTOM_MASK, MEM_Mask
+    End If
+  End If
+
+  ' ingame
+  If MEM_GameState = &H11 Then
+    ' remote reset
+    If OPT_Reset = 1 Then
+      OPT_Reset = 0
+      Offset.lowpart = M3EM_RAMBASE.lowpart + &H105010
+      WriteLong64 Offset, &H100&
+    End If
+  End If
+End Sub
+
+Private Sub OnTimer_Scud()
+  Dim Offset As LARGE_INTEGER
+  Offset.highpart = M3EM_RAMBASE.highpart
+  
+  Offset.lowpart = M3EM_RAMBASE.lowpart + &H104007
+  MEM_GameState = ReadByte64(Offset)
+  
+  Offset.lowpart = M3EM_RAMBASE.lowpart + &H104005
+  MEM_SetupState = ReadByte(M2EM_RAMBASE + SETUP_STATE)
+  
+  If MEM_GameState >= &H11 Then
+    MEM_ControlStatus = CTRL_STATUS_INGAME
+  Else
+    MEM_ControlStatus = CTRL_STATUS_ONLINE
+  End If
+
+  ' attract mode
+  If MEM_GameState < &HF Then
+    ' remote start
+    If OPT_Start = 1 Then
+      OPT_Start = 0
+      M3EM_SendServiceB
+    End If
+    
+    ' remote reset
+    If OPT_Reset = 1 Then
+      OPT_Reset = 0
+    End If
+  End If
+  
+  ' join screen
+  If MEM_GameState = &HF Then
+    ' auto startup
+    If OPT_Startup = CTRL_STARTUP_AUTO Then
+      FlipFlop = Not FlipFlop
+      If FlipFlop Then
+        M3EM_SendServiceB
+      End If
+    End If
+  End If
+
+  ' ingame
+  If MEM_GameState = &H15 Then
+    ' remote reset
+    If OPT_Reset = 1 Then
+      OPT_Reset = 0
+      Offset.lowpart = M3EM_RAMBASE.lowpart + &H104010
+      WriteLong64 Offset, &H100&
     End If
   End If
 End Sub
@@ -215,11 +341,7 @@ Public Sub ReadUDP(lHandle As Long, sBuffer As String, sAddress As String)
     Case CTRL_CMD_PING
       CTRL_Node = baBuffer(2)
       If MEM_Open Then
-        If MEM_GameState > &H9 Then
-          baBuffer(1) = CTRL_STATUS_INGAME
-        Else
-          baBuffer(1) = CTRL_STATUS_ONLINE
-        End If
+        baBuffer(1) = MEM_ControlStatus
       Else
         baBuffer(1) = CTRL_STATUS_OFFLINE
       End If

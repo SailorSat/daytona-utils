@@ -1,10 +1,12 @@
 Window = 556, 0, 1112, 492, , 0, 390, 556, 780, C
 IniFiles = 556, 0, 1112, 390, 
-ProcessMemory = 556, 390, 1112, 780, 
+ProcessMemory = 556, 390, 1112, 780, Z
 DaytonaOffsets = 78, 0, 640, 492, 
 CoreEvents = 84, 220, 640, 480, 
 ControlConstants = 0, 0, 556, 492, 
 WindowsAPI = 130, 130, 1584, 592, 
 ControlClient = 26, 26, 1480, 518, 
-M2Emulator = 26, 26, 1480, 488, Z
+M2Emulator = 26, 26, 1480, 488, 
 Winsock = 26, 26, 1480, 518, 
+ProcessMemory64 = 0, 0, 445, 544, 
+M3Emulator = 26, 26, 471, 570, 
