@@ -20,7 +20,7 @@ Public Function GetProcessByFilename(Filename As String, Index As Long) As Long
   Result = Process32First(Snapshot, Process)
   While Result <> 0
     Binary = Left$(Process.szExeFile, InStr(1, Process.szExeFile, Chr(0), vbBinaryCompare) - 1)
-    If Binary = Filename Then
+    If LCase(Binary) = LCase(Filename) Then
       If Count = Index Then
         GetProcessByFilename = Process.th32ProcessID
         CloseHandle Snapshot
@@ -52,7 +52,7 @@ Public Function GetModuleByFilename(Filename As String, Process As Long) As Long
   Result = Module32First(Snapshot, Module)
   While Result <> 0
     Binary = Left$(Module.szModule, InStr(1, Module.szModule, Chr(0), vbBinaryCompare) - 1)
-    If Binary = Filename Then
+    If LCase(Binary) = LCase(Filename) Then
       GetModuleByFilename = Module.modBaseAddr
       CloseHandle Snapshot
       Exit Function
@@ -117,11 +117,11 @@ Public Function ReadByte(Address As Long) As Byte
 End Function
 
 
-Public Function ReadString(Address As Long, Length As Byte) As String
+Public Function ReadString(Address As Long, length As Byte) As String
   Dim Result As Long
   Dim Buffer() As Byte
-  ReDim Buffer(Length)
-  Result = ReadProcessMemory(mProcessHandle, Address, Buffer(0), Length, 0)
+  ReDim Buffer(length)
+  Result = ReadProcessMemory(mProcessHandle, Address, Buffer(0), length, 0)
   ReadString = Buffer
   If InStr(1, ReadString, Chr(0)) Then ReadString = Left$(ReadString, InStr(1, ReadString, Chr(0), vbBinaryCompare) - 1)
 End Function

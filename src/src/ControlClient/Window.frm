@@ -32,6 +32,7 @@ Private Sub Form_Load()
   Me.Move Screen.Width - Me.Width, 0
   Winsock.Load
 
+  Call init_mame(ByVal 1, "Test", AddressOf mame_start, AddressOf mame_stop, AddressOf mame_copydata, AddressOf mame_updatestate)
   ControlClient.Load
   
   Timer.Enabled = True

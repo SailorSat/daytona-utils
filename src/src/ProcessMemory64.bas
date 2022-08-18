@@ -61,7 +61,7 @@ Public Function GetModuleByFilename64(Filename As String, hProcess As Long, ByRe
     End If
     
     BaseDllName = Left(Buffer, tLDR_DATA_TABLE_ENTRY64.BaseDllName.length / 2)
-    If BaseDllName = Filename Then
+    If LCase(BaseDllName) = LCase(Filename) Then
       BaseAddress = tLDR_DATA_TABLE_ENTRY64.BaseAddress
       GetModuleByFilename64 = counter
       Exit Function

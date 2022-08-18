@@ -217,7 +217,7 @@ Private Sub OnTimer_Daytona2()
   MEM_GameState = ReadByte64(Offset)
   
   Offset.lowpart = M3EM_RAMBASE.lowpart + &H105005
-  MEM_SetupState = ReadByte(M2EM_RAMBASE + SETUP_STATE)
+  MEM_SetupState = ReadByte64(Offset)
   
   If MEM_GameState >= &HB Then
     MEM_ControlStatus = CTRL_STATUS_INGAME
@@ -269,7 +269,7 @@ Private Sub OnTimer_Scud()
   MEM_GameState = ReadByte64(Offset)
   
   Offset.lowpart = M3EM_RAMBASE.lowpart + &H104005
-  MEM_SetupState = ReadByte(M2EM_RAMBASE + SETUP_STATE)
+  MEM_SetupState = ReadByte64(Offset)
   
   If MEM_GameState >= &H11 Then
     MEM_ControlStatus = CTRL_STATUS_INGAME

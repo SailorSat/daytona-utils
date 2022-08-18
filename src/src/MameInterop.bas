@@ -73,6 +73,7 @@ Public Function mame_stop() As Long
   Debug.Print "mame_stop"
   ReDim output_array(1, 0) As String
   MAME_Online = False
+  MAME_Profile = ""
 End Function
 
 Public Function mame_copydata(ByVal id As Long, ByVal Name As String) As Long

@@ -5,6 +5,7 @@ Public M3EM_Profile As String
 
 Public M3EM_RAMBASE As LARGE_INTEGER
 
+Private M3EM_SupermodelEXE As LARGE_INTEGER
 Private M3EM_Handle As Long
 
 Public Function M3EM_Online() As Boolean
@@ -16,8 +17,7 @@ Public Function M3EM_Online() As Boolean
     ' got handle, check if valid
     Dim liRet As LARGE_INTEGER
     Dim Result As Long
-    Dim Buffer As Byte
-    Result = NtWow64ReadVirtualMemory64(M3EM_Handle, M3EM_RAMBASE.lowpart, M3EM_RAMBASE.highpart, Buffer, 1, 0, liRet)
+    Result = NtWow64ReadVirtualMemory64(M3EM_Handle, M3EM_SupermodelEXE.lowpart + &H432058, M3EM_SupermodelEXE.highpart, M3EM_RAMBASE, 8, 0, liRet)
     If Result < 0 Then
       CloseProcess64
       M3EM_Handle = -1
@@ -35,7 +35,7 @@ Private Function OpenProcessMemoryModel3() As Boolean
   Dim Module As Long
   
   OpenProcessMemoryModel3 = False
-  
+
   Process = GetProcessByFilename("supermodel.exe", 0)
   If Process = -1 Then
     Exit Function
@@ -46,15 +46,17 @@ Private Function OpenProcessMemoryModel3() As Boolean
     Exit Function
   End If
 
-  Dim SupermodelEXE As LARGE_INTEGER, Result As Long
-  Result = GetModuleByFilename64("supermodel.exe", M3EM_Handle, SupermodelEXE)
+  Dim Result As Long
+  Result = GetModuleByFilename64("supermodel.exe", M3EM_Handle, M3EM_SupermodelEXE)
   If Result = -1 Then
     CloseProcess64
     Exit Function
   End If
 
   Dim liRet As LARGE_INTEGER
-  Result = NtWow64ReadVirtualMemory64(M3EM_Handle, SupermodelEXE.lowpart + &H432058, SupermodelEXE.highpart, M3EM_RAMBASE, 8, 0, liRet)
+
+  'Supermodel.exe+432058
+  Result = NtWow64ReadVirtualMemory64(M3EM_Handle, M3EM_SupermodelEXE.lowpart + &H432058, M3EM_SupermodelEXE.highpart, M3EM_RAMBASE, 8, 0, liRet)
   If Result < 0 Then
     CloseProcess64
     Exit Function
@@ -71,14 +73,10 @@ End Function
 
 Private Function CheckProfile() As Boolean
   Dim Result As Long, liRet As LARGE_INTEGER
-  Dim Profile As String
-  ReDim Buffer(8) As Byte
-  Result = NtWow64ReadVirtualMemory64(M3EM_Handle, &H5FFAD0, 0, Buffer(0), 8, 0, liRet)
-  Profile = StrConv(Buffer, vbUnicode)
-  If InStr(1, Profile, Chr(0), vbBinaryCompare) > 0 Then
-    Profile = Left$(Profile, InStr(1, Profile, Chr(0), vbBinaryCompare) - 1)
-  End If
+  Dim Buffer(0 To 7) As Byte, Profile As String
 
+  Profile = MAME_Profile
+  
   Select Case Profile
     Case "daytona2", "dayto2pe"
       ' 2.1 Daytona USA2
@@ -89,7 +87,7 @@ Private Function CheckProfile() As Boolean
       M3EM_Profile = "scud"
 
     Case Else
-      M3EM_Profile = Profile
+      M3EM_Profile = ""
       Debug.Print "unknown game", Profile
   End Select
     

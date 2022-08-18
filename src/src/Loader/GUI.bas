@@ -82,7 +82,7 @@ Sub DrawFont(Text As String, X As Long, Y As Long, Color As Long)
   Dim DstX As Long, DstY As Long
   Dim Idx As Long, Char As Byte
   
-  ' set background color if picturebox (to change the actual color)
+  ' set background color of picturebox (to change the actual color)
   Window.pbFont.BackColor = Color
   
   DstX = X * 8
