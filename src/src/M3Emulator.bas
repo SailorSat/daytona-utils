@@ -75,7 +75,17 @@ Private Function CheckProfile() As Boolean
   Dim Result As Long, liRet As LARGE_INTEGER
   Dim Buffer(0 To 7) As Byte, Profile As String
 
-  Profile = MAME_Profile
+  '"Supermodel.exe"+005720D0
+  Dim Offset0 As LARGE_INTEGER, Offset1 As LARGE_INTEGER, Offset2 As LARGE_INTEGER, Offset3 As LARGE_INTEGER
+  Result = NtWow64ReadVirtualMemory64(M3EM_Handle, M3EM_SupermodelEXE.lowpart + &H5720D0, M3EM_SupermodelEXE.highpart, Offset0, 8, 0, liRet)
+  Result = NtWow64ReadVirtualMemory64(M3EM_Handle, Offset0.lowpart + &H268&, Offset0.highpart, Offset1, 8, 0, liRet)
+  Result = NtWow64ReadVirtualMemory64(M3EM_Handle, Offset1.lowpart + &H28&, Offset1.highpart, Offset2, 8, 0, liRet)
+  Result = NtWow64ReadVirtualMemory64(M3EM_Handle, Offset2.lowpart + &HC0&, Offset2.highpart, Offset3, 8, 0, liRet)
+  Result = NtWow64ReadVirtualMemory64(M3EM_Handle, Offset3.lowpart + &H9E0&, Offset3.highpart, Buffer(0), 8, 0, liRet)
+  Profile = StrConv(Buffer, vbUnicode)
+  If InStr(1, Profile, Chr(0)) Then Profile = Left$(Profile, InStr(1, Profile, Chr(0), vbBinaryCompare) - 1)
+  
+  'Profile = MAME_Profile
   
   Select Case Profile
     Case "daytona2", "dayto2pe"
