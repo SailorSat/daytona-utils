@@ -70,29 +70,39 @@ Public Sub STATS_OnReadUDP(lHandle As Long, sBuffer As String, sAddress As Strin
   If Not LastFrame Is Nothing Then
     If Not STATS_Online Then
       If LastFrame.Status = 2 And LastFrame.Packet(0).x016_LocalGameState > 0 Then
-        Dim FoundCar(0 To 7) As Boolean, LocalCar As Byte
-        STATS_Players = 0
+        ' sanity check
+        Dim Skip As Boolean
+        Skip = False
         For Index = 0 To 7
-          Set Packet = LastFrame.Packet(Index)
-          LocalCar = Packet.x0D4_CarNumber
-          If FoundCar(LocalCar) Then
-            Index = 8
-          Else
-            FoundCar(LocalCar) = True
-            STATS_Players = STATS_Players + 1
-          End If
+          If LastFrame.Packet(Index).x016_LocalGameState = 0 Then Skip = True
         Next
         
-        For Index = 0 To STATS_Players - 1
-          LocalCar = STATS_Players - Index + 1
-          If LocalCar > STATS_Players Then LocalCar = 1
-          STATS_CarToNode(Index) = LocalCar
-          STATS_NodeToCar(LocalCar) = Index
-        Next
-      
-        STATS_Online = True
+        If Not Skip Then
+          Dim FoundCar(0 To 7) As Boolean, LocalCar As Byte
+          STATS_Players = 0
+          For Index = 0 To 7
+            Set Packet = LastFrame.Packet(Index)
+            LocalCar = Packet.x0D4_CarNumber
+            If FoundCar(LocalCar) Then
+              Index = 8
+            Else
+              FoundCar(LocalCar) = True
+              STATS_Players = STATS_Players + 1
+            End If
+          Next
+          
+          For Index = 0 To STATS_Players - 1
+            LocalCar = STATS_Players - Index + 1
+            If LocalCar > STATS_Players Then LocalCar = 1
+            STATS_CarToNode(Index) = LocalCar
+            STATS_NodeToCar(LocalCar) = Index
+          Next
+        
+          STATS_Online = True
+        End If
       End If
     End If
+    
     If CurrentTrack < 3 Then
       If STATS_FlipFlop > 0 Then
         STATS_FlipFlop = STATS_FlipFlop - 1
@@ -109,6 +119,7 @@ Public Sub STATS_OnReadUDP(lHandle As Long, sBuffer As String, sAddress As Strin
         STATS_FlipFlop = 1
       End If
     End If
+    
     If CLIENT_Online Then
       If CLIENT_Hooked Then
         LiveClient.ProcessFrame LastFrame
