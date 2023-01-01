@@ -50,7 +50,7 @@ Public Sub mame_start_internal(Profile As String)
   Debug.Print "mame_start_internal", Profile
   MAME_Profile = Profile
   Select Case MAME_Profile
-    Case "orunners", "outrun", "calspeed", "crusnusa", "crusnwld", "crusnexo", "sfrush", "sfrushrk", "sf2049", "gticlub"
+    Case "orunners", "outrun", "calspeed", "offroadc", "crusnusa", "crusnwld", "crusnexo", "sfrush", "sfrushrk", "sf2049", "gticlub"
       DriveData = &H7
       LampsData = &H0
       PwmData = &H0
@@ -98,6 +98,9 @@ Public Function mame_updatestate(ByVal id As Long, ByVal State As Long) As Long
     Case "orunners"
       OutRunners Name, State
     
+    Case "offroadc"
+      OffroadC Name, State
+      
     Case "calspeed"
       CalSpeed Name, State
       
@@ -217,7 +220,7 @@ Public Sub OutRun(Name As String, State As Long)
   End If
 End Sub
 
-Public Sub CalSpeed(Name As String, State As Long)
+Public Sub OffroadC(Name As String, State As Long)
 '  wheel ? ff-80 = left; 00-7f = right
 '  lamp0 start 0/1
 '  lamp1 view1 0/1
@@ -237,7 +240,34 @@ Public Sub CalSpeed(Name As String, State As Long)
       Force = State \ &H10&
     End If
     If Force = 0 Then
-      DriveData = &H30
+      DriveData = &H10
+    Else
+      DriveData = Cmd Or (Force - 1)
+    End If
+  End If
+End Sub
+
+Public Sub CalSpeed(Name As String, State As Long)
+'  wheel ? ff-80 = left; 00-7f = right
+'  lamp0 start 0/1
+'  lamp1 view1 0/1
+'  lamp2 view2 0/1
+'  lamp3 view3 0/1
+  
+  If Name = "wheel" Then
+    Dim Cmd As Byte
+    Dim Force As Byte
+    If State > &H7F Then
+      ' ff-80 = left / ccw
+      Cmd = &H60
+      Force = (&HFF - State) \ &H10&
+    Else
+      ' 00-7f = right / cw
+      Cmd = &H50
+      Force = State \ &H10&
+    End If
+    If Force = 0 Then
+      DriveData = &H10
     Else
       DriveData = Cmd Or (Force - 1)
     End If
@@ -261,14 +291,14 @@ Public Sub Crusn(Name As String, State As Long)
     If State > &H7F Then
       ' 80-ff = left / ccw
       Cmd = &H50
-      Force = ((State - &H80&) \ &H10&)
+      Force = (&HFF - State) \ &H10&
     Else
       ' 00-7f = right / cw
       Cmd = &H60
       Force = State \ &H10&
     End If
     If Force = 0 Then
-      DriveData = &H30
+      DriveData = &H10
     Else
       DriveData = Cmd Or (Force - 1)
     End If
@@ -318,7 +348,7 @@ Public Sub SFRush(Name As String, State As Long)
       Force = State \ &H10&
     End If
     If Force = 0 Then
-      DriveData = &H30
+      DriveData = &H10
     Else
       DriveData = Cmd Or Force - 1
     End If
@@ -367,15 +397,15 @@ Public Sub SFRush2049(Name As String, State As Long)
     Dim Force As Byte
     If State > &H7F Then
       ' 80-ff = left / ccw
-      Cmd = &H50
+      Cmd = &H60
       Force = (&HFF& - State) \ &H10&
     Else
       ' 00-7f = right / cw
-      Cmd = &H60
+      Cmd = &H50
       Force = State \ &H10&
     End If
     If Force = 0 Then
-      DriveData = &H30
+      DriveData = &H10
     Else
       DriveData = Cmd Or Force - 1
     End If
@@ -449,15 +479,15 @@ Public Sub GtiClub(Name As String, State As Long)
     Select Case Cmd
       Case &H80&
         ' right?
-        Cmd = &H60&
+        Cmd = &H50&
         Force = Force \ 2
       Case &H90&
         ' left?
-        Cmd = &H50&
+        Cmd = &H60&
         Force = Force \ 2
       Case Else
         ' 00 = center / motor off
-        Cmd = &H30&
+        Cmd = &H10&
         Force = 0
     End Select
     DriveData = Cmd Or Force

@@ -1,6 +1,6 @@
 IniFiles = 88, 88, 1380, 580, 
 Window = 176, 176, 1468, 668, , 154, 154, 1446, 646, C
-CoreEvents = 198, 198, 1490, 690, Z
+CoreEvents = 198, 198, 1490, 690, 
 NetworkParser = 0, 0, 1292, 492, 
 DaytonaFrame = 66, 66, 1358, 558, 
 DaytonaPacket = 242, 242, 1534, 734, 
@@ -9,7 +9,7 @@ Utilities = 176, 176, 634, 668,
 LiveClient = 242, 242, 1534, 734, 
 ProcessMemory = 66, 66, 498, 558, 
 DaytonaOffsets = 264, 264, 1556, 756, 
-LiveMap = 0, 0, 432, 492, 
+LiveMap = 0, 0, 432, 492, Z
 LiveOverlay = 22, 22, 454, 514, 
 Window2 = 22, 22, 327, 227, , 66, 66, 371, 271, C
 DaytonaMath = 176, 176, 1468, 644, 
