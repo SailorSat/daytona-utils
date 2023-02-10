@@ -347,6 +347,48 @@ Begin VB.Form Window
       Width           =   7455
       Begin VB.CommandButton cmdProfile 
          Appearance      =   0  'Flat
+         BackColor       =   &H0000C000&
+         Caption         =   "Super Monaco GP"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Index           =   23
+         Left            =   4440
+         Style           =   1  'Graphical
+         TabIndex        =   82
+         Top             =   3480
+         Width           =   2055
+      End
+      Begin VB.CommandButton cmdProfile 
+         Appearance      =   0  'Flat
+         BackColor       =   &H0000C000&
+         Caption         =   "Power Drift"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Index           =   22
+         Left            =   4440
+         Style           =   1  'Graphical
+         TabIndex        =   81
+         Top             =   3000
+         Width           =   2055
+      End
+      Begin VB.CommandButton cmdProfile 
+         Appearance      =   0  'Flat
          BackColor       =   &H00C000C0&
          Caption         =   "Media Player"
          BeginProperty Font 
@@ -2024,6 +2066,10 @@ Private Sub cmdProfile_Click(Index As Integer)
       bsBuffer = StrConv("calspeed", vbFromUnicode)
     Case 20
       bsBuffer = StrConv("sfrush", vbFromUnicode)
+    Case 22
+      bsBuffer = StrConv("pdrift", vbFromUnicode)
+    Case 23
+      bsBuffer = StrConv("smgp", vbFromUnicode)
       
     Case 9
       bsBuffer = StrConv("daytona2", vbFromUnicode)
