@@ -52,6 +52,9 @@ GEAR 4         = Button 24
 dataForController_t controllerData;
 byte size = sizeof(dataForController_t) - 1;
 
+bool buttonState0[64];
+bool buttonState1[64];
+
 void setup() {
   setupPins();
   setupSerial();
@@ -104,26 +107,34 @@ void setupSerial() {
   Serial.write(0xA5);
 }
 
+bool buttonRead(int pin) {
+  buttonState1[pin] = !digitalRead(pin);
+  if (buttonState0[pin] != buttonState1[pin]) {
+     buttonState0[pin] = buttonState1[pin];
+     return 0;
+  }
+  return buttonState0[pin];
+}
+
 void getControllerData(void) {
   // digital pin 21-14
-  controllerData.button01 = !digitalRead(21);
-  controllerData.button03 = !digitalRead(20);
-  controllerData.button04 = !digitalRead(19);
-  controllerData.button05 = !digitalRead(18);
-  controllerData.button06 = !digitalRead(17);
-  controllerData.button07 = !digitalRead(16);
-  controllerData.button08 = !digitalRead(15);
-  controllerData.button09 = !digitalRead(14);
+  controllerData.button01 = buttonRead(21);
+  controllerData.button03 = buttonRead(20);
+  controllerData.button04 = buttonRead(19);
+  controllerData.button05 = buttonRead(18);
+  controllerData.button06 = buttonRead(17);
+  controllerData.button07 = buttonRead(16);
+  controllerData.button08 = buttonRead(15);
+  controllerData.button09 = buttonRead(14);
 
   // digital pin 2-7
-  controllerData.button10 = !digitalRead(2);
-  controllerData.button11 = !digitalRead(3);
-  controllerData.button12 = !digitalRead(4);
-  controllerData.button16 = !digitalRead(8);
+  controllerData.button10 = buttonRead(2);
+  controllerData.button11 = buttonRead(3);
+  controllerData.button12 = buttonRead(4);
 
   // digital pin 8-9
-  controllerData.button16 = !digitalRead(8);
-  controllerData.button02 = !digitalRead(9);
+  controllerData.button16 = buttonRead(8);
+  controllerData.button02 = buttonRead(9);
 
   // unused buttons
   controllerData.button17 = 0;
@@ -131,11 +142,12 @@ void getControllerData(void) {
   controllerData.button19 = 0;
 
   // OPTION0 - DECODE
-  if (!digitalRead(10)) {
+  //!digitalRead(10)
+  if (buttonRead(10)) {
     // decoder disabled
-    controllerData.button13 = !digitalRead(5);
-    controllerData.button14 = !digitalRead(6);
-    controllerData.button15 = !digitalRead(7);
+    controllerData.button13 = buttonRead(5);
+    controllerData.button14 = buttonRead(6);
+    controllerData.button15 = buttonRead(7);
     controllerData.button20 = 0;
     controllerData.button21 = 0;
     controllerData.button22 = 0;
@@ -150,7 +162,7 @@ void getControllerData(void) {
     // 4=1+2/!3+4 = 4
     // 3=2/4      = 2
     // 2=1/3      = 1
-    switch (!digitalRead(5) + !digitalRead(6) * 2 + !digitalRead(7) * 4) {
+    switch (buttonRead(5) + buttonRead(6) * 2 + buttonRead(7) * 4) {
       case 0x05:
         // gear 1
         controllerData.button20 = 0;
@@ -200,7 +212,7 @@ void getControllerData(void) {
   // get the analog data
   analogRead(A8);
   // OPTION1 - mode selection
-  if (!digitalRead(11)) {
+  if (buttonRead(11)) {
     // flight stick mode
     controllerData.rz_axis = 0x0200;
     controllerData.z_axis = analogRead(A2);

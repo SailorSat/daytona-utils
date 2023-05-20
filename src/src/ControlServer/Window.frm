@@ -347,6 +347,27 @@ Begin VB.Form Window
       Width           =   7455
       Begin VB.CommandButton cmdProfile 
          Appearance      =   0  'Flat
+         BackColor       =   &H0000C0C0&
+         Caption         =   "SEGA RALLY 1/2"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Index           =   24
+         Left            =   2280
+         Style           =   1  'Graphical
+         TabIndex        =   83
+         Top             =   4440
+         Width           =   2055
+      End
+      Begin VB.CommandButton cmdProfile 
+         Appearance      =   0  'Flat
          BackColor       =   &H0000C000&
          Caption         =   "Super Monaco GP"
          BeginProperty Font 
@@ -2094,6 +2115,8 @@ Private Sub cmdProfile_Click(Index As Integer)
       bsBuffer = StrConv("showcase", vbFromUnicode)
     Case 18
       bsBuffer = StrConv("showcase2", vbFromUnicode)
+    Case 24
+      bsBuffer = StrConv("srally12", vbFromUnicode)
     
     Case 21
       bsBuffer = StrConv("media", vbFromUnicode)

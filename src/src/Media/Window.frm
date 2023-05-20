@@ -9,6 +9,14 @@ Begin VB.Form Window
    ScaleHeight     =   3120
    ScaleWidth      =   8145
    StartUpPosition =   3  'Windows Default
+   Begin VB.CommandButton Command14 
+      Caption         =   "BillieJean"
+      Height          =   435
+      Left            =   5880
+      TabIndex        =   13
+      Top             =   1560
+      Width           =   1815
+   End
    Begin VB.CommandButton Command13 
       Caption         =   "MagFest"
       Height          =   435
@@ -158,6 +166,12 @@ End Sub
 Private Sub Command13_Click()
   Dim Data As String
   Data = "GET /browser.html?path=%5c%5cDAYTONA09%5cSoftware%5cmagfest.mp4 HTTP/1.1" & vbCrLf & vbCrLf
+  SendToAll Data
+End Sub
+
+Private Sub Command14_Click()
+  Dim Data As String
+  Data = "GET /browser.html?path=%5c%5cDAYTONA09%5cSoftware%5cCity-Nacht.mp4 HTTP/1.1" & vbCrLf & vbCrLf
   SendToAll Data
 End Sub
 
