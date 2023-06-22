@@ -26,12 +26,6 @@ Private Type LPWSADATA
   lpVendorInfo As Long
 End Type
 
-Private Declare Function RegisterWindowMessageA Lib "user32.dll" (ByVal sString As String) As Long
-Private Declare Function CallWindowProcA Lib "user32.dll" (ByVal wndrpcPrev As Long, ByVal hWnd As Long, ByVal lMessage As Long, ByVal wParam As Long, lParam As Any) As Long
-Private Declare Function CreateWindowExA Lib "user32.dll" (ByVal dwExStyle As Long, ByVal lpClassName As String, ByVal lpWindowName As String, ByVal dwStyle As Long, ByVal X As Long, ByVal Y As Long, ByVal nWidth As Long, ByVal nHeight As Long, ByVal hWndParent As Long, ByVal hMenu As Long, ByVal hInstance As Long, lpParam As Any) As Long
-Private Declare Function DestroyWindow Lib "user32.dll" (ByVal hWnd As Long) As Long
-Private Declare Function SetWindowLongA Lib "user32.dll" (ByVal hWnd As Long, ByVal NIndex As Long, ByVal dwNewLong As Long) As Long
-
 Private Declare Function accept Lib "ws2_32.dll" (ByVal hSocket As Long, ByVal sAddress As String, ByRef lAddress As Long) As Long
 Private Declare Function closesocket Lib "ws2_32.dll" (ByVal hSocket As Long) As Long
 Private Declare Function recv Lib "ws2_32.dll" (ByVal hSocket As Long, ByVal aBuffer As Any, ByVal lBuffer As Long, ByVal lFlags As Long) As Long

@@ -10,6 +10,11 @@ Public Declare Sub RtlMoveMemory Lib "kernel32.dll" (Destination As Any, Source 
 
 Public Declare Function SetFocus Lib "user32.dll" (ByVal hWnd As Long) As Long
 
+Public Declare Function CreateWindowExA Lib "user32.dll" (ByVal dwExStyle As Long, ByVal lpClassName As String, ByVal lpWindowName As String, ByVal dwStyle As Long, ByVal X As Long, ByVal Y As Long, ByVal nWidth As Long, ByVal nHeight As Long, ByVal hWndParent As Long, ByVal hMenu As Long, ByVal hInstance As Long, lpParam As Any) As Long
+Public Declare Function DestroyWindow Lib "user32.dll" (ByVal hWnd As Long) As Long
+Public Declare Function RegisterWindowMessageA Lib "user32.dll" (ByVal sString As String) As Long
+Public Declare Function CallWindowProcA Lib "user32.dll" (ByVal wndrpcPrev As Long, ByVal hWnd As Long, ByVal lMessage As Long, ByVal wParam As Long, lParam As Any) As Long
+
 
 ' ---
 ' IniFiles
@@ -21,13 +26,14 @@ Public Declare Function WritePrivateProfileStringA Lib "kernel32.dll" (ByVal lpA
 ' Timer
 Public Declare Function timeGetTime Lib "winmm.dll" () As Long
 Public Declare Function timeBeginPeriod Lib "winmm.dll" (ByVal uPeriod As Long) As Long
+Public Declare Function timeEndPeriod Lib "winmm.dll" (ByVal uPeriod As Long) As Long
 
 Public Declare Sub Sleep Lib "kernel32.dll" (ByVal dwMilliseconds As Long)
 
 Public Declare Function SetTimer Lib "user32.dll" (ByVal hWnd As Long, ByVal nIDEvent As Long, ByVal uElapse As Long, ByVal lpTimerFunc As Long) As Long
 Public Declare Function KillTimer Lib "user32.dll" (ByVal hWnd As Long, ByVal nIDEvent As Long) As Long
 
-Public Const WM_TIMER = &H113
+Public Const WM_Timer = &H113
 
 
 ' ---

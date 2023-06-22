@@ -53,7 +53,6 @@ Private UDP_Socket As Long
 Private UDP_Buffer As String
 
 Private NET_Framerate As Long
-Private NET_Delay As Long
 Private NET_FlipFlop As Long
 
 Private NET_Resolution As Currency
@@ -61,10 +60,6 @@ Private NET_Resolution As Currency
 Private LastFrame As String
 
 Private hEventTimer As Long
-
-Private Counter1 As Currency
-Private Counter2 As Currency
-
 
 Private Sub cmdGo_Click()
   Winsock.SendUDP UDP_Socket, SendFrame0, UDP_RemoteAddress
@@ -75,13 +70,6 @@ Private Sub Form_Load()
   Me.Show
   DoEvents
   
-  NET_Delay = 17
-  
-  QueryPerformanceFrequency NET_Resolution
-  Debug.Print "1000ms ~= " & NET_Resolution
-  NET_Resolution = NET_Resolution / 58 'target fps of 58
-  Debug.Print "time per frame ~= " & NET_Resolution
-
   ' Init Winsock
   Winsock.Load
     
@@ -109,10 +97,36 @@ Private Sub Form_Load()
     MsgBox "Something went wrong! #UDP_Socket", vbCritical Or vbOKOnly, Window.Caption
     Form_Unload 0
   End If
-  
+
   FAKE_READY = True
   
   UDP_Buffer = ""
+  
+  MainLoop
+End Sub
+
+Private Sub MainLoop()
+  QueryPerformanceFrequency NET_Resolution
+  Debug.Print "1000ms ~= " & NET_Resolution
+  NET_Resolution = NET_Resolution / 57 'target fps of 57.5
+  Debug.Print "time per frame ~= " & NET_Resolution
+  'NET_Resolution = NET_Resolution * 2
+  Dim Counter1 As Currency
+  Dim Counter2 As Currency
+  
+  QueryPerformanceCounter Counter1
+  Counter2 = Counter1 + NET_Resolution
+  Do
+    While Counter1 < Counter2
+      QueryPerformanceCounter Counter1
+      DoEvents
+    Wend
+    Counter2 = Counter1 + NET_Resolution
+    If UDP_Buffer <> "" Then
+      Winsock.SendUDP UDP_Socket, UDP_Buffer, UDP_RemoteAddress
+      UDP_Buffer = ""
+    End If
+  Loop
 End Sub
 
 
@@ -124,28 +138,17 @@ End Sub
 
 Public Sub OnReadUDP(lHandle As Long, sBuffer As String, sAddress As String)
   If FAKE_READY Then
-    While Counter1 < Counter2
-      QueryPerformanceCounter Counter1
-    Wend
-    Winsock.SendUDP UDP_Socket, sBuffer, UDP_RemoteAddress
-    QueryPerformanceCounter Counter1
-    Counter2 = Counter1 + NET_Resolution
-    NET_Framerate = NET_Framerate + 1
+    Dim baBuffer() As Byte
+    baBuffer() = StrConv(sBuffer, vbFromUnicode)
+    If baBuffer(4) = 2 Then
+      UDP_Buffer = sBuffer
+      NET_Framerate = NET_Framerate + 1
+    Else
+      Winsock.SendUDP UDP_Socket, sBuffer, UDP_RemoteAddress
+    End If
   Else
     Winsock.SendUDP UDP_Socket, ParseFrame(sBuffer), UDP_RemoteAddress
   End If
-End Sub
-
-
-Public Sub SleepHigh(Delay As Currency)
-  'Sleep Delay
-  Dim Counter1 As Currency
-  Dim Counter2 As Currency
-  QueryPerformanceCounter Counter1
-  Counter2 = Counter1 + NET_Resolution * Delay
-  While Counter1 < Counter2
-    QueryPerformanceCounter Counter1
-  Wend
 End Sub
 
 
@@ -160,21 +163,21 @@ Public Function ParseFrame(sBuffer As String) As String
   ' check header status
   Select Case baBuffer(4)
     Case 0
-      Open App.Path & "\00.bin" For Binary As #1
-      Put #1, , baBuffer
-      Close #1
+'      Open App.Path & "\00.bin" For Binary As #1
+'      Put #1, , baBuffer
+'      Close #1
       ParseFrame = SendFrame1(baBuffer(5))
     
     Case 1
-      Open App.Path & "\01.bin" For Binary As #1
-      Put #1, , baBuffer
-      Close #1
+'      Open App.Path & "\01.bin" For Binary As #1
+'      Put #1, , baBuffer
+'      Close #1
       ParseFrame = SendFrame2
        
     Case 2
-      Open App.Path & "\02.bin" For Binary As #1
-      Put #1, , baBuffer
-      Close #1
+'      Open App.Path & "\02.bin" For Binary As #1
+'      Put #1, , baBuffer
+'      Close #1
       ParseFrame = SendFrame2
   
   End Select
@@ -199,8 +202,6 @@ End Function
 
 
 Public Function SendFrame1(Size As Byte) As String
-  Debug.Print Size
-  
   Dim baBuffer() As Byte
   baBuffer() = StrConv(String(3589, Chr(0)), vbFromUnicode)
 
