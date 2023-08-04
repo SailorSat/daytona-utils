@@ -1,0 +1,36 @@
+-- axis --
+1093c	08	02	accel
+10940	08	05	brake
+10944	08	08	accel/break
+10948	08	00	wheel
+1094c	08	08	gear up/down
+10950	08	08	menu up/down
+10954	08	08	??
+
+00 = joy1 x
+01 = joy1 y
+02 = joy1 z
+03 = joy2 x (rx)
+04 = joy2 y (ry)
+05 = joy2 z (rz)
+06 = slider 1
+07 = slider 2
+08 = unassigned
+
+-- buttons --
+10958	00	16	??
+1095c	01	17	gear up
+10960	02	18	gear down
+10964	03	19	horn
+10968	04	20	view
+1096c	05	21	??
+10970	06	22	??
+10974	07	23	brake
+10978	08	24	accel
+1097c	09	25	??
+10980	0a	26	??
+10984	0b	27	??
+10988	0c	28	??
+1098c	0d	29	start
+10990	0e	30	??
+10994	0f	31	??

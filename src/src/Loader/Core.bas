@@ -208,7 +208,7 @@ Public Sub OnStatus(sModule As String, lStatus As Long, sStatus As String)
 End Sub
 
 Public Sub OnText(sModule As String, sTopic As String, sText As String)
-  Dim SrcX As Long, SrcY As Long, Color As Long, Length As Integer
+  Dim SrcX As Long, SrcY As Long, Color As Long, length As Integer
   Color = vbWhite
   Select Case sModule
     Case "Feedback", "DriveTranslation"
@@ -216,22 +216,22 @@ Public Sub OnText(sModule As String, sTopic As String, sText As String)
       Select Case sTopic
         Case "Lamps"
           SrcX = Row2 + 8
-          Length = 2
+          length = 2
           Color = vbCyan
         Case "Drive"
           SrcX = Row2 + 11
-          Length = 2
+          length = 2
           Color = vbMagenta
         Case "Pwm"
           SrcX = Row2 + 14
-          Length = 2
+          length = 2
           Color = vbRed
         Case "Debug"
           SrcX = Row2 + 17
-          Length = 8
+          length = 8
       End Select
   End Select
-  DrawFont TailSpace(UCase(sText), Length), SrcX, SrcY, Color
+  DrawFont TailSpace(UCase(sText), length), SrcX, SrcY, Color
   
   Debug.Print "OnText", sModule, sTopic, sText
 End Sub
@@ -255,10 +255,12 @@ Public Sub OnProfile(sProfile As String)
     CurrentProfile = sProfile
     Key = "profile-" & CurrentProfile
     
-    ' override lagfix config
-    Host = ReadIni("loader.ini", Key, "remotehost", "")
-    Port = CLng(ReadIni("loader.ini", Key, "remoteport", "0"))
-    Lagfix.OverrideTX Host, Port
+    ' override lagfix config (if enabled)
+    If UseLagFix Then
+      Host = ReadIni("loader.ini", Key, "remotehost", "")
+      Port = CLng(ReadIni("loader.ini", Key, "remoteport", "0"))
+      Lagfix.OverrideTX Host, Port
+    End If
     
     Path = ReadIni("loader.ini", Key, "Path", "D:\m2emulator")
     File = ReadIni("loader.ini", Key, "File", "emulator_multicpu.exe")

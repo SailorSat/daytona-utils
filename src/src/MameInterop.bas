@@ -88,7 +88,7 @@ Public Function mame_updatestate(ByVal id As Long, ByVal State As Long) As Long
   If Left(Name, 6) = "cpuled" Then Exit Function
   If Left(Name, 10) = "system_led" Then Exit Function
   
-  Debug.Print "mame_updatestate", id, Hex(State), Name
+  'Debug.Print "mame_updatestate", id, Hex(State), Name
   
   Select Case MAME_Profile
     Case "harddriv", "racedriv"
@@ -131,6 +131,10 @@ Public Function mame_updatestate(ByVal id As Long, ByVal State As Long) As Long
 End Function
 
 Public Sub HardDrivin(Name As String, State As Long)
+  ' lamp2 = abort light
+  ' wheel = wheel (duh!)
+  ' sel3 = shifter magnet pwm
+
   Select Case Name
     Case "wheel"
       ' wheel latch
@@ -182,9 +186,25 @@ Public Sub HardDrivin(Name As String, State As Long)
 
     Case "SEL4"
       HardDrivin_SEL4 = State
-
+ 
     Case Else
-      Debug.Print Name, Hex(State)
+      Dim Mask As Byte
+      Select Case Name
+        Case "lamp1"
+          ' seat lock / &H04 - start lamp
+          Mask = &H4
+        Case "lamp2"
+          ' abort led / &H08 - red lamp
+          Mask = &H8
+        Case Else
+          Debug.Print Name, Hex(State)
+      End Select
+      
+      If State = 0 Then
+        LampsData = LampsData And (&HFF - Mask)
+      Else
+        LampsData = LampsData Or Mask
+      End If
   End Select
 End Sub
 

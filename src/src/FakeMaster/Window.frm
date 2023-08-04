@@ -106,9 +106,10 @@ Private Sub Form_Load()
 End Sub
 
 Private Sub MainLoop()
+  timeBeginPeriod 1
   QueryPerformanceFrequency NET_Resolution
   Debug.Print "1000ms ~= " & NET_Resolution
-  NET_Resolution = NET_Resolution / 57 'target fps of 57.5
+  NET_Resolution = NET_Resolution / 57.5 '57 'target fps of 57.5
   Debug.Print "time per frame ~= " & NET_Resolution
   'NET_Resolution = NET_Resolution * 2
   Dim Counter1 As Currency

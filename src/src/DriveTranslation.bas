@@ -273,7 +273,7 @@ Private Function TranslateDrive_M2(ByRef OldData As Byte, ByVal NewData As Byte)
       End If
       Exit Function
   Case Else
-    Debug.Print Profile, Hex(NewData)
+    'Debug.Print Profile, Hex(NewData)
 
   End Select
 
