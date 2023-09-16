@@ -230,7 +230,7 @@ Public Sub OutRun(Name As String, State As Long)
     End If
   End If
   If OutRun_Motor_Direction = 0 Then
-    DriveData = &H30
+    DriveData = &H10
   Else
     If OutRun_Motor_Direction = 1 Then
       DriveData = &H50 + OutRun_Motor_Speed
