@@ -5,6 +5,11 @@ function Init()
 	Patch_Network();
 end
 
+function Frame()
+	-- patch network error counter
+	I960_WriteDWord(0x00513994,0x00000000)
+end
+
 function Patch_Network()
 	Romset_PatchDWord(0, 0x4f344, 0x82A83000);
 	Romset_PatchDWord(0, 0x4f348, 0x00500000);	-- stob    g5,0x1a14000

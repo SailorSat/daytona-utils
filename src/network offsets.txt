@@ -1,0 +1,7 @@
+1a12001
+
+-= errorcounter =-
+indy500		0x53c6b0
+indy500d	0x555214
+motoraid	0x5195d4
+waverunr	0x513994	*

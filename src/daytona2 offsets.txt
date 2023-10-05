@@ -1,0 +1,12 @@
+Daytona2
+WORKRAM
++105007	= state
+	05  = attract mode
+	07  = logo
+	0B  = waiting for entry
+        0D  = setup
+        0F  = pre-race
+        11  = ingame
+	13  = ranking
+	17  = game over
+	1D  = ranking #2
