@@ -494,6 +494,7 @@ Public Declare Function MapVirtualKeyA Lib "user32.dll" (ByVal wCode As Long, By
 
 Public Const INPUT_KEYBOARD  As Long = 1
 
+Public Const KEYEVENTF_EXTENDEDKEY = &H1
 Public Const KEYEVENTF_KEYUP  As Long = 2
 Public Const KEYEVENTF_SCANCODE  As Long = 8
 
