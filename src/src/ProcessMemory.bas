@@ -117,11 +117,11 @@ Public Function ReadByte(Address As Long) As Byte
 End Function
 
 
-Public Function ReadString(Address As Long, length As Byte) As String
+Public Function ReadString(Address As Long, Length As Byte) As String
   Dim Result As Long
   Dim Buffer() As Byte
-  ReDim Buffer(length)
-  Result = ReadProcessMemory(mProcessHandle, Address, Buffer(0), length, 0)
+  ReDim Buffer(Length)
+  Result = ReadProcessMemory(mProcessHandle, Address, Buffer(0), Length, 0)
   ReadString = Buffer
   If InStr(1, ReadString, Chr(0)) Then ReadString = Left$(ReadString, InStr(1, ReadString, Chr(0), vbBinaryCompare) - 1)
 End Function

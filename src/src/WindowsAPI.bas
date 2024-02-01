@@ -497,6 +497,12 @@ Public Const INPUT_KEYBOARD  As Long = 1
 Public Const KEYEVENTF_KEYUP  As Long = 2
 Public Const KEYEVENTF_SCANCODE  As Long = 8
 
+Public Const VK_RETURN As Long = &HD
+Public Const VK_ESCAPE As Long = &H1B
+Public Const VK_LEFT As Long = &H25
+Public Const VK_UP As Long = &H26
+Public Const VK_RIGHT As Long = &H27
+Public Const VK_DOWN As Long = &H28
 Public Const VK_7 As Long = &H37
 
 Public Const MAPVK_VK_TO_VSC As Long = 0

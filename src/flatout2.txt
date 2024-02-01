@@ -1,3 +1,23 @@
 -lan -host
 
 -lan -join=1.2.3.4
+
+
+
+RaceInfo	0x8E8410
+	*+458		SessionType
+	*+1e14		PlayerName (default PLAYER)
+
+	SessionType	1	- menus
+			2	- ingame
+
+LinkSessionPtr	0x73B018
+	if zero then meh
+
+--
+
+Gas	= Enter
+Brake 	= ESC
+
+VR1	= Up
+VR2	= Down
