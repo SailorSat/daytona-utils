@@ -44,6 +44,20 @@
               <VariableType>4 Bytes</VariableType>
               <Address>+0x2C</Address>
             </CheatEntry>
+            <CheatEntry>
+              <ID>24</ID>
+              <Description>"0x30 ?"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>4 Bytes</VariableType>
+              <Address>+0x30</Address>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>23</ID>
+              <Description>"2087c"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>4 Bytes</VariableType>
+              <Address>+0x2087c</Address>
+            </CheatEntry>
           </CheatEntries>
         </CheatEntry>
         <CheatEntry>

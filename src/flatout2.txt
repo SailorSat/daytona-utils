@@ -1,6 +1,4 @@
--lan -host
-
--lan -join=1.2.3.4
+-profilenr=1 -lan -host -private_addr=1.2.3.4 -join=1.2.3.4
 
 
 

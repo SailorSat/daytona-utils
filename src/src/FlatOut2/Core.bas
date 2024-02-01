@@ -46,7 +46,6 @@ Public Sub Main()
     DirectInputDevice.GetDeviceStateJoystick DirectInputJoyState
   Else
     Debug.Print "no direct input devices?"
-    Stop
   End If
 
   ' dummy call
@@ -75,14 +74,14 @@ Public Sub Main()
       RetVal = FO2_GameState
       Window.Caption = RetVal
       Select Case RetVal
-        Case 0
+        Case 0, 3
           ' 0 splash
-          ' do nothing
-            LastReturnTick = GetTickCount
+          ' 3 profile
+          ' nothing to do
         
         Case 1
           ' 1 menu
-          If GetTickCount - LastReturnTick >= 333 Then
+          If GetTickCount - LastReturnTick >= 1000 Then
             LastReturnTick = GetTickCount
             LastWheelStatus = LastWheelStatus And &HF
           End If
@@ -104,14 +103,14 @@ Public Sub Main()
             If WheelActive And &H1 Then FO2_SendKey_CursorDown
           End If
         
-        Case 2, 3
+        Case 2
           ' 2 race
-          ' 3 profile
           ' tick return key once a second
           If GetTickCount - LastReturnTick >= 1000 Then
             LastReturnTick = GetTickCount
             FO2_SendKey_Return
           End If
+
       End Select
     Else
       IsRunning = False
@@ -135,12 +134,14 @@ End Sub
 Private Function CombinedWheelStatus() As Long
   Dim Result As Long
   
+  If DirectInputDevice Is Nothing Then Exit Function
+  
   DirectInputDevice.GetDeviceStateJoystick DirectInputJoyState
   With DirectInputJoyState
     ' X - wheel ; left / right
-    If .X < 16384 Then
+    If .X < 24576 Then
       Result = Result Or &H80
-    ElseIf .X > 49152 Then
+    ElseIf .X > 40960 Then
       Result = Result Or &H40
     End If
     
@@ -152,15 +153,15 @@ Private Function CombinedWheelStatus() As Long
     End If
   
     ' Z - accel ; enter
-    If .z > 32768 Then
+    If .z > 16384 Then
       Result = Result Or &H8
     End If
-    If .slider(0) > 32768 Then
+    If .slider(0) > 16384 Then
       Result = Result Or &H4
     End If
     
     ' rZ - brake ; escape
-    If .rz > 32768 Then
+    If .rz > 16384 Then
       Result = Result Or &H4
     End If
   
@@ -175,12 +176,12 @@ Private Function CombinedWheelStatus() As Long
     End If
   
     ' button 3 - up
-    If .Buttons(3) Then
+    If .Buttons(5) Then
       Result = Result Or &H2
     End If
     
     ' button 4 - down
-    If .Buttons(4) Then
+    If .Buttons(6) Then
       Result = Result Or &H1
     End If
 
