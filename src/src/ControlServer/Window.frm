@@ -348,6 +348,27 @@ Begin VB.Form Window
       Begin VB.CommandButton cmdProfile 
          Appearance      =   0  'Flat
          BackColor       =   &H0000C0C0&
+         Caption         =   "FLATOUT 2"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Index           =   25
+         Left            =   120
+         Style           =   1  'Graphical
+         TabIndex        =   84
+         Top             =   3960
+         Width           =   2055
+      End
+      Begin VB.CommandButton cmdProfile 
+         Appearance      =   0  'Flat
+         BackColor       =   &H0000C0C0&
          Caption         =   "SEGA RALLY 1/2"
          BeginProperty Font 
             Name            =   "Fixedsys"
@@ -2120,7 +2141,10 @@ Private Sub cmdProfile_Click(Index As Integer)
     
     Case 21
       bsBuffer = StrConv("media", vbFromUnicode)
-      
+    
+    Case 25
+      bsBuffer = StrConv("flatout2", vbFromUnicode)
+    
     Case Else
       Exit Sub
   End Select
