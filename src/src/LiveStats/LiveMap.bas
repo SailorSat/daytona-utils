@@ -4,6 +4,7 @@ Option Explicit
 Private MapOffset(0 To 15) As Long
 
 Public STATS_LocalAddress As String
+Public STATS_RemoteAddress As String
 Public STATS_Socket As Long
 
 Public STATS_Online As Boolean
@@ -31,6 +32,11 @@ Public Sub STATS_OnLoad()
     MsgBox "Something went wrong! #STATS_LocalAddress", vbCritical Or vbOKOnly, Window.Caption
     OnUnload
   End If
+
+  ' Local (relay)
+  Host = ReadIni("stats.ini", "relay", "remotehost", "127.0.0.1")
+  Port = CLng(ReadIni("stats.ini", "relay", "remoteport", "-1"))
+  STATS_RemoteAddress = WSABuildSocketAddress(Host, Port)
 
   STATS_Socket = ListenUDP(STATS_LocalAddress)
   If STATS_Socket = -1 Then
@@ -65,6 +71,8 @@ Public Sub STATS_OnReadUDP(lHandle As Long, sBuffer As String, sAddress As Strin
   Dim LastFrame As DaytonaFrame
   Dim Index As Long
   Dim Packet As DaytonaPacket
+    
+  If STATS_RemoteAddress <> "" Then Winsock.SendUDP lHandle, sBuffer, STATS_RemoteAddress
   
   Set LastFrame = ParseFrame(sBuffer)
   If Not LastFrame Is Nothing Then
