@@ -1,0 +1,68 @@
+CONFIG.DAT
+axis 0	X
+axis 1	Y
+axis 2	slider?
+axis 5	rZ
+
+
+steer right
+16cc	00 00 00 00		--
+	01 ff 80 00		joystick 1 X-R
+	01 00 7F 00		josttick 1 X-L
+
+steer left
+16d0	00 00 00 00		--
+	01 ff 80 00		joystick 1 X-R
+	01 00 7F 00		josttick 1 X-L
+
+accel
+16d4	00 00 00 00		--
+	01 00 FF 01		joystick 1 Y-F
+	01 FF 80 01		joystick 1 Y-D
+	01 00 7F 01		joystick 1 Y-U
+	01 00 FF 02		joystick 1 ?-F-
+	01 FF 00 02		joystick 1 ?-F+
+	01 00 FF 05		joystick 1 ?-F-
+
+brake
+16d8	00 00 00 00		--
+	01 00 FF 01		joystick 1 Y-F
+	01 FF 80 01		joystick 1 Y-D
+	01 00 7F 01		joystick 1 Y-U
+
+-handbrake-
+16dc	02 00 00 00		joy1 button1
+	02 06 00 00		joy1 button7
+
+-shift up-
+16e0	02 01 00 00		joy1 button2
+
+-shift down-
+16e4	02 02 00 00		joy1 button3
+
+-camera-
+16e8	02 00 00 00		joy1 button1
+
+-horn/siren-
+16ec	02 05 00 00		joy1 button6
+
+-rear view-
+16f0	04 30 00 42		keyboard B
+	04 26 00 4C		keyboard L
+-reset-
+16f4
+
+-spike-
+16f8
+
+-light-
+16fc
+
+
+
+----
+
+bumper cam
+in car
+low cam
+high cam
