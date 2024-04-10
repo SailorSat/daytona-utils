@@ -1,6 +1,6 @@
 VERSION 5.00
 Begin VB.Form Window 
-   BorderStyle     =   4  'Fixed ToolWindow
+   BorderStyle     =   4  'Festes Werkzeugfenster
    Caption         =   "Form1"
    ClientHeight    =   585
    ClientLeft      =   45
@@ -11,7 +11,7 @@ Begin VB.Form Window
    MinButton       =   0   'False
    ScaleHeight     =   585
    ScaleWidth      =   1785
-   StartUpPosition =   3  'Windows Default
+   StartUpPosition =   3  'Windows-Standard
    Begin VB.Timer Timer 
       Interval        =   1000
       Left            =   1800
@@ -27,10 +27,10 @@ Begin VB.Form Window
    End
    Begin VB.Shape shStatus 
       BackColor       =   &H00000040&
-      BackStyle       =   1  'Opaque
+      BackStyle       =   1  'Undurchsichtig
       Height          =   375
       Left            =   120
-      Shape           =   4  'Rounded Rectangle
+      Shape           =   4  'Gerundetes Rechteck
       Top             =   120
       Width           =   375
    End
@@ -58,6 +58,8 @@ Private NET_FlipFlop As Long
 Private NET_Resolution As Currency
 
 Private LastFrame As String
+
+Private isRunning As Boolean
 
 Private hEventTimer As Long
 
@@ -106,32 +108,39 @@ Private Sub Form_Load()
 End Sub
 
 Private Sub MainLoop()
-  timeBeginPeriod 1
-  QueryPerformanceFrequency NET_Resolution
-  Debug.Print "1000ms ~= " & NET_Resolution
-  NET_Resolution = NET_Resolution / 57.5 '57 'target fps of 57.5
-  Debug.Print "time per frame ~= " & NET_Resolution
-  'NET_Resolution = NET_Resolution * 2
-  Dim Counter1 As Currency
-  Dim Counter2 As Currency
+  isRunning = True
   
-  QueryPerformanceCounter Counter1
-  Counter2 = Counter1 + NET_Resolution
-  Do
-    While Counter1 < Counter2
-      QueryPerformanceCounter Counter1
-      DoEvents
-    Wend
-    Counter2 = Counter1 + NET_Resolution
+  ' prepare fps limiter
+  SetupTimer 57.7
+  
+  ' main loop
+  Dim delta As Single
+  While isRunning
+    ' throttle speed
+    delta = WaitTimer
+    
+    ' send data if available
     If UDP_Buffer <> "" Then
       Winsock.SendUDP UDP_Socket, UDP_Buffer, UDP_RemoteAddress
       UDP_Buffer = ""
+    
+      ' update fps counter
+      NET_Framerate = NET_Framerate + 1
     End If
-  Loop
+    
+    
+    ' VB shenanigans
+    DoEvents
+  Wend
+  
+  Winsock.Unload
+  End
 End Sub
 
 
 Private Sub Form_Unload(Cancel As Integer)
+  isRunning = False
+
   Winsock.Unload
   End
 End Sub
@@ -143,7 +152,6 @@ Public Sub OnReadUDP(lHandle As Long, sBuffer As String, sAddress As String)
     baBuffer() = StrConv(sBuffer, vbFromUnicode)
     If baBuffer(4) = 2 Then
       UDP_Buffer = sBuffer
-      NET_Framerate = NET_Framerate + 1
     Else
       Winsock.SendUDP UDP_Socket, sBuffer, UDP_RemoteAddress
     End If

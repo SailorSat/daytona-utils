@@ -6,6 +6,7 @@ Module=CoreEvents; src\FakeMaster\CoreEvents.bas
 Module=WindowsAPI; src\WindowsAPI.bas
 Module=Utilities; src\Utilities.bas
 Module=Winsock; src\Winsock.bas
+Module=Timer; src\Timer.bas
 IconForm="Window"
 Startup="Window"
 HelpFile=""
