@@ -111,13 +111,16 @@ Private Sub MainLoop()
   isRunning = True
   
   ' prepare fps limiter
-  SetupTimer 57.7
+  SetupTimer 57
   
   ' main loop
   Dim delta As Single
   While isRunning
     ' throttle speed
     delta = WaitTimer
+    
+    ' VB shenanigans
+    DoEvents
     
     ' send data if available
     If UDP_Buffer <> "" Then
@@ -127,10 +130,6 @@ Private Sub MainLoop()
       ' update fps counter
       NET_Framerate = NET_Framerate + 1
     End If
-    
-    
-    ' VB shenanigans
-    DoEvents
   Wend
   
   Winsock.Unload

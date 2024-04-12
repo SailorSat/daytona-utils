@@ -20,8 +20,7 @@ Public Function WaitTimer() As Single
   Dim TimerTemp As Currency
   QueryPerformanceCounter TimerTemp
   While TimerTemp < g_TimerGoal
-    'Sleep 0
-    DoEvents
+    Sleep 0
     QueryPerformanceCounter TimerTemp
   Wend
   While TimerTemp >= g_TimerGoal
