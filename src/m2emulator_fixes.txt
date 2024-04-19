@@ -1,0 +1,12 @@
+004cf3e1 89 44 24 0c     MOV        dword ptr [ESP + local_22c_pBufferRX],EAX
+004cf3e5 89 44 24 10     MOV        dword ptr [ESP + local_228_timeOut],EAX
+004cf3e9 89 44 24 14     MOV        dword ptr [ESP + local_228_timeOut+0x4],EAX
+
+--- change so that EAX is 0x4000 at 004cf3e9
+
+emulator_multicpu.exe+CF3C5 - C7 44 24 14 00400000  - mov [esp+14],00004000
+emulator_multicpu.exe+CF3CD - EB 1E                 - jmp emulator_multicpu.exe+CF3ED
+
+emulator_multicpu.exe+CF3E9 - EB DA                 - jmp emulator_multicpu.exe+CF3C5
+emulator_multicpu.exe+CF3EB - 90                    - nop 
+emulator_multicpu.exe+CF3EC - 90                    - nop 

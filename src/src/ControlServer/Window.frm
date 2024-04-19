@@ -348,6 +348,90 @@ Begin VB.Form Window
       Begin VB.CommandButton cmdProfile 
          Appearance      =   0  'Flat
          BackColor       =   &H0000C0C0&
+         Caption         =   "BENCHMARK"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Index           =   29
+         Left            =   4440
+         Style           =   1  'Graphical
+         TabIndex        =   88
+         Top             =   3960
+         Width           =   2055
+      End
+      Begin VB.CommandButton cmdProfile 
+         Appearance      =   0  'Flat
+         BackColor       =   &H0000C000&
+         Caption         =   "MOTOR RAID"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Index           =   28
+         Left            =   2280
+         Style           =   1  'Graphical
+         TabIndex        =   87
+         Top             =   1560
+         Width           =   2055
+      End
+      Begin VB.CommandButton cmdProfile 
+         Appearance      =   0  'Flat
+         BackColor       =   &H0000C000&
+         Caption         =   "MANX TT"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Index           =   27
+         Left            =   2280
+         Style           =   1  'Graphical
+         TabIndex        =   86
+         Top             =   1080
+         Width           =   2055
+      End
+      Begin VB.CommandButton cmdProfile 
+         Appearance      =   0  'Flat
+         BackColor       =   &H0000C000&
+         Caption         =   "SEGA TOURING CAR"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Index           =   26
+         Left            =   120
+         Style           =   1  'Graphical
+         TabIndex        =   85
+         Top             =   1560
+         Width           =   2055
+      End
+      Begin VB.CommandButton cmdProfile 
+         Appearance      =   0  'Flat
+         BackColor       =   &H0000C0C0&
          Caption         =   "FLATOUT 2"
          BeginProperty Font 
             Name            =   "Fixedsys"
@@ -2091,6 +2175,12 @@ Private Sub cmdProfile_Click(Index As Integer)
       bsBuffer = StrConv("indy500", vbFromUnicode)
     Case 2
       bsBuffer = StrConv("srallyc", vbFromUnicode)
+    Case 26
+      bsBuffer = StrConv("stcc", vbFromUnicode)
+    Case 27
+      bsBuffer = StrConv("manxtt", vbFromUnicode)
+    Case 28
+      bsBuffer = StrConv("motoraid", vbFromUnicode)
       
     Case 3
       bsBuffer = StrConv("vr", vbFromUnicode)
@@ -2138,6 +2228,8 @@ Private Sub cmdProfile_Click(Index As Integer)
       bsBuffer = StrConv("showcase2", vbFromUnicode)
     Case 24
       bsBuffer = StrConv("srally12", vbFromUnicode)
+    Case 29
+      bsBuffer = StrConv("bench", vbFromUnicode)
     
     Case 21
       bsBuffer = StrConv("media", vbFromUnicode)

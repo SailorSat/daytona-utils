@@ -1,0 +1,8 @@
+Window = 110, 110, 949, 492, Z, 22, 22, 861, 404, C
+WindowsAPI = 44, 44, 883, 426, 
+Winsock = 22, 22, 861, 404, 
+CoreEvents = 66, 66, 905, 448, 
+IniFiles = 0, 0, 0, 0, C
+M2Emulator = 0, 0, 839, 382, 
+ProcessMemory = 22, 22, 861, 404, 
+DaytonaOffsets = 66, 66, 905, 448, 

@@ -229,7 +229,7 @@ Public Sub ProcessPackets(ServerPacket As DaytonaPacket, ClientPacket As Daytona
     If FoundOne Then
       RtlMoveMemory RotI, Rot, 2
       WriteInteger M2EM_RAMBASE + CAMERA_ROTATION, RotI
-      WriteLong M2EM_BACKUPBASE + &H350, ZPos
+      WriteLong M2EM_BACKUPBASE + &H350&, ZPos
       WriteByte M2EM_RAMBASE + View, ViewNo
     Else
       ' Change View

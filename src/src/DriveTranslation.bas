@@ -94,7 +94,9 @@ Private Function TranslateDrive_M2(ByRef OldData As Byte, ByVal NewData As Byte)
           Debug.Print "daytona u", Hex(NewData)
       End Select
       
-    Case "stcc"
+    Case "stcc", "sgt24h", "overrev"
+      ' sgt24h - choose i/o type B
+      ' overrev - choose cabinet STCC
       CmdForce = NewData Mod &H10
       CmdGroup = NewData - CmdForce
       Select Case CmdGroup
@@ -108,6 +110,13 @@ Private Function TranslateDrive_M2(ByRef OldData As Byte, ByVal NewData As Byte)
         Case &H90
           ' 0x9x = ? (98 on start)
           Debug.Print "stcc 1", Hex(NewData)
+          If NewData = &H98 Then
+            TempData = &H7
+          Else
+            Exit Function
+          End If
+        Case &HA, &HB, &HC
+          ' unknown, ignore for now
           Exit Function
         Case Else
           Debug.Print "stcc u", Hex(NewData)
@@ -273,7 +282,7 @@ Private Function TranslateDrive_M2(ByRef OldData As Byte, ByVal NewData As Byte)
       End If
       Exit Function
   Case Else
-    'Debug.Print Profile, Hex(NewData)
+    Debug.Print Profile, Hex(NewData)
 
   End Select
 

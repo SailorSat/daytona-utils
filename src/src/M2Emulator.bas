@@ -137,6 +137,13 @@ Private Function CheckProfile() As Boolean
       ' Sega Touring Car Championship
       M2EM_Profile = "stcc"
 
+    Case "sgt24h"
+      ' Super GT 24h
+      M2EM_Profile = "sgt24h"
+      
+    Case "overrev", "overrevb"
+      ' OverRev
+
     Case Else
       M2EM_Profile = Profile
       Debug.Print "unknown game", Profile
