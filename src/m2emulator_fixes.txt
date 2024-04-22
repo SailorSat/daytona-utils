@@ -10,3 +10,11 @@ emulator_multicpu.exe+CF3CD - EB 1E                 - jmp emulator_multicpu.exe+
 emulator_multicpu.exe+CF3E9 - EB DA                 - jmp emulator_multicpu.exe+CF3C5
 emulator_multicpu.exe+CF3EB - 90                    - nop 
 emulator_multicpu.exe+CF3EC - 90                    - nop 
+
+CF3D0	-	CE7D0
+
+CC CC CC CC		>>		C7 44 24 14
+CC CC CC CC		>>		00 40 00 00
+CC CC			>>		EB 1E
+
+89 44 24 14		>>		EB DA 90 90
