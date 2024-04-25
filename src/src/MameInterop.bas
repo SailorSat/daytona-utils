@@ -50,7 +50,7 @@ Public Sub mame_start_internal(Profile As String)
   Debug.Print "mame_start_internal", Profile
   MAME_Profile = Profile
   Select Case MAME_Profile
-    Case "orunners", "outrun", "calspeed", "offroadc", "crusnusa", "crusnwld", "crusnexo", "sfrush", "sfrushrk", "sf2049", "gticlub"
+    Case "orunners", "outrun", "calspeed", "offroadc", "crusnusa", "crusnwld", "crusnexo", "sfrush", "sfrushrk", "sf2049", "gticlub", "midnrun", "windheat"
       DriveData = &H7
       LampsData = &H0
       PwmData = &H0
@@ -88,7 +88,7 @@ Public Function mame_updatestate(ByVal id As Long, ByVal State As Long) As Long
   If Left(Name, 6) = "cpuled" Then Exit Function
   If Left(Name, 10) = "system_led" Then Exit Function
   
-  'Debug.Print "mame_updatestate", id, Hex(State), Name
+  Debug.Print "mame_updatestate", id, Hex(State), Name
   
   Select Case MAME_Profile
     Case "harddriv", "racedriv"
@@ -113,7 +113,7 @@ Public Function mame_updatestate(ByVal id As Long, ByVal State As Long) As Long
     Case "sf2049"
       SFRush2049 Name, State
     
-    Case "gticlub"
+    Case "gticlub", "midnrun", "windheat"
       GtiClub Name, State
 
     Case Else
