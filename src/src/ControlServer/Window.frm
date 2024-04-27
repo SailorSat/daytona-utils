@@ -348,6 +348,48 @@ Begin VB.Form Window
       Begin VB.CommandButton cmdProfile 
          Appearance      =   0  'Flat
          BackColor       =   &H0000C0C0&
+         Caption         =   "SHOWCASE #4"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Index           =   31
+         Left            =   4440
+         Style           =   1  'Graphical
+         TabIndex        =   90
+         Top             =   4920
+         Width           =   2055
+      End
+      Begin VB.CommandButton cmdProfile 
+         Appearance      =   0  'Flat
+         BackColor       =   &H0000C0C0&
+         Caption         =   "SHOWCASE #3"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Index           =   30
+         Left            =   4440
+         Style           =   1  'Graphical
+         TabIndex        =   89
+         Top             =   4440
+         Width           =   2055
+      End
+      Begin VB.CommandButton cmdProfile 
+         Appearance      =   0  'Flat
+         BackColor       =   &H00C000C0&
          Caption         =   "BENCHMARK"
          BeginProperty Font 
             Name            =   "Fixedsys"
@@ -360,10 +402,10 @@ Begin VB.Form Window
          EndProperty
          Height          =   375
          Index           =   29
-         Left            =   4440
+         Left            =   2280
          Style           =   1  'Graphical
          TabIndex        =   88
-         Top             =   3960
+         Top             =   4440
          Width           =   2055
       End
       Begin VB.CommandButton cmdProfile 
@@ -468,7 +510,7 @@ Begin VB.Form Window
          Left            =   2280
          Style           =   1  'Graphical
          TabIndex        =   83
-         Top             =   4440
+         Top             =   3960
          Width           =   2055
       End
       Begin VB.CommandButton cmdProfile 
@@ -486,7 +528,7 @@ Begin VB.Form Window
          EndProperty
          Height          =   375
          Index           =   23
-         Left            =   4440
+         Left            =   2280
          Style           =   1  'Graphical
          TabIndex        =   82
          Top             =   3480
@@ -594,7 +636,7 @@ Begin VB.Form Window
          Left            =   4440
          Style           =   1  'Graphical
          TabIndex        =   59
-         Top             =   4920
+         Top             =   3960
          Width           =   2055
       End
       Begin VB.CommandButton cmdProfile 
@@ -615,7 +657,7 @@ Begin VB.Form Window
          Left            =   4440
          Style           =   1  'Graphical
          TabIndex        =   58
-         Top             =   4440
+         Top             =   3480
          Width           =   2055
       End
       Begin VB.CommandButton cmdProfile 
@@ -2222,20 +2264,24 @@ Private Sub cmdProfile_Click(Index As Integer)
     Case 16
       bsBuffer = StrConv("dirtdvls", vbFromUnicode)
       
+    Case 24
+      bsBuffer = StrConv("srally12", vbFromUnicode)
+    Case 25
+      bsBuffer = StrConv("flatout2", vbFromUnicode)
+    
+    Case 29
+      bsBuffer = StrConv("bench", vbFromUnicode)
+    Case 21
+      bsBuffer = StrConv("media", vbFromUnicode)
+    
     Case 17
       bsBuffer = StrConv("showcase", vbFromUnicode)
     Case 18
       bsBuffer = StrConv("showcase2", vbFromUnicode)
-    Case 24
-      bsBuffer = StrConv("srally12", vbFromUnicode)
-    Case 29
-      bsBuffer = StrConv("bench", vbFromUnicode)
-    
-    Case 21
-      bsBuffer = StrConv("media", vbFromUnicode)
-    
-    Case 25
-      bsBuffer = StrConv("flatout2", vbFromUnicode)
+    Case 30
+      bsBuffer = StrConv("showcase3", vbFromUnicode)
+    Case 31
+      bsBuffer = StrConv("showcase4", vbFromUnicode)
     
     Case Else
       Exit Sub
