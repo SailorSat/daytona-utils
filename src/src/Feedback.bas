@@ -38,7 +38,10 @@ Public Sub Timer()
     ProcessPwm 0
     If FeedbackDebug Then OnText "Feedback", "Debug", "M2EM"
   Else
-    ProcessDrive 0
+    ProcessDrive &H10
+    Sleep 50
+    ProcessDrive &H0
+    Sleep 50
     ProcessLamps 0
     ProcessPwm 0
     If FeedbackDebug Then OnText "Feedback", "Debug", "NONE"

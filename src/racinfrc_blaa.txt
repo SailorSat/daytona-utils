@@ -1,0 +1,18 @@
+init @ 2013ac
+
+--
+c08094	D0 AND 0x07 (player id mask)
+D0 to 0xDD0000
+D0 to D1
+D1 << 7
+D0 += 1
+D0 to 0xC0607f,D1
+D0 to 0xC0647f,D1
+D0 to 0xDC007f,D1*2
+D0 to 0xC0687f
+
+-- c080c6
+(A0 = C05F00)
+0x01 to A0 + $86
+CLR A0 + $88
+0x36 to 0xDD0001

@@ -16,6 +16,7 @@ Public Const CTRL_CMD_REBOOT As Byte = &H10
 Public Const CTRL_CMD_EX As Byte = &H11
 Public Const CTRL_CMD_CAMERA As Byte = &H12
 Public Const CTRL_CMD_LOADER_PROFILE As Byte = &HF0
+Public Const CTRL_CMD_LOADER_SOUND As Byte = &HF1
 
 ' Status (byte 1)
 Public Const CTRL_STATUS_OFFLINE As Byte = &H10

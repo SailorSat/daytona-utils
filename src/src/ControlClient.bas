@@ -398,6 +398,9 @@ Public Sub ReadUDP(lHandle As Long, sBuffer As String, sAddress As String)
   
     Case CTRL_CMD_LOADER_PROFILE
       OnProfile Replace(Mid(StrConv(baBuffer, vbUnicode), 2), Chr(0), "")
+      
+    Case CTRL_CMD_LOADER_SOUND
+      PlaySoundA "test.wav", 0, SND_FILENAME Or SND_ASYNC
   End Select
 End Sub
 

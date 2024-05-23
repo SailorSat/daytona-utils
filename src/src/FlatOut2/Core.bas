@@ -10,8 +10,6 @@ Global RunOnIDE As Boolean
 Private IsRunning As Boolean
 Private SystemPath As String
 
-Private Declare Function GetSystemDirectoryA Lib "kernel32" (ByVal lpBuffer As String, ByVal nSize As Long) As Long
-
 Private LastReturnTick As Long
 Private LastWheelStatus As Long
 

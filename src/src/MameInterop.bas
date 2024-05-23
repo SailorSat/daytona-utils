@@ -88,6 +88,13 @@ Public Function mame_updatestate(ByVal id As Long, ByVal State As Long) As Long
   If Left(Name, 6) = "cpuled" Then Exit Function
   If Left(Name, 10) = "system_led" Then Exit Function
   
+  If Left(Name, 11) = "Orientation" Then
+    Sleep 500
+    MAME_SendLeftRight
+    Sleep 500
+    MAME_SendLeftRight
+  End If
+  
   Debug.Print "mame_updatestate", id, Hex(State), Name
   
   Select Case MAME_Profile
@@ -684,3 +691,42 @@ End Function
 ' 0x20 - fwd/rvs
 ' 0x40 - brake
 ' 0x80 - seat lock
+
+
+Public Sub MAME_SendLeftRight()
+  Dim keyInput As INPUT_
+  Dim VKey As Long, ScanCode As Long
+  
+  ' left
+  ScanCode = MapVirtualKeyA(VK_LEFT, MAPVK_VK_TO_VSC)
+  
+  keyInput.dwType = INPUT_KEYBOARD
+  keyInput.dwFlags = KEYEVENTF_SCANCODE + KEYEVENTF_EXTENDEDKEY
+  keyInput.wScan = ScanCode
+  SendInput 1, keyInput, LenB(keyInput)
+  
+  Sleep 25
+  
+  keyInput.dwFlags = KEYEVENTF_SCANCODE + KEYEVENTF_EXTENDEDKEY + KEYEVENTF_KEYUP
+  keyInput.wScan = ScanCode
+  SendInput 1, keyInput, LenB(keyInput)
+
+  Sleep 25
+  
+  ' right
+  ScanCode = MapVirtualKeyA(VK_RIGHT, MAPVK_VK_TO_VSC)
+  
+  keyInput.dwType = INPUT_KEYBOARD
+  keyInput.dwFlags = KEYEVENTF_SCANCODE + KEYEVENTF_EXTENDEDKEY
+  keyInput.wScan = ScanCode
+  SendInput 1, keyInput, LenB(keyInput)
+  
+  Sleep 25
+  
+  keyInput.dwFlags = KEYEVENTF_SCANCODE + KEYEVENTF_EXTENDEDKEY + KEYEVENTF_KEYUP
+  keyInput.wScan = ScanCode
+  SendInput 1, keyInput, LenB(keyInput)
+
+  Sleep 25
+End Sub
+

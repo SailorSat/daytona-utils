@@ -17,9 +17,6 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
-Private Declare Sub mouse_event Lib "user32" (ByVal dwFlags As Long, ByVal dx As Long, ByVal dy As Long, ByVal cButtons As Long, ByVal dwExtraInfo As Long)
-Private Const MOUSEEVENTF_MOVE = &H1&
-
 Private DirectX As DirectX8, DirectInput As DirectInput8, DirectInputEnumeration As DirectInputEnumDevices8
 Private DirectInputDevice As DirectInputDevice8, Joystate As DIJOYSTATE
 Private Active As Boolean

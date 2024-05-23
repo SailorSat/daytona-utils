@@ -7,6 +7,7 @@ Option Explicit
 Public Declare Function GetTickCount Lib "kernel32.dll" () As Long
 Public Declare Function CloseHandle Lib "kernel32.dll" (ByVal hObject As Long) As Long
 Public Declare Sub RtlMoveMemory Lib "kernel32.dll" (Destination As Any, Source As Any, ByVal Length As Long)
+Public Declare Function GetSystemDirectoryA Lib "kernel32.dll" (ByVal lpBuffer As String, ByVal nSize As Long) As Long
 
 Public Declare Function SetFocus Lib "user32.dll" (ByVal hWnd As Long) As Long
 
@@ -14,6 +15,14 @@ Public Declare Function CreateWindowExA Lib "user32.dll" (ByVal dwExStyle As Lon
 Public Declare Function DestroyWindow Lib "user32.dll" (ByVal hWnd As Long) As Long
 Public Declare Function RegisterWindowMessageA Lib "user32.dll" (ByVal sString As String) As Long
 Public Declare Function CallWindowProcA Lib "user32.dll" (ByVal wndrpcPrev As Long, ByVal hWnd As Long, ByVal lMessage As Long, ByVal wParam As Long, lParam As Any) As Long
+
+
+
+' ---
+' Sound
+Public Declare Function PlaySoundA Lib "winmm.dll" (ByVal lpszName As String, ByVal hModule As Long, ByVal dwFlags As Long) As Long
+Public Const SND_ASYNC As Long = &H1
+Public Const SND_FILENAME As Long = &H20000
 
 
 ' ---
@@ -489,6 +498,7 @@ Public Type INPUT_
   dwPadding As Currency
 End Type
 
+Public Declare Sub mouse_event Lib "user32.dll" (ByVal dwFlags As Long, ByVal dx As Long, ByVal dy As Long, ByVal cButtons As Long, ByVal dwExtraInfo As Long)
 Public Declare Function SendInput Lib "user32.dll" (ByVal nInputs As Long, ByRef pInputs As Any, ByVal cbSize As Long) As Long
 Public Declare Function MapVirtualKeyA Lib "user32.dll" (ByVal wCode As Long, ByVal wMapType As Long) As Long
 
@@ -508,6 +518,7 @@ Public Const VK_7 As Long = &H37
 
 Public Const MAPVK_VK_TO_VSC As Long = 0
 
+Public Const MOUSEEVENTF_MOVE = &H1&
 
 ' ---
 Public Function GetErrorString(ByVal LastError As Long) As String
