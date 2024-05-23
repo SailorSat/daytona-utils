@@ -2880,6 +2880,8 @@ Private OPT_GameMode As Byte
 Private OPT_Handicap As Byte
 Private OPT_Music As Byte
 
+Private AllowExit As Boolean
+
 Private Sub cmdCamera_Click(Index As Integer)
   Dim baBuffer(0 To 31) As Byte
   baBuffer(0) = CTRL_CMD_CAMERA
@@ -3193,7 +3195,7 @@ Private Sub optTrack_Click(Index As Integer)
 End Sub
 
 Private Sub Form_DblClick()
-  Form_Unload 0
+  If AllowExit Then Form_Unload 0
 End Sub
 
 Private Sub Form_Load()
@@ -3228,6 +3230,11 @@ Private Sub Form_Load()
   For Index = 0 To 15
     UDP_RemoteStatus(Index) = CTRL_STATUS_OFFLINE
   Next
+
+  AllowExit = CBool(ReadIni("control.ini", "server", "AllowExit", "true"))
+  optRemote(1).Enabled = CBool(ReadIni("control.ini", "server", "AllowCamera", "true"))
+  optRemote(2).Enabled = CBool(ReadIni("control.ini", "server", "AllowProfile", "true"))
+  optRemote(3).Enabled = CBool(ReadIni("control.ini", "server", "AllowSounds", "true"))
 
   Timer2.Enabled = True
   Timer2_Timer
