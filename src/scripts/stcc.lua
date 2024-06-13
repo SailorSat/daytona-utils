@@ -23,6 +23,9 @@ function FixMasterState()
 						for offset = 0x000, 0xE00, 0x1C0
 						do
 							-- if client
+							if I960_ReadByte(0x01A12002 + offset) == 0x00 then
+								AllClientsReady = AllClientsReady and false;
+							end
 							if I960_ReadByte(0x01A12002 + offset) > 0x02 then
 								if I960_ReadByte(0x01A12005 + offset) == 0x01 then
 									AllClientsReady = AllClientsReady and true;
@@ -41,9 +44,6 @@ function FixMasterState()
 					end
 				end
 			end
-		else
-			-- client
-			StateDelay = 0x01;
 		end
 	end
 end
