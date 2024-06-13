@@ -5,5 +5,5 @@ end
 
 function Frame()
 	-- patch network error counter
-	I960_WriteDWord(0x0053c6b0,0x00000000)
+	I960_WriteDWord(0x005ec6b0,0x00000000)
 end

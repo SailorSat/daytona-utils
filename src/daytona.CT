@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<CheatTable CheatEngineTableVersion="42">
+<CheatTable CheatEngineTableVersion="45">
   <CheatEntries>
     <CheatEntry>
       <ID>0</ID>
@@ -831,6 +831,22 @@
               <VariableType>Byte</VariableType>
               <Address>+3</Address>
             </CheatEntry>
+            <CheatEntry>
+              <ID>186</ID>
+              <Description>"+12 FRAME SIZE"</Description>
+              <ShowAsHex>1</ShowAsHex>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>2 Bytes</VariableType>
+              <Address>+12</Address>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>187</ID>
+              <Description>"+14 FRAME OFFSET"</Description>
+              <ShowAsHex>1</ShowAsHex>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>2 Bytes</VariableType>
+              <Address>+14</Address>
+            </CheatEntry>
           </CheatEntries>
         </CheatEntry>
         <CheatEntry>
@@ -841,6 +857,89 @@
           <BitLength>1</BitLength>
           <ShowAsBinary>0</ShowAsBinary>
           <Address>+A000</Address>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>188</ID>
+              <Description>"Slot 0"</Description>
+              <ShowAsHex>1</ShowAsHex>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>Array of byte</VariableType>
+              <ByteLength>32</ByteLength>
+              <Address>+0</Address>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>189</ID>
+              <Description>"Slot 1"</Description>
+              <ShowAsHex>1</ShowAsHex>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>Array of byte</VariableType>
+              <ByteLength>32</ByteLength>
+              <Address>+1c0</Address>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>190</ID>
+              <Description>"Slot 2"</Description>
+              <ShowAsHex>1</ShowAsHex>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>Array of byte</VariableType>
+              <ByteLength>32</ByteLength>
+              <Address>+380</Address>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>191</ID>
+              <Description>"Slot 3"</Description>
+              <ShowAsHex>1</ShowAsHex>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>Array of byte</VariableType>
+              <ByteLength>32</ByteLength>
+              <Address>+540</Address>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>193</ID>
+              <Description>"Slot 4"</Description>
+              <ShowAsHex>1</ShowAsHex>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>Array of byte</VariableType>
+              <ByteLength>32</ByteLength>
+              <Address>+700</Address>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>192</ID>
+              <Description>"Slot 5"</Description>
+              <ShowAsHex>1</ShowAsHex>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>Array of byte</VariableType>
+              <ByteLength>32</ByteLength>
+              <Address>+8c0</Address>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>195</ID>
+              <Description>"Slot 6"</Description>
+              <ShowAsHex>1</ShowAsHex>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>Array of byte</VariableType>
+              <ByteLength>32</ByteLength>
+              <Address>+a80</Address>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>194</ID>
+              <Description>"Slot 7"</Description>
+              <ShowAsHex>1</ShowAsHex>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>Array of byte</VariableType>
+              <ByteLength>32</ByteLength>
+              <Address>+c40</Address>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>196</ID>
+              <Description>"Slot 8"</Description>
+              <ShowAsHex>1</ShowAsHex>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>Array of byte</VariableType>
+              <ByteLength>32</ByteLength>
+              <Address>+e00</Address>
+            </CheatEntry>
+          </CheatEntries>
         </CheatEntry>
       </CheatEntries>
     </CheatEntry>
@@ -910,8 +1009,11 @@
           <ShowAsHex>1</ShowAsHex>
           <ShowAsSigned>0</ShowAsSigned>
           <VariableType>Array of byte</VariableType>
-          <ByteLength>4096</ByteLength>
+          <ByteLength>32</ByteLength>
           <Address>005aa750</Address>
+          <Offsets>
+            <Offset>0</Offset>
+          </Offsets>
         </CheatEntry>
         <CheatEntry>
           <ID>168</ID>
@@ -973,6 +1075,7 @@
         <CheatEntry>
           <ID>176</ID>
           <Description>"CommOffset"</Description>
+          <ShowAsHex>1</ShowAsHex>
           <ShowAsSigned>0</ShowAsSigned>
           <VariableType>4 Bytes</VariableType>
           <Address>00574dd8</Address>
@@ -1009,6 +1112,56 @@
       <VariableType>4 Bytes</VariableType>
       <Address>004cf3e9</Address>
     </CheatEntry>
+    <CheatEntry>
+      <ID>181</ID>
+      <Description>"RXCODE"</Description>
+      <ShowAsHex>1</ShowAsHex>
+      <ShowAsSigned>0</ShowAsSigned>
+      <VariableType>4 Bytes</VariableType>
+      <Address>004CF7B1</Address>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>183</ID>
+      <Description>"FPS?"</Description>
+      <ShowAsSigned>0</ShowAsSigned>
+      <VariableType>Float</VariableType>
+      <Address>00574DCC</Address>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>184</ID>
+      <Description>"No description"</Description>
+      <ShowAsSigned>0</ShowAsSigned>
+      <VariableType>2 Bytes</VariableType>
+      <Address>004cc8d5</Address>
+    </CheatEntry>
   </CheatEntries>
+  <CheatCodes>
+    <CodeEntry>
+      <Description>Change of add esi,00002000</Description>
+      <AddressString>emulator_multicpu.exe+CF7B7</AddressString>
+      <Before>
+        <Byte>44</Byte>
+        <Byte>90</Byte>
+        <Byte>90</Byte>
+        <Byte>90</Byte>
+        <Byte>90</Byte>
+      </Before>
+      <Actual>
+        <Byte>81</Byte>
+        <Byte>C6</Byte>
+        <Byte>00</Byte>
+        <Byte>20</Byte>
+        <Byte>00</Byte>
+        <Byte>00</Byte>
+      </Actual>
+      <After>
+        <Byte>B9</Byte>
+        <Byte>80</Byte>
+        <Byte>03</Byte>
+        <Byte>00</Byte>
+        <Byte>00</Byte>
+      </After>
+    </CodeEntry>
+  </CheatCodes>
   <UserdefinedSymbols/>
 </CheatTable>
