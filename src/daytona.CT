@@ -558,6 +558,38 @@
           <VariableType>4 Bytes</VariableType>
           <Address>+100000</Address>
         </CheatEntry>
+        <CheatEntry>
+          <ID>197</ID>
+          <Description>"+EC6B0 - INDY500 Error Counter"</Description>
+          <ShowAsHex>1</ShowAsHex>
+          <ShowAsSigned>0</ShowAsSigned>
+          <VariableType>4 Bytes</VariableType>
+          <Address>+EC6B0</Address>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>198</ID>
+          <Description>"+55214 - INDY500D Error Counter"</Description>
+          <ShowAsHex>1</ShowAsHex>
+          <ShowAsSigned>0</ShowAsSigned>
+          <VariableType>4 Bytes</VariableType>
+          <Address>+55214</Address>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>199</ID>
+          <Description>"+195d4 - MOTORAID Error Counter"</Description>
+          <ShowAsHex>1</ShowAsHex>
+          <ShowAsSigned>0</ShowAsSigned>
+          <VariableType>4 Bytes</VariableType>
+          <Address>+195d4</Address>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>200</ID>
+          <Description>"+13994 - WAVERUNR Error Counter"</Description>
+          <ShowAsHex>1</ShowAsHex>
+          <ShowAsSigned>0</ShowAsSigned>
+          <VariableType>4 Bytes</VariableType>
+          <Address>+13994</Address>
+        </CheatEntry>
       </CheatEntries>
     </CheatEntry>
     <CheatEntry>
