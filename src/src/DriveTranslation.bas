@@ -107,8 +107,15 @@ Private Function TranslateDrive_M2(ByRef OldData As Byte, ByVal NewData As Byte)
           Else
             Exit Function
           End If
-        Case &H30, &H50, &H60
+        Case &H30
           ' 0x3x = CENTERING (30-37)
+          If CmdForce < &H8 Then
+            TempData = &H10
+          Else
+            TempData = NewData
+          End If
+          Exit Function
+        Case &H50, &H60
           ' 0x5x = ROLL LEFT (51-57)
           ' 0x6x = ROLL RIGHT (61-67)
           Debug.Print "jaleco 0", Hex(NewData)
@@ -138,13 +145,20 @@ Private Function TranslateDrive_M2(ByRef OldData As Byte, ByVal NewData As Byte)
       CmdForce = NewData Mod &H10
       CmdGroup = NewData - CmdForce
       Select Case CmdGroup
-        Case &H0, &H10, &H20, &H30, &H40, &H50, &H60, &H80
+        Case &H30
+          If CmdForce < &H8 Then
+            TempData = &H10
+          Else
+            TempData = NewData
+          End If
+          Exit Function
+        Case &H0, &H10, &H20, &H40, &H50, &H60, &H80
           ' 0x0x = GAME STATE
-          ' 0x3x = CENTERING (30-37)
           ' 0x5x = ROLL LEFT (51-57)
           ' 0x6x = ROLL RIGHT (61-67)
           Debug.Print "stcc 0", Hex(NewData)
           TempData = NewData
+        
         Case &H90
           Debug.Print "stcc 1", Hex(NewData)
           If NewData = &H98 Then

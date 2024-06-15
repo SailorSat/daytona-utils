@@ -1215,26 +1215,128 @@
     </CheatEntry>
     <CheatEntry>
       <ID>207</ID>
-      <Description>"FPS3"</Description>
+      <Description>"PerformanceFrequency?"</Description>
       <ShowAsHex>1</ShowAsHex>
       <ShowAsSigned>0</ShowAsSigned>
       <VariableType>8 Bytes</VariableType>
-      <Address>0018FA38</Address>
+      <Address>0018F9DC</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>208</ID>
-      <Description>"No description"</Description>
+      <Description>"Timer0"</Description>
+      <ShowAsHex>1</ShowAsHex>
+      <ShowAsSigned>0</ShowAsSigned>
+      <VariableType>8 Bytes</VariableType>
+      <Address>0018FA20+18</Address>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>210</ID>
+      <Description>"Timer1"</Description>
       <ShowAsHex>1</ShowAsHex>
       <ShowAsSigned>0</ShowAsSigned>
       <VariableType>8 Bytes</VariableType>
       <Address>0018FA20+10</Address>
     </CheatEntry>
     <CheatEntry>
+      <ID>223</ID>
+      <Description>"Timer3"</Description>
+      <ShowAsHex>1</ShowAsHex>
+      <ShowAsSigned>0</ShowAsSigned>
+      <VariableType>8 Bytes</VariableType>
+      <Address>0018FA60</Address>
+    </CheatEntry>
+    <CheatEntry>
       <ID>209</ID>
-      <Description>"No description"</Description>
+      <Description>"TimerD (1 second)"</Description>
       <ShowAsSigned>0</ShowAsSigned>
       <VariableType>Double</VariableType>
       <Address>0018FA20+8</Address>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>216</ID>
+      <Description>"ESI"</Description>
+      <ShowAsSigned>0</ShowAsSigned>
+      <VariableType>Byte</VariableType>
+      <Address>03F20020</Address>
+      <CheatEntries>
+        <CheatEntry>
+          <ID>221</ID>
+          <Description>"+2C -Rendering Stats"</Description>
+          <ShowAsSigned>0</ShowAsSigned>
+          <VariableType>Byte</VariableType>
+          <Address>+2C</Address>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>217</ID>
+          <Description>"+1C - PAUSE"</Description>
+          <ShowAsSigned>0</ShowAsSigned>
+          <VariableType>Byte</VariableType>
+          <Address>+1c</Address>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>220</ID>
+          <Description>"+2D - Render Tilemaps"</Description>
+          <ShowAsSigned>0</ShowAsSigned>
+          <VariableType>Byte</VariableType>
+          <Address>+2D</Address>
+        </CheatEntry>
+      </CheatEntries>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>218</ID>
+      <Description>"EDI"</Description>
+      <ShowAsSigned>0</ShowAsSigned>
+      <VariableType>Byte</VariableType>
+      <Address>0018FA20</Address>
+      <CheatEntries>
+        <CheatEntry>
+          <ID>219</ID>
+          <Description>"+28D - TIMING DEBUG"</Description>
+          <ShowAsSigned>0</ShowAsSigned>
+          <VariableType>Byte</VariableType>
+          <Address>+28D</Address>
+        </CheatEntry>
+      </CheatEntries>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>222</ID>
+      <Description>"No description"</Description>
+      <ShowAsSigned>0</ShowAsSigned>
+      <VariableType>Byte</VariableType>
+      <Address>010f01b5</Address>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>224</ID>
+      <Description>"No description"</Description>
+      <VariableType>Float</VariableType>
+      <Address>emulator_multicpu.exe+172934</Address>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>225</ID>
+      <Description>"No description"</Description>
+      <VariableType>Float</VariableType>
+      <Address>emulator_multicpu.exe+174DCC</Address>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>226</ID>
+      <Description>"No description"</Description>
+      <ShowAsSigned>0</ShowAsSigned>
+      <VariableType>Float</VariableType>
+      <Address>0051d058</Address>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>227</ID>
+      <Description>"No description"</Description>
+      <ShowAsSigned>0</ShowAsSigned>
+      <VariableType>Float</VariableType>
+      <Address>0051d050</Address>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>228</ID>
+      <Description>"Target FPS?"</Description>
+      <ShowAsSigned>0</ShowAsSigned>
+      <VariableType>Float</VariableType>
+      <Address>010F1350+28</Address>
     </CheatEntry>
   </CheatEntries>
   <UserdefinedSymbols/>
