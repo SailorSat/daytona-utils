@@ -70,6 +70,7 @@ Public Sub SendDrive(Data As Byte)
 End Sub
 
 Public Sub ProcessLamps(Data As Byte)
+  If Data = &HFF Then Exit Sub
   If Data <> LampsData Then
     LampsData = Data
     SendLamps LampsData

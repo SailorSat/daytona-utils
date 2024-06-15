@@ -93,34 +93,76 @@ Private Function TranslateDrive_M2(ByRef OldData As Byte, ByVal NewData As Byte)
         Case Else
           Debug.Print "daytona u", Hex(NewData)
       End Select
-      
-    Case "stcc", "sgt24h", "overrev"
+    
+    Case "sgt24h", "overrev"
       ' sgt24h - choose i/o type B
       ' overrev - choose cabinet STCC
       CmdForce = NewData Mod &H10
       CmdGroup = NewData - CmdForce
       Select Case CmdGroup
+        Case &H0
+          Debug.Print "jaleco 1", Hex(NewData)
+          If NewData = &H1 Then
+            TempData = &H10
+          Else
+            Exit Function
+          End If
+        Case &H30, &H50, &H60
+          ' 0x3x = CENTERING (30-37)
+          ' 0x5x = ROLL LEFT (51-57)
+          ' 0x6x = ROLL RIGHT (61-67)
+          Debug.Print "jaleco 0", Hex(NewData)
+          TempData = NewData
+        Case &H70, &H90, &HA0, &HB0, &HC0
+          ' 0x9x = ? (98 on start)
+          ' unknown, ignore for now
+          Exit Function
+        Case &HF0
+          Debug.Print "jaleco F", Hex(NewData)
+          If NewData = &HFF Then
+            TempData = &H7
+          Else
+            Exit Function
+          End If
+        Case Else
+          Debug.Print "jaleco u", Hex(NewData)
+      End Select
+      If OldData <> TempData Then
+        OldData = TempData
+        TranslateDrive_M2 = True
+      End If
+      Exit Function
+    
+    
+    Case "stcc"
+      CmdForce = NewData Mod &H10
+      CmdGroup = NewData - CmdForce
+      Select Case CmdGroup
         Case &H0, &H10, &H20, &H30, &H40, &H50, &H60, &H80
           ' 0x0x = GAME STATE
-          ' 0x3x = CENTERING (30-38)
+          ' 0x3x = CENTERING (30-37)
           ' 0x5x = ROLL LEFT (51-57)
           ' 0x6x = ROLL RIGHT (61-67)
           Debug.Print "stcc 0", Hex(NewData)
           TempData = NewData
         Case &H90
-          ' 0x9x = ? (98 on start)
           Debug.Print "stcc 1", Hex(NewData)
           If NewData = &H98 Then
             TempData = &H7
           Else
             Exit Function
           End If
-        Case &HA, &HB, &HC
+        Case &HA0, &HB0, &HC0
           ' unknown, ignore for now
           Exit Function
         Case Else
           Debug.Print "stcc u", Hex(NewData)
       End Select
+      If OldData <> TempData Then
+        OldData = TempData
+        TranslateDrive_M2 = True
+      End If
+      Exit Function
 
     Case "srallyc"
       Select Case NewData
