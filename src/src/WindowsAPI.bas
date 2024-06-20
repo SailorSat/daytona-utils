@@ -17,7 +17,6 @@ Public Declare Function RegisterWindowMessageA Lib "user32.dll" (ByVal sString A
 Public Declare Function CallWindowProcA Lib "user32.dll" (ByVal wndrpcPrev As Long, ByVal hWnd As Long, ByVal lMessage As Long, ByVal wParam As Long, lParam As Any) As Long
 
 
-
 ' ---
 ' Sound
 Public Declare Function PlaySoundA Lib "winmm.dll" (ByVal lpszName As String, ByVal hModule As Long, ByVal dwFlags As Long) As Long
@@ -87,6 +86,18 @@ Public Type PROCESSENTRY32
   dwFlags As Long
   szExeFile As String * 260
 End Type
+
+
+' ---
+' Process Priority/Affinity
+Public Declare Function GetCurrentProcess Lib "kernel32.dll" () As Long
+Public Declare Function SetProcessAffinityMask Lib "kernel32.dll" (ByVal hProcess As Long, ByVal dwProcessAffinityMask As Long) As Long
+Public Declare Function SetPriorityClass Lib "kernel32.dll" (ByVal hProcess As Long, ByVal dwPriorityClass As Long) As Long
+
+Public Const IDLE_PRIORITY_CLASS As Long = &H40&
+Public Const NORMAL_PRIORITY_CLASS As Long = &H20&
+Public Const HIGH_PRIORITY_CLASS As Long = &H80&
+Public Const REALTIME_PRIORITY_CLASS As Long = &H100&
 
 
 ' ---

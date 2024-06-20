@@ -1,0 +1,51 @@
+@004CF7B1
+8B 35 50 A7 5A 00					-- mov esi,[005AA750]
+81 C6 00 20 00 00					-- add esi,00002000
+B9 80 03 00 00						-- mov ecx,00000380
+8D BC 24 1D 0E 00 00				-- lea edi,[esp+00000E1D]
+
+C7 84 24 18 0E 00 00 4D 32 45 4D	-- mov [esp+00000E18],4D45324D
+C6 84 24 1C 0E 00 00 02				-- mov byte ptr [esp+00000E1C],02
+F3 A5								-- repe movsd 
+
+68 C8 A6 5A 00						-- push 005AA6C8
+8D BC 24 1C 0E 00 00				-- lea edi,[esp+00000E1C]
+E8 D9 FA FF FF						-- call 004cf2d0
+
+@004CF7F7
+
+-----
+@004CF7B1
+EB 44								-- jmp 004CF7F7
+
+8B 35 50 A7 5A 00					-- mov esi,[005AA750]
+81 C6 00 20 00 00					-- add esi,00002000
+B9 80 03 00 00						-- mov ecx,00000380
+8D BC 24 1D 0E 00 00				-- lea edi,[esp+00000E1D]
+C7 84 24 18 0E 00 00 4D 32 45 4D	-- mov [esp+00000E18],4D45324D
+C6 84 24 1C 0E 00 00 02				-- mov byte ptr [esp+00000E1C],02
+F3 A5								-- repe movsd 
+
+68 C8 A6 5A 00						-- push 005AA6C8
+8D BC 24 1C 0E 00 00				-- lea edi,[esp+00000E1C]
+E8 DF FA FF FF						-- call 004cf2d0
+E9 9E 04 00 00						-- jmp 004CFC94
+
+CC									-- int 3
+
+@004CF82F
+ e9 10 01 00 00        -- jmp 004CF944
+ 90                    -- nop
+ 
+@004CF944
+ 38 1d b9 d8 0e 01     -- cmp [010ED8B9],bl
+ e9 63 02 00 00        -- jmp 004CFBB2
+
+@004CFBB2
+ 75 05				   -- jne 004CFBB9
+ E9 FA FB FF FF        -- jmp 004CF7B3
+ e9 d6 00 00 00        -- jmp 004CFC94
+ 
+@004CFC94
+ ff 15 88 80 50 00     -- set event
+ e9 96 fb ff ff	       -- jmp 004CF835

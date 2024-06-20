@@ -1,0 +1,43 @@
+@004cf7de
+ 38 1d b9 d8 0e 01     -- master check
+ 75 11			       -- jnz
+ 68 c8 a6 5a 00	       -- push sockaddr
+ 8d bc 24 1c 0e 00 00  -- set edi
+ e8 d9 fa ff ff        -- call sub 004cf2d0
+ 
+@004cf82f
+ ff 15 88 80 50 00     -- set event
+ e9 26 ff ff ff	       -- jmp 004cf760
+
+---
+esp 14E5E34C
+edi 14E5F168
+
+esp 14E3E348
+edi 14E3F164
+--- 
+ -----
+@004cf7de
+ eb 17                 -- skip code for now
+ 68 C8 A6 5A 00		   -- push 005AA6C8
+ 8D BC 24 20 0E 00 00  -- lea edi,[esp+00000E20]
+ E8 DF FA FF FF		   -- call 004cf2d0
+ E9 9E 04 00 00        -- jmp 004CFC94
+ 90
+
+@004CF82F
+ e9 10 01 00 00        -- jmp 004CF944
+ 90                    -- nop
+ 
+@004CF944
+ 38 1d b9 d8 0e 01     -- master check
+ e9 63 02 00 00        -- jmp 004CFBB2
+
+@004CFBB2
+ 75 05				   -- jne 004CFBB9
+ e9 27 fc ff ff        -- jmp 004CF7E0
+ e9 d6 00 00 00        -- jmp 004CFC94
+ 
+@004CFC94
+ ff 15 88 80 50 00     -- set event
+ e9 96 fb ff ff	       -- jmp 004CF835

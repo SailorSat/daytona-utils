@@ -8,8 +8,8 @@ Private g_TimerGoal As Currency
 Private g_TimerTick As Currency
 
 Public Sub SetupTimer(pFPS As Single)
+  timeBeginPeriod 1
   Call QueryPerformanceFrequency(g_TimerFreq)
-  
   g_TimerStep = g_TimerFreq / pFPS
   QueryPerformanceCounter g_TimerLast
   g_TimerGoal = g_TimerLast + g_TimerStep
@@ -17,10 +17,15 @@ Public Sub SetupTimer(pFPS As Single)
 End Sub
 
 Public Function WaitTimer() As Single
-  Dim TimerTemp As Currency
+  Dim TimerTemp As Currency, TimerDiff As Currency
   QueryPerformanceCounter TimerTemp
   While TimerTemp < g_TimerGoal
-    Sleep 0
+    TimerDiff = g_TimerGoal - TimerTemp
+    If TimerDiff > 2 Then
+      Sleep 1
+    Else
+      Sleep 0
+    End If
     QueryPerformanceCounter TimerTemp
   Wend
   While TimerTemp >= g_TimerGoal
@@ -30,4 +35,3 @@ Public Function WaitTimer() As Single
   WaitTimer = (TimerTemp - g_TimerTick) / g_TimerFreq
   g_TimerTick = TimerTemp
 End Function
-
