@@ -1,6 +1,6 @@
 VERSION 5.00
 Begin VB.Form Window 
-   BorderStyle     =   4  'Festes Werkzeugfenster
+   BorderStyle     =   4  'Fixed ToolWindow
    ClientHeight    =   615
    ClientLeft      =   45
    ClientTop       =   285
@@ -10,13 +10,13 @@ Begin VB.Form Window
    MinButton       =   0   'False
    ScaleHeight     =   615
    ScaleWidth      =   660
-   StartUpPosition =   3  'Windows-Standard
+   StartUpPosition =   3  'Windows Default
    Begin VB.Shape shStatus 
       BackColor       =   &H00000040&
-      BackStyle       =   1  'Undurchsichtig
+      BackStyle       =   1  'Opaque
       Height          =   375
       Left            =   120
-      Shape           =   4  'Gerundetes Rechteck
+      Shape           =   4  'Rounded Rectangle
       Top             =   120
       Width           =   375
    End
@@ -33,11 +33,12 @@ Private UDP_RemoteAddress As String
 Private UDP_Socket As Long
 
 Private TargetSpeed As Single
+Private Ticks As Long
 
 Private isRunning As Boolean
 
 Private Sub Form_Load()
-  Me.Show
+  Me.Hide
   DoEvents
   
   ' Init Winsock
@@ -98,7 +99,8 @@ Private Sub MainLoop()
   While isRunning
     ' throttle speed
     delta = WaitTimer
-
+    Ticks = 0
+    
     ' VB shenanigans
     DoEvents
   Wend
@@ -117,5 +119,8 @@ End Sub
 
 
 Public Sub OnReadUDP(lHandle As Long, sBuffer As String, sAddress As String)
-  Winsock.SendUDP UDP_Socket, sBuffer, UDP_RemoteAddress
+  If Ticks = 0 Then
+    Winsock.SendUDP UDP_Socket, sBuffer, UDP_RemoteAddress
+    Ticks = 1
+  End If
 End Sub

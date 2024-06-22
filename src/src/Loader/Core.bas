@@ -8,6 +8,7 @@ Private UseControlClient As Boolean
 Private UseFeedback As Boolean
 Private UseLagFix As Boolean
 Private UseWheelCheck As Boolean
+Private UseThrottle As Boolean
 Private UseProfile As Boolean
 
 Private CurrentProfile As String
@@ -38,6 +39,7 @@ Public Sub Main()
   UseFeedback = CBool(ReadIni("loader.ini", "feedback", "enabled", "false"))
   UseLagFix = CBool(ReadIni("loader.ini", "lagfix", "enabled", "false"))
   UseWheelCheck = CBool(ReadIni("loader.ini", "wheelcheck", "enabled", "false"))
+  UseThrottle = CBool(ReadIni("loader.ini", "throttle", "enabled", "false"))
   UseProfile = CBool(ReadIni("loader.ini", "profile", "enabled", "false"))
 
   ' draw primary gui
@@ -99,6 +101,12 @@ Public Sub Main()
     DrawFont "CHECK", Row2, 13, vbRed
     WheelCheck
     DrawFont "ONLINE", Row2, 13, vbGreen
+  End If
+  Sleep 500
+  
+  ' start throttle
+  If UseThrottle Then
+    ShellExecuteA Window.hWnd, "open", App.Path & "\DaytonaThrottle.exe", "", App.Path, SW_HIDE
   End If
   Sleep 500
   
