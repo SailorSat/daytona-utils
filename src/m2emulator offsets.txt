@@ -1,1 +1,5 @@
 EE2E3 audio frequency
+
+11b6f8	model2 target speed	(00 00 68 42 = 58.00)
+				(00 00 70 42 = 60.00)
+				(66 66 72 42 = 60.60)
