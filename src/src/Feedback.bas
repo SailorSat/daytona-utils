@@ -11,6 +11,7 @@ Private PwmData As Byte
 
 Public Sub Load()
   Dim SomeData As Byte
+  DirectMode = CBool(ReadIni("drive.ini", "feedback", "direct", "false"))
   Model3Mode = CBool(ReadIni("drive.ini", "feedback", "model3", "false"))
   
   CloseDriveChannel

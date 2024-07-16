@@ -5,14 +5,19 @@ Option Explicit
 Public Profile As String
 
 ' optional model3 and debug modes
+Public DirectMode As Boolean
 Public Model3Mode As Boolean
 Public TranslationDebug As Boolean
 
 Public Function TranslateDrive(ByRef OldData As Byte, ByVal NewData As Byte) As Boolean
-  If Model3Mode Then
-    TranslateDrive = TranslateDrive_M3(OldData, NewData)
+  If DirectMode Then
+    TranslateDrive = NewData
   Else
-    TranslateDrive = TranslateDrive_M2(OldData, NewData)
+    If Model3Mode Then
+      TranslateDrive = TranslateDrive_M3(OldData, NewData)
+    Else
+      TranslateDrive = TranslateDrive_M2(OldData, NewData)
+    End If
   End If
 End Function
 
