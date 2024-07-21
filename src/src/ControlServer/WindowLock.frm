@@ -3,13 +3,13 @@ Begin VB.Form WindowLock
    BackColor       =   &H00404040&
    BorderStyle     =   0  'None
    Caption         =   "Form1"
-   ClientHeight    =   7200
+   ClientHeight    =   9000
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   9600
+   ClientWidth     =   12000
    LinkTopic       =   "Form1"
-   ScaleHeight     =   7200
-   ScaleWidth      =   9600
+   ScaleHeight     =   9000
+   ScaleWidth      =   12000
    ShowInTaskbar   =   0   'False
    Begin VB.Frame fmKeys 
       BackColor       =   &H00404040&
@@ -24,9 +24,9 @@ Begin VB.Form WindowLock
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   2895
-      Left            =   3713
+      Left            =   4920
       TabIndex        =   1
-      Top             =   2693
+      Top             =   3480
       Width           =   2175
       Begin VB.CommandButton cmdEnter 
          Appearance      =   0  'Flat
@@ -272,9 +272,9 @@ Begin VB.Form WindowLock
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   975
-      Left            =   3713
+      Left            =   4920
       TabIndex        =   0
-      Top             =   1613
+      Top             =   2400
       Width           =   2175
       Begin VB.Label lblCode 
          Alignment       =   2  'Center
