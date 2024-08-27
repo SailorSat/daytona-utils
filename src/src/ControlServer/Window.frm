@@ -441,6 +441,27 @@ Begin VB.Form Window
       Begin VB.CommandButton cmdProfile 
          Appearance      =   0  'Flat
          BackColor       =   &H0000C000&
+         Caption         =   "S.F. RushtheRock"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Index           =   12
+         Left            =   2280
+         Style           =   1  'Graphical
+         TabIndex        =   118
+         Top             =   5280
+         Width           =   2055
+      End
+      Begin VB.CommandButton cmdProfile 
+         Appearance      =   0  'Flat
+         BackColor       =   &H0000C000&
          Caption         =   "SGT24H / OverRev"
          BeginProperty Font 
             Name            =   "Fixedsys"
@@ -2939,6 +2960,8 @@ Private Sub cmdProfile_Click(Index As Integer)
       bsBuffer = StrConv("pdrift", vbFromUnicode)
     Case 23
       bsBuffer = StrConv("smgp", vbFromUnicode)
+    Case 12
+      bsBuffer = StrConv("sfrushrk", vbFromUnicode)
       
     Case 9
       bsBuffer = StrConv("daytona2", vbFromUnicode)
