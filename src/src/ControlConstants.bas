@@ -33,6 +33,7 @@ Public Const CTRL_TRACK_MAJOR As Byte = &H50
 Public Const CTRL_TRACK_BEGINNER As Byte = &H51
 Public Const CTRL_TRACK_ADVANCED As Byte = &H52
 Public Const CTRL_TRACK_EXPERT As Byte = &H53
+Public Const CTRL_TRACK_CHALLENGE As Byte = &H54
 
 ' Gears (byte 1)
 Public Const CTRL_GEARS_SELECT As Byte = &H60

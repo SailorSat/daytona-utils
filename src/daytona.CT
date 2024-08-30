@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<CheatTable CheatEngineTableVersion="42">
+<CheatTable CheatEngineTableVersion="45">
   <CheatEntries>
     <CheatEntry>
       <ID>0</ID>
@@ -1299,44 +1299,11 @@
       </CheatEntries>
     </CheatEntry>
     <CheatEntry>
-      <ID>222</ID>
-      <Description>"No description"</Description>
-      <ShowAsSigned>0</ShowAsSigned>
-      <VariableType>Byte</VariableType>
-      <Address>010f01b5</Address>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>224</ID>
-      <Description>"No description"</Description>
-      <VariableType>Float</VariableType>
-      <Address>emulator_multicpu.exe+172934</Address>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>225</ID>
-      <Description>"No description"</Description>
-      <VariableType>Float</VariableType>
-      <Address>emulator_multicpu.exe+174DCC</Address>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>226</ID>
-      <Description>"No description"</Description>
-      <ShowAsSigned>0</ShowAsSigned>
-      <VariableType>Float</VariableType>
-      <Address>0051d058</Address>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>227</ID>
-      <Description>"No description"</Description>
-      <ShowAsSigned>0</ShowAsSigned>
-      <VariableType>Float</VariableType>
-      <Address>0051d050</Address>
-    </CheatEntry>
-    <CheatEntry>
       <ID>228</ID>
-      <Description>"Target FPS?"</Description>
+      <Description>"Target FPS"</Description>
       <ShowAsSigned>0</ShowAsSigned>
       <VariableType>Float</VariableType>
-      <Address>010F1350+28</Address>
+      <Address>emulator_multicpu.exe+11d0f8</Address>
     </CheatEntry>
   </CheatEntries>
   <UserdefinedSymbols/>

@@ -249,6 +249,17 @@ Private Sub OnTimer_Daytona2()
       End If
     End If
   End If
+  
+  ' setup screen
+  If MEM_GameState = &HD Then
+    If MEM_SetupState = &HA Then
+      ' track select (active)
+    ElseIf MEM_SetupState = &HB Then
+      ' track select (inactive)
+    ElseIf MEM_SetupState = &HC Then
+      ' car select / transmission select
+    End If
+  End If
 
   ' ingame
   If MEM_GameState = &H11 Then
