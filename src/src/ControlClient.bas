@@ -252,12 +252,62 @@ Private Sub OnTimer_Daytona2()
   
   ' setup screen
   If MEM_GameState = &HD Then
-    If MEM_SetupState = &HA Then
+    If MEM_SetupState = &H7 Or MEM_SetupState = &HA Or MEM_SetupState = &H8 Or MEM_SetupState = &HB Then
       ' track select (active)
-    ElseIf MEM_SetupState = &HB Then
+      ' 07 BotE / 0A PE
+      
       ' track select (inactive)
-    ElseIf MEM_SetupState = &HC Then
+      ' 08 BotE / 0B PE
+      
+      ' 105FC6 - Track (RO) - 0 Challenge, 1 Beginner, 2 Advanced, 3 Expert
+      Offset.lowpart = M3EM_RAMBASE.lowpart + &H105FC6
+      Select Case OPT_Track
+        Case CTRL_TRACK_BEGINNER
+          WriteLong64 Offset, 1
+        Case CTRL_TRACK_ADVANCED
+          WriteLong64 Offset, 2
+        Case CTRL_TRACK_EXPERT
+          WriteLong64 Offset, 3
+        Case CTRL_TRACK_CHALLENGE
+          WriteLong64 Offset, 0
+      End Select
+      
+      ' 500343 - Selection
+      Offset.lowpart = M3EM_RAMBASE.lowpart + &H500343
+      Select Case OPT_Track
+        Case CTRL_TRACK_BEGINNER
+          WriteLong64 Offset, 1
+        Case CTRL_TRACK_ADVANCED
+          WriteLong64 Offset, 2
+        Case CTRL_TRACK_EXPERT
+          WriteLong64 Offset, 3
+        Case CTRL_TRACK_CHALLENGE
+          WriteLong64 Offset, 4
+      End Select
+    ElseIf MEM_SetupState = &H9 Or MEM_SetupState = &HC Then
       ' car select / transmission select
+      ' 09 BotE / 0C PE
+      
+      ' 105FC4 - CAR Type
+      ' todo?
+      
+      ' 105FC5 - AT/MT
+      Offset.lowpart = M3EM_RAMBASE.lowpart + &H105FC5
+      Select Case OPT_Gears
+        Case CTRL_GEARS_AUTO
+          WriteLong64 Offset, 0
+        Case CTRL_GEARS_MANUAL
+          WriteLong64 Offset, 1
+      End Select
+      
+      ' 106200 - Timelap
+      Offset.lowpart = M3EM_RAMBASE.lowpart + &H106200
+      Select Case OPT_GameMode
+        Case CTRL_GAMEMODE_NORMAL
+          WriteLong64 Offset, 0
+        Case CTRL_GAMEMODE_TIMEATCK
+          WriteLong64 Offset, 1
+      End Select
     End If
   End If
 
@@ -311,6 +361,48 @@ Private Sub OnTimer_Scud()
         M3EM_SendServiceB
       End If
     End If
+  End If
+
+  ' setup screen
+  If MEM_GameState = &H11 Then
+    ' 11 / 01 - Track select
+    ' 11 / 02 - Track select (inactive)
+    
+    ' 11 / 05 - Car select / MT select
+    ' 11 / 06 - Car select / MT select (inactive)
+  
+    ' 11 / 07 - all ready?
+    
+    ' 104F46 - Track
+    Offset.lowpart = M3EM_RAMBASE.lowpart + &H104F46
+    Select Case OPT_Track
+      Case CTRL_TRACK_BEGINNER
+        WriteLong64 Offset, 0
+      Case CTRL_TRACK_ADVANCED
+        WriteLong64 Offset, 1
+      Case CTRL_TRACK_EXPERT
+        WriteLong64 Offset, 2
+      Case CTRL_TRACK_CHALLENGE
+        WriteLong64 Offset, 3
+    End Select
+    
+    ' 104F45 - AT/MT
+    Offset.lowpart = M3EM_RAMBASE.lowpart + &H104F45
+    Select Case OPT_Gears
+      Case CTRL_GEARS_AUTO
+        WriteLong64 Offset, 0
+      Case CTRL_GEARS_MANUAL
+        WriteLong64 Offset, 1
+    End Select
+    
+    ' 1051A0 - Timelap
+    Offset.lowpart = M3EM_RAMBASE.lowpart + &H1051A0
+    Select Case OPT_GameMode
+      Case CTRL_GAMEMODE_NORMAL
+        WriteLong64 Offset, 0
+      Case CTRL_GAMEMODE_TIMEATCK
+        WriteLong64 Offset, 1
+    End Select
   End If
 
   ' ingame
