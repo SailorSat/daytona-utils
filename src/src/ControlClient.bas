@@ -26,6 +26,7 @@ Private CTRL_Node As Byte
 Private CTRL_Ex As Byte
 
 Private FlipFlop As Boolean
+Private AllowTracksD2 As Boolean
 
 Public Sub Load()
   Dim Host As String
@@ -237,6 +238,8 @@ Private Sub OnTimer_Daytona2()
     If OPT_Reset = 1 Then
       OPT_Reset = 0
     End If
+    
+    AllowTracksD2 = True
   End If
   
   ' join screen
@@ -248,49 +251,63 @@ Private Sub OnTimer_Daytona2()
         M3EM_SendServiceB
       End If
     End If
+    
+    AllowTracksD2 = True
   End If
   
   ' setup screen
   If MEM_GameState = &HD Then
-    If MEM_SetupState = &H7 Or MEM_SetupState = &HA Or MEM_SetupState = &H8 Or MEM_SetupState = &HB Then
+    If MEM_SetupState = &H7 Or MEM_SetupState = &H8 Or MEM_SetupState = &HA Or MEM_SetupState = &HB Then
       ' track select (active)
       ' 07 BotE / 0A PE
       
       ' track select (inactive)
       ' 08 BotE / 0B PE
       
-      ' 105FC6 - Track (RO) - 0 Challenge, 1 Beginner, 2 Advanced, 3 Expert
-      Offset.lowpart = M3EM_RAMBASE.lowpart + &H105FC6
-      Select Case OPT_Track
-        Case CTRL_TRACK_BEGINNER
-          WriteLong64 Offset, 1
-        Case CTRL_TRACK_ADVANCED
-          WriteLong64 Offset, 2
-        Case CTRL_TRACK_EXPERT
-          WriteLong64 Offset, 3
-        Case CTRL_TRACK_CHALLENGE
-          WriteLong64 Offset, 0
-      End Select
-      
-      ' 500343 - Selection
-      Offset.lowpart = M3EM_RAMBASE.lowpart + &H500343
-      Select Case OPT_Track
-        Case CTRL_TRACK_BEGINNER
-          WriteLong64 Offset, 1
-        Case CTRL_TRACK_ADVANCED
-          WriteLong64 Offset, 2
-        Case CTRL_TRACK_EXPERT
-          WriteLong64 Offset, 3
-        Case CTRL_TRACK_CHALLENGE
-          WriteLong64 Offset, 4
-      End Select
+      If AllowTracksD2 Then
+        ' 105FC6 - Track (RO) - 0 Challenge, 1 Beginner, 2 Advanced, 3 Expert
+        Offset.lowpart = M3EM_RAMBASE.lowpart + &H105FC6
+        Select Case OPT_Track
+          Case CTRL_TRACK_BEGINNER
+            WriteLong64 Offset, 1
+          Case CTRL_TRACK_ADVANCED
+            WriteLong64 Offset, 2
+          Case CTRL_TRACK_EXPERT
+            WriteLong64 Offset, 3
+          Case CTRL_TRACK_CHALLENGE
+            WriteLong64 Offset, 0
+        End Select
+        
+''        ' 500343 - Selection
+''        Offset.lowpart = M3EM_RAMBASE.lowpart + &H500343
+''        Select Case OPT_Track
+''          Case CTRL_TRACK_BEGINNER
+''            WriteLong64 Offset, 1
+''          Case CTRL_TRACK_ADVANCED
+''            WriteLong64 Offset, 2
+''          Case CTRL_TRACK_EXPERT
+''            WriteLong64 Offset, 3
+''          Case CTRL_TRACK_CHALLENGE
+''            WriteLong64 Offset, 4
+''        End Select
+      End If
     ElseIf MEM_SetupState = &H9 Or MEM_SetupState = &HC Then
       ' car select / transmission select
       ' 09 BotE / 0C PE
-      
+
       ' 105FC4 - CAR Type
-      ' todo?
-      
+      Offset.lowpart = M3EM_RAMBASE.lowpart + &H105FC4
+      Select Case OPT_Music
+        Case CTRL_MUSIC_1
+          WriteLong64 Offset, 0
+        Case CTRL_MUSIC_2
+          WriteLong64 Offset, 1
+        Case CTRL_MUSIC_3
+          WriteLong64 Offset, 2
+        Case CTRL_MUSIC_4
+          WriteLong64 Offset, 3
+      End Select
+
       ' 105FC5 - AT/MT
       Offset.lowpart = M3EM_RAMBASE.lowpart + &H105FC5
       Select Case OPT_Gears
@@ -299,7 +316,7 @@ Private Sub OnTimer_Daytona2()
         Case CTRL_GEARS_MANUAL
           WriteLong64 Offset, 1
       End Select
-      
+
       ' 106200 - Timelap
       Offset.lowpart = M3EM_RAMBASE.lowpart + &H106200
       Select Case OPT_GameMode
@@ -308,6 +325,8 @@ Private Sub OnTimer_Daytona2()
         Case CTRL_GAMEMODE_TIMEATCK
           WriteLong64 Offset, 1
       End Select
+      
+      AllowTracksD2 = False
     End If
   End If
 
@@ -319,6 +338,8 @@ Private Sub OnTimer_Daytona2()
       Offset.lowpart = M3EM_RAMBASE.lowpart + &H105010
       WriteLong64 Offset, &H100&
     End If
+    
+    AllowTracksD2 = True
   End If
 End Sub
 
@@ -393,6 +414,19 @@ Private Sub OnTimer_Scud()
         WriteLong64 Offset, 0
       Case CTRL_GEARS_MANUAL
         WriteLong64 Offset, 1
+    End Select
+    
+    ' 104F44 - Car
+    Offset.lowpart = M3EM_RAMBASE.lowpart + &H104F44
+    Select Case OPT_Music
+      Case CTRL_MUSIC_1
+        WriteLong64 Offset, 4
+      Case CTRL_MUSIC_2
+        WriteLong64 Offset, 5
+      Case CTRL_MUSIC_3
+        WriteLong64 Offset, 6
+      Case CTRL_MUSIC_4
+        WriteLong64 Offset, 7
     End Select
     
     ' 1051A0 - Timelap
