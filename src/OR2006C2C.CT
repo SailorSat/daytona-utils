@@ -124,6 +124,7 @@
     <CheatEntry>
       <ID>28</ID>
       <Description>"Menu Address"</Description>
+      <ShowAsHex>1</ShowAsHex>
       <VariableType>4 Bytes</VariableType>
       <Address>7b17e8</Address>
       <Offsets>
@@ -632,6 +633,45 @@
       <CodePage>0</CodePage>
       <ZeroTerminate>1</ZeroTerminate>
       <Address>005B4565</Address>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>129</ID>
+      <Description>"No description"</Description>
+      <VariableType>Byte</VariableType>
+      <Address>08042810</Address>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>138</ID>
+      <Description>"Menu Item #2 -- 288-E8"</Description>
+      <ShowAsSigned>0</ShowAsSigned>
+      <VariableType>8 Bytes</VariableType>
+      <Address>"OR2006C2C.exe"+003B17E8</Address>
+      <Offsets>
+        <Offset>E8</Offset>
+        <Offset>288</Offset>
+      </Offsets>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>143</ID>
+      <Description>"Menu Item #3 -- 28C-E8"</Description>
+      <ShowAsSigned>0</ShowAsSigned>
+      <VariableType>8 Bytes</VariableType>
+      <Address>"OR2006C2C.exe"+003B17E8</Address>
+      <Offsets>
+        <Offset>E8</Offset>
+        <Offset>28C</Offset>
+      </Offsets>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>150</ID>
+      <Description>"Menu Item #4 -- 290-E8"</Description>
+      <ShowAsSigned>0</ShowAsSigned>
+      <VariableType>8 Bytes</VariableType>
+      <Address>"OR2006C2C.exe"+003B17E8</Address>
+      <Offsets>
+        <Offset>E8</Offset>
+        <Offset>290</Offset>
+      </Offsets>
     </CheatEntry>
   </CheatEntries>
   <CheatCodes>
