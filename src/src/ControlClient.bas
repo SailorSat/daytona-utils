@@ -278,18 +278,18 @@ Private Sub OnTimer_Daytona2()
             WriteLong64 Offset, 0
         End Select
         
-''        ' 500343 - Selection
-''        Offset.lowpart = M3EM_RAMBASE.lowpart + &H500343
-''        Select Case OPT_Track
-''          Case CTRL_TRACK_BEGINNER
-''            WriteLong64 Offset, 1
-''          Case CTRL_TRACK_ADVANCED
-''            WriteLong64 Offset, 2
-''          Case CTRL_TRACK_EXPERT
-''            WriteLong64 Offset, 3
-''          Case CTRL_TRACK_CHALLENGE
-''            WriteLong64 Offset, 4
-''        End Select
+        ' 500343 - Selection
+        Offset.lowpart = M3EM_RAMBASE.lowpart + &H500343
+        Select Case OPT_Track
+          Case CTRL_TRACK_BEGINNER
+            WriteLong64 Offset, 1
+          Case CTRL_TRACK_ADVANCED
+            WriteLong64 Offset, 2
+          Case CTRL_TRACK_EXPERT
+            WriteLong64 Offset, 3
+          Case CTRL_TRACK_CHALLENGE
+            WriteLong64 Offset, 4
+        End Select
       End If
     ElseIf MEM_SetupState = &H9 Or MEM_SetupState = &HC Then
       ' car select / transmission select

@@ -50,7 +50,7 @@ Public Sub mame_start_internal(Profile As String)
   Debug.Print "mame_start_internal", Profile
   MAME_Profile = Profile
   Select Case MAME_Profile
-    Case "orunners", "outrun", "calspeed", "offroadc", "crusnusa", "crusnwld", "crusnexo", "sfrush", "sfrushrk", "sf2049", "gticlub", "midnrun", "windheat"
+    Case "orunners", "outrun", "calspeed", "offroadc", "crusnusa", "crusnwld", "crusnexo", "sfrush", "sfrushrk", "sf2049", "gticlub", "midnrun", "windheat", "harddriv", "racedriv"
       DriveData = &H7
       LampsData = &H0
       PwmData = &H0
