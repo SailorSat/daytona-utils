@@ -10,6 +10,35 @@ Begin VB.Form Window
    LinkTopic       =   "Form1"
    ScaleHeight     =   9000
    ScaleWidth      =   12000
+   Begin VB.Frame fmLive 
+      BackColor       =   &H00404040&
+      Caption         =   "SPECTATOR"
+      BeginProperty Font 
+         Name            =   "Fixedsys"
+         Size            =   9
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FFFFFF&
+      Height          =   975
+      Left            =   120
+      TabIndex        =   129
+      Top             =   4320
+      Width           =   1695
+      Begin VB.Shape shStatus 
+         FillColor       =   &H00000080&
+         FillStyle       =   0  'Solid
+         Height          =   375
+         Index           =   16
+         Left            =   240
+         Shape           =   4  'Rounded Rectangle
+         Top             =   360
+         Width           =   375
+      End
+   End
    Begin VB.Timer Timer60 
       Enabled         =   0   'False
       Interval        =   60000
@@ -426,899 +455,6 @@ Begin VB.Form Window
          Shape           =   4  'Rounded Rectangle
          Top             =   360
          Width           =   375
-      End
-   End
-   Begin VB.Frame fmTabPage 
-      BackColor       =   &H00404040&
-      BorderStyle     =   0  'None
-      Height          =   7575
-      Index           =   2
-      Left            =   2040
-      TabIndex        =   40
-      Top             =   1320
-      Visible         =   0   'False
-      Width           =   9855
-      Begin VB.CommandButton cmdProfile 
-         Appearance      =   0  'Flat
-         BackColor       =   &H0000C000&
-         Caption         =   "Four Trax"
-         BeginProperty Font 
-            Name            =   "Fixedsys"
-            Size            =   9
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   375
-         Index           =   41
-         Left            =   6840
-         Style           =   1  'Graphical
-         TabIndex        =   128
-         Top             =   6240
-         Width           =   2055
-      End
-      Begin VB.CommandButton cmdProfile 
-         Appearance      =   0  'Flat
-         BackColor       =   &H0000C000&
-         Caption         =   "Suzuka 8H"
-         BeginProperty Font 
-            Name            =   "Fixedsys"
-            Size            =   9
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   375
-         Index           =   40
-         Left            =   4560
-         Style           =   1  'Graphical
-         TabIndex        =   127
-         Top             =   6240
-         Width           =   2055
-      End
-      Begin VB.CommandButton cmdProfile 
-         Appearance      =   0  'Flat
-         BackColor       =   &H0000C000&
-         Caption         =   "Cyber Cycles"
-         BeginProperty Font 
-            Name            =   "Fixedsys"
-            Size            =   9
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   375
-         Index           =   39
-         Left            =   2280
-         Style           =   1  'Graphical
-         TabIndex        =   126
-         Top             =   6240
-         Width           =   2055
-      End
-      Begin VB.CommandButton cmdProfile 
-         Appearance      =   0  'Flat
-         BackColor       =   &H0000C000&
-         Caption         =   "Winning Run '91"
-         BeginProperty Font 
-            Name            =   "Fixedsys"
-            Size            =   9
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   375
-         Index           =   38
-         Left            =   0
-         Style           =   1  'Graphical
-         TabIndex        =   125
-         Top             =   6240
-         Width           =   2055
-      End
-      Begin VB.CommandButton cmdProfile 
-         Appearance      =   0  'Flat
-         BackColor       =   &H0000C000&
-         Caption         =   "Rave Racer"
-         BeginProperty Font 
-            Name            =   "Fixedsys"
-            Size            =   9
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   375
-         Index           =   37
-         Left            =   6840
-         Style           =   1  'Graphical
-         TabIndex        =   124
-         Top             =   5760
-         Width           =   2055
-      End
-      Begin VB.CommandButton cmdProfile 
-         Appearance      =   0  'Flat
-         BackColor       =   &H0000C000&
-         Caption         =   "Ridge Racer 2"
-         BeginProperty Font 
-            Name            =   "Fixedsys"
-            Size            =   9
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   375
-         Index           =   36
-         Left            =   4560
-         Style           =   1  'Graphical
-         TabIndex        =   123
-         Top             =   5760
-         Width           =   2055
-      End
-      Begin VB.CommandButton cmdProfile 
-         Appearance      =   0  'Flat
-         BackColor       =   &H0000C000&
-         Caption         =   "Victory Lap"
-         BeginProperty Font 
-            Name            =   "Fixedsys"
-            Size            =   9
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   375
-         Index           =   35
-         Left            =   2280
-         Style           =   1  'Graphical
-         TabIndex        =   122
-         Top             =   5760
-         Width           =   2055
-      End
-      Begin VB.CommandButton cmdProfile 
-         Appearance      =   0  'Flat
-         BackColor       =   &H0000C000&
-         Caption         =   "Ace Driver"
-         BeginProperty Font 
-            Name            =   "Fixedsys"
-            Size            =   9
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   375
-         Index           =   34
-         Left            =   0
-         Style           =   1  'Graphical
-         TabIndex        =   121
-         Top             =   5760
-         Width           =   2055
-      End
-      Begin VB.CommandButton cmdProfile 
-         Appearance      =   0  'Flat
-         BackColor       =   &H0000C000&
-         Caption         =   "SCUD Race Plus"
-         BeginProperty Font 
-            Name            =   "Fixedsys"
-            Size            =   9
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   375
-         Index           =   13
-         Left            =   6840
-         Style           =   1  'Graphical
-         TabIndex        =   119
-         Top             =   480
-         Width           =   2055
-      End
-      Begin VB.CommandButton cmdProfile 
-         Appearance      =   0  'Flat
-         BackColor       =   &H0000C000&
-         Caption         =   "S.F. RushtheRock"
-         BeginProperty Font 
-            Name            =   "Fixedsys"
-            Size            =   9
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   375
-         Index           =   12
-         Left            =   2280
-         Style           =   1  'Graphical
-         TabIndex        =   118
-         Top             =   5280
-         Width           =   2055
-      End
-      Begin VB.CommandButton cmdProfile 
-         Appearance      =   0  'Flat
-         BackColor       =   &H0000C000&
-         Caption         =   "SGT24H / OverRev"
-         BeginProperty Font 
-            Name            =   "Fixedsys"
-            Size            =   9
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   375
-         Index           =   32
-         Left            =   4560
-         Style           =   1  'Graphical
-         TabIndex        =   117
-         Top             =   2880
-         Width           =   2055
-      End
-      Begin VB.CommandButton cmdProfile 
-         Appearance      =   0  'Flat
-         BackColor       =   &H0000C000&
-         Caption         =   "SEGA TOURING CAR"
-         BeginProperty Font 
-            Name            =   "Fixedsys"
-            Size            =   9
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   375
-         Index           =   26
-         Left            =   4560
-         Style           =   1  'Graphical
-         TabIndex        =   116
-         Top             =   2400
-         Width           =   2055
-      End
-      Begin VB.CommandButton cmdProfile 
-         Appearance      =   0  'Flat
-         BackColor       =   &H0000C000&
-         Caption         =   "MOTOR RAID"
-         BeginProperty Font 
-            Name            =   "Fixedsys"
-            Size            =   9
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   375
-         Index           =   28
-         Left            =   4560
-         Style           =   1  'Graphical
-         TabIndex        =   115
-         Top             =   1920
-         Width           =   2055
-      End
-      Begin VB.CommandButton cmdProfile 
-         Appearance      =   0  'Flat
-         BackColor       =   &H0000C000&
-         Caption         =   "MANX TT"
-         BeginProperty Font 
-            Name            =   "Fixedsys"
-            Size            =   9
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   375
-         Index           =   27
-         Left            =   4560
-         Style           =   1  'Graphical
-         TabIndex        =   114
-         Top             =   1440
-         Width           =   2055
-      End
-      Begin VB.CommandButton cmdProfile 
-         Appearance      =   0  'Flat
-         BackColor       =   &H0000C000&
-         Caption         =   "SEGA RALLY"
-         BeginProperty Font 
-            Name            =   "Fixedsys"
-            Size            =   9
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   375
-         Index           =   2
-         Left            =   4560
-         Style           =   1  'Graphical
-         TabIndex        =   113
-         Top             =   480
-         Width           =   2055
-      End
-      Begin VB.CommandButton cmdProfile 
-         Appearance      =   0  'Flat
-         BackColor       =   &H0000C000&
-         Caption         =   "INDY500"
-         BeginProperty Font 
-            Name            =   "Fixedsys"
-            Size            =   9
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   375
-         Index           =   1
-         Left            =   4560
-         Style           =   1  'Graphical
-         TabIndex        =   112
-         Top             =   960
-         Width           =   2055
-      End
-      Begin VB.CommandButton cmdProfile 
-         Appearance      =   0  'Flat
-         BackColor       =   &H0000C000&
-         Caption         =   "DAYTONA USA"
-         BeginProperty Font 
-            Name            =   "Fixedsys"
-            Size            =   9
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   375
-         Index           =   0
-         Left            =   4560
-         Style           =   1  'Graphical
-         TabIndex        =   111
-         Top             =   0
-         Width           =   2055
-      End
-      Begin VB.CommandButton cmdProfile 
-         Appearance      =   0  'Flat
-         BackColor       =   &H0000C000&
-         Caption         =   "VIRTUA RACING"
-         BeginProperty Font 
-            Name            =   "Fixedsys"
-            Size            =   9
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   375
-         Index           =   3
-         Left            =   2280
-         Style           =   1  'Graphical
-         TabIndex        =   110
-         Top             =   0
-         Width           =   2055
-      End
-      Begin VB.CommandButton cmdProfile 
-         Appearance      =   0  'Flat
-         BackColor       =   &H0000C000&
-         Caption         =   "VIRTUA FORMULA"
-         BeginProperty Font 
-            Name            =   "Fixedsys"
-            Size            =   9
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   375
-         Index           =   4
-         Left            =   2280
-         Style           =   1  'Graphical
-         TabIndex        =   109
-         Top             =   480
-         Width           =   2055
-      End
-      Begin VB.CommandButton cmdProfile 
-         Appearance      =   0  'Flat
-         BackColor       =   &H0000C000&
-         Caption         =   "OutRunners"
-         BeginProperty Font 
-            Name            =   "Fixedsys"
-            Size            =   9
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   375
-         Index           =   8
-         Left            =   0
-         Style           =   1  'Graphical
-         TabIndex        =   108
-         Top             =   2400
-         Width           =   2055
-      End
-      Begin VB.CommandButton cmdProfile 
-         Appearance      =   0  'Flat
-         BackColor       =   &H0000C000&
-         Caption         =   "Stadium Cross"
-         BeginProperty Font 
-            Name            =   "Fixedsys"
-            Size            =   9
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   375
-         Index           =   7
-         Left            =   0
-         Style           =   1  'Graphical
-         TabIndex        =   107
-         Top             =   1920
-         Width           =   2055
-      End
-      Begin VB.CommandButton cmdProfile 
-         Appearance      =   0  'Flat
-         BackColor       =   &H0000C000&
-         Caption         =   "Rad Rally"
-         BeginProperty Font 
-            Name            =   "Fixedsys"
-            Size            =   9
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   375
-         Index           =   6
-         Left            =   0
-         Style           =   1  'Graphical
-         TabIndex        =   106
-         Top             =   1440
-         Width           =   2055
-      End
-      Begin VB.CommandButton cmdProfile 
-         Appearance      =   0  'Flat
-         BackColor       =   &H0000C000&
-         Caption         =   "F1 Super Lap"
-         BeginProperty Font 
-            Name            =   "Fixedsys"
-            Size            =   9
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   375
-         Index           =   5
-         Left            =   0
-         Style           =   1  'Graphical
-         TabIndex        =   105
-         Top             =   960
-         Width           =   2055
-      End
-      Begin VB.CommandButton cmdProfile 
-         Appearance      =   0  'Flat
-         BackColor       =   &H0000C000&
-         Caption         =   "Super Monaco GP"
-         BeginProperty Font 
-            Name            =   "Fixedsys"
-            Size            =   9
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   375
-         Index           =   23
-         Left            =   0
-         Style           =   1  'Graphical
-         TabIndex        =   104
-         Top             =   480
-         Width           =   2055
-      End
-      Begin VB.CommandButton cmdProfile 
-         Appearance      =   0  'Flat
-         BackColor       =   &H0000C000&
-         Caption         =   "Power Drift"
-         BeginProperty Font 
-            Name            =   "Fixedsys"
-            Size            =   9
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   375
-         Index           =   22
-         Left            =   0
-         Style           =   1  'Graphical
-         TabIndex        =   103
-         Top             =   0
-         Width           =   2055
-      End
-      Begin VB.CommandButton cmdProfile 
-         Appearance      =   0  'Flat
-         BackColor       =   &H0000C0C0&
-         Caption         =   "DooM-tona"
-         BeginProperty Font 
-            Name            =   "Fixedsys"
-            Size            =   9
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   375
-         Index           =   33
-         Left            =   6840
-         Style           =   1  'Graphical
-         TabIndex        =   87
-         Top             =   4320
-         Width           =   2055
-      End
-      Begin VB.CommandButton cmdProfile 
-         Appearance      =   0  'Flat
-         BackColor       =   &H0000C0C0&
-         Caption         =   "SHOWCASE #4"
-         BeginProperty Font 
-            Name            =   "Fixedsys"
-            Size            =   9
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   375
-         Index           =   31
-         Left            =   6840
-         Style           =   1  'Graphical
-         TabIndex        =   74
-         Top             =   3840
-         Width           =   2055
-      End
-      Begin VB.CommandButton cmdProfile 
-         Appearance      =   0  'Flat
-         BackColor       =   &H0000C0C0&
-         Caption         =   "SHOWCASE #3"
-         BeginProperty Font 
-            Name            =   "Fixedsys"
-            Size            =   9
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   375
-         Index           =   30
-         Left            =   4560
-         Style           =   1  'Graphical
-         TabIndex        =   73
-         Top             =   3840
-         Width           =   2055
-      End
-      Begin VB.CommandButton cmdProfile 
-         Appearance      =   0  'Flat
-         BackColor       =   &H00C000C0&
-         Caption         =   "BENCHMARK"
-         BeginProperty Font 
-            Name            =   "Fixedsys"
-            Size            =   9
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   375
-         Index           =   29
-         Left            =   4560
-         Style           =   1  'Graphical
-         TabIndex        =   72
-         Top             =   4800
-         Width           =   2055
-      End
-      Begin VB.CommandButton cmdProfile 
-         Appearance      =   0  'Flat
-         BackColor       =   &H0000C0C0&
-         Caption         =   "FLATOUT 2"
-         BeginProperty Font 
-            Name            =   "Fixedsys"
-            Size            =   9
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   375
-         Index           =   25
-         Left            =   4560
-         Style           =   1  'Graphical
-         TabIndex        =   71
-         Top             =   4320
-         Width           =   2055
-      End
-      Begin VB.CommandButton cmdProfile 
-         Appearance      =   0  'Flat
-         BackColor       =   &H0000C0C0&
-         Caption         =   "SEGA RALLY 1/2"
-         BeginProperty Font 
-            Name            =   "Fixedsys"
-            Size            =   9
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   375
-         Index           =   24
-         Left            =   0
-         Style           =   1  'Graphical
-         TabIndex        =   70
-         Top             =   4320
-         Width           =   2055
-      End
-      Begin VB.CommandButton cmdProfile 
-         Appearance      =   0  'Flat
-         BackColor       =   &H00C000C0&
-         Caption         =   "Media Player"
-         BeginProperty Font 
-            Name            =   "Fixedsys"
-            Size            =   9
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   375
-         Index           =   21
-         Left            =   6840
-         Style           =   1  'Graphical
-         TabIndex        =   69
-         Top             =   4800
-         Width           =   2055
-      End
-      Begin VB.CommandButton cmdProfile 
-         Appearance      =   0  'Flat
-         BackColor       =   &H0000C000&
-         Caption         =   "S.F. Rush"
-         BeginProperty Font 
-            Name            =   "Fixedsys"
-            Size            =   9
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   375
-         Index           =   20
-         Left            =   2280
-         Style           =   1  'Graphical
-         TabIndex        =   50
-         Top             =   4800
-         Width           =   2055
-      End
-      Begin VB.CommandButton cmdProfile 
-         Appearance      =   0  'Flat
-         BackColor       =   &H0000C000&
-         Caption         =   "California Speed"
-         BeginProperty Font 
-            Name            =   "Fixedsys"
-            Size            =   9
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   375
-         Index           =   19
-         Left            =   0
-         Style           =   1  'Graphical
-         TabIndex        =   49
-         Top             =   4800
-         Width           =   2055
-      End
-      Begin VB.CommandButton cmdProfile 
-         Appearance      =   0  'Flat
-         BackColor       =   &H0000C0C0&
-         Caption         =   "SHOWCASE #2"
-         BeginProperty Font 
-            Name            =   "Fixedsys"
-            Size            =   9
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   375
-         Index           =   18
-         Left            =   2280
-         Style           =   1  'Graphical
-         TabIndex        =   48
-         Top             =   3840
-         Width           =   2055
-      End
-      Begin VB.CommandButton cmdProfile 
-         Appearance      =   0  'Flat
-         BackColor       =   &H0000C0C0&
-         Caption         =   "SHOWCASE #1"
-         BeginProperty Font 
-            Name            =   "Fixedsys"
-            Size            =   9
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   375
-         Index           =   17
-         Left            =   0
-         Style           =   1  'Graphical
-         TabIndex        =   47
-         Top             =   3840
-         Width           =   2055
-      End
-      Begin VB.CommandButton cmdProfile 
-         Appearance      =   0  'Flat
-         BackColor       =   &H0000C000&
-         Caption         =   "DIRT DEVILS"
-         BeginProperty Font 
-            Name            =   "Fixedsys"
-            Size            =   9
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   375
-         Index           =   16
-         Left            =   6840
-         Style           =   1  'Graphical
-         TabIndex        =   46
-         Top             =   1920
-         Width           =   2055
-      End
-      Begin VB.CommandButton cmdProfile 
-         Appearance      =   0  'Flat
-         BackColor       =   &H0000C000&
-         Caption         =   "LE MANS 24"
-         BeginProperty Font 
-            Name            =   "Fixedsys"
-            Size            =   9
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   375
-         Index           =   15
-         Left            =   6840
-         Style           =   1  'Graphical
-         TabIndex        =   45
-         Top             =   960
-         Width           =   2055
-      End
-      Begin VB.CommandButton cmdProfile 
-         Appearance      =   0  'Flat
-         BackColor       =   &H0000C000&
-         Caption         =   "SEGA RALLY 2"
-         BeginProperty Font 
-            Name            =   "Fixedsys"
-            Size            =   9
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   375
-         Index           =   14
-         Left            =   6840
-         Style           =   1  'Graphical
-         TabIndex        =   44
-         Top             =   1440
-         Width           =   2055
-      End
-      Begin VB.CommandButton cmdProfile 
-         Appearance      =   0  'Flat
-         BackColor       =   &H0000C000&
-         Caption         =   "SCUD Race"
-         BeginProperty Font 
-            Name            =   "Fixedsys"
-            Size            =   9
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   375
-         Index           =   11
-         Left            =   6840
-         Style           =   1  'Graphical
-         TabIndex        =   43
-         Top             =   0
-         Width           =   2055
-      End
-      Begin VB.CommandButton cmdProfile 
-         Appearance      =   0  'Flat
-         BackColor       =   &H0000C000&
-         Caption         =   "Daytona2 PE"
-         BeginProperty Font 
-            Name            =   "Fixedsys"
-            Size            =   9
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   375
-         Index           =   10
-         Left            =   6840
-         Style           =   1  'Graphical
-         TabIndex        =   42
-         Top             =   2880
-         Width           =   2055
-      End
-      Begin VB.CommandButton cmdProfile 
-         Appearance      =   0  'Flat
-         BackColor       =   &H0000C000&
-         Caption         =   "Daytona2 BotE"
-         BeginProperty Font 
-            Name            =   "Fixedsys"
-            Size            =   9
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   375
-         Index           =   9
-         Left            =   6840
-         Style           =   1  'Graphical
-         TabIndex        =   41
-         Top             =   2400
-         Width           =   2055
       End
    End
    Begin VB.Frame fmTabPage 
@@ -3090,6 +2226,899 @@ Begin VB.Form Window
          End
       End
    End
+   Begin VB.Frame fmTabPage 
+      BackColor       =   &H00404040&
+      BorderStyle     =   0  'None
+      Height          =   7575
+      Index           =   2
+      Left            =   2040
+      TabIndex        =   40
+      Top             =   1320
+      Visible         =   0   'False
+      Width           =   9855
+      Begin VB.CommandButton cmdProfile 
+         Appearance      =   0  'Flat
+         BackColor       =   &H0000C000&
+         Caption         =   "Four Trax"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Index           =   41
+         Left            =   6840
+         Style           =   1  'Graphical
+         TabIndex        =   128
+         Top             =   6240
+         Width           =   2055
+      End
+      Begin VB.CommandButton cmdProfile 
+         Appearance      =   0  'Flat
+         BackColor       =   &H0000C000&
+         Caption         =   "Suzuka 8H"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Index           =   40
+         Left            =   4560
+         Style           =   1  'Graphical
+         TabIndex        =   127
+         Top             =   6240
+         Width           =   2055
+      End
+      Begin VB.CommandButton cmdProfile 
+         Appearance      =   0  'Flat
+         BackColor       =   &H0000C000&
+         Caption         =   "Cyber Cycles"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Index           =   39
+         Left            =   2280
+         Style           =   1  'Graphical
+         TabIndex        =   126
+         Top             =   6240
+         Width           =   2055
+      End
+      Begin VB.CommandButton cmdProfile 
+         Appearance      =   0  'Flat
+         BackColor       =   &H0000C000&
+         Caption         =   "Winning Run '91"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Index           =   38
+         Left            =   0
+         Style           =   1  'Graphical
+         TabIndex        =   125
+         Top             =   6240
+         Width           =   2055
+      End
+      Begin VB.CommandButton cmdProfile 
+         Appearance      =   0  'Flat
+         BackColor       =   &H0000C000&
+         Caption         =   "Rave Racer"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Index           =   37
+         Left            =   6840
+         Style           =   1  'Graphical
+         TabIndex        =   124
+         Top             =   5760
+         Width           =   2055
+      End
+      Begin VB.CommandButton cmdProfile 
+         Appearance      =   0  'Flat
+         BackColor       =   &H0000C000&
+         Caption         =   "Ridge Racer 2"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Index           =   36
+         Left            =   4560
+         Style           =   1  'Graphical
+         TabIndex        =   123
+         Top             =   5760
+         Width           =   2055
+      End
+      Begin VB.CommandButton cmdProfile 
+         Appearance      =   0  'Flat
+         BackColor       =   &H0000C000&
+         Caption         =   "Victory Lap"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Index           =   35
+         Left            =   2280
+         Style           =   1  'Graphical
+         TabIndex        =   122
+         Top             =   5760
+         Width           =   2055
+      End
+      Begin VB.CommandButton cmdProfile 
+         Appearance      =   0  'Flat
+         BackColor       =   &H0000C000&
+         Caption         =   "Ace Driver"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Index           =   34
+         Left            =   0
+         Style           =   1  'Graphical
+         TabIndex        =   121
+         Top             =   5760
+         Width           =   2055
+      End
+      Begin VB.CommandButton cmdProfile 
+         Appearance      =   0  'Flat
+         BackColor       =   &H0000C000&
+         Caption         =   "SCUD Race Plus"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Index           =   13
+         Left            =   6840
+         Style           =   1  'Graphical
+         TabIndex        =   119
+         Top             =   480
+         Width           =   2055
+      End
+      Begin VB.CommandButton cmdProfile 
+         Appearance      =   0  'Flat
+         BackColor       =   &H0000C000&
+         Caption         =   "S.F. RushtheRock"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Index           =   12
+         Left            =   2280
+         Style           =   1  'Graphical
+         TabIndex        =   118
+         Top             =   5280
+         Width           =   2055
+      End
+      Begin VB.CommandButton cmdProfile 
+         Appearance      =   0  'Flat
+         BackColor       =   &H0000C000&
+         Caption         =   "SGT24H / OverRev"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Index           =   32
+         Left            =   4560
+         Style           =   1  'Graphical
+         TabIndex        =   117
+         Top             =   2880
+         Width           =   2055
+      End
+      Begin VB.CommandButton cmdProfile 
+         Appearance      =   0  'Flat
+         BackColor       =   &H0000C000&
+         Caption         =   "SEGA TOURING CAR"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Index           =   26
+         Left            =   4560
+         Style           =   1  'Graphical
+         TabIndex        =   116
+         Top             =   2400
+         Width           =   2055
+      End
+      Begin VB.CommandButton cmdProfile 
+         Appearance      =   0  'Flat
+         BackColor       =   &H0000C000&
+         Caption         =   "MOTOR RAID"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Index           =   28
+         Left            =   4560
+         Style           =   1  'Graphical
+         TabIndex        =   115
+         Top             =   1920
+         Width           =   2055
+      End
+      Begin VB.CommandButton cmdProfile 
+         Appearance      =   0  'Flat
+         BackColor       =   &H0000C000&
+         Caption         =   "MANX TT"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Index           =   27
+         Left            =   4560
+         Style           =   1  'Graphical
+         TabIndex        =   114
+         Top             =   1440
+         Width           =   2055
+      End
+      Begin VB.CommandButton cmdProfile 
+         Appearance      =   0  'Flat
+         BackColor       =   &H0000C000&
+         Caption         =   "SEGA RALLY"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Index           =   2
+         Left            =   4560
+         Style           =   1  'Graphical
+         TabIndex        =   113
+         Top             =   480
+         Width           =   2055
+      End
+      Begin VB.CommandButton cmdProfile 
+         Appearance      =   0  'Flat
+         BackColor       =   &H0000C000&
+         Caption         =   "INDY500"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Index           =   1
+         Left            =   4560
+         Style           =   1  'Graphical
+         TabIndex        =   112
+         Top             =   960
+         Width           =   2055
+      End
+      Begin VB.CommandButton cmdProfile 
+         Appearance      =   0  'Flat
+         BackColor       =   &H0000C000&
+         Caption         =   "DAYTONA USA"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Index           =   0
+         Left            =   4560
+         Style           =   1  'Graphical
+         TabIndex        =   111
+         Top             =   0
+         Width           =   2055
+      End
+      Begin VB.CommandButton cmdProfile 
+         Appearance      =   0  'Flat
+         BackColor       =   &H0000C000&
+         Caption         =   "VIRTUA RACING"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Index           =   3
+         Left            =   2280
+         Style           =   1  'Graphical
+         TabIndex        =   110
+         Top             =   0
+         Width           =   2055
+      End
+      Begin VB.CommandButton cmdProfile 
+         Appearance      =   0  'Flat
+         BackColor       =   &H0000C000&
+         Caption         =   "VIRTUA FORMULA"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Index           =   4
+         Left            =   2280
+         Style           =   1  'Graphical
+         TabIndex        =   109
+         Top             =   480
+         Width           =   2055
+      End
+      Begin VB.CommandButton cmdProfile 
+         Appearance      =   0  'Flat
+         BackColor       =   &H0000C000&
+         Caption         =   "OutRunners"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Index           =   8
+         Left            =   0
+         Style           =   1  'Graphical
+         TabIndex        =   108
+         Top             =   2400
+         Width           =   2055
+      End
+      Begin VB.CommandButton cmdProfile 
+         Appearance      =   0  'Flat
+         BackColor       =   &H0000C000&
+         Caption         =   "Stadium Cross"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Index           =   7
+         Left            =   0
+         Style           =   1  'Graphical
+         TabIndex        =   107
+         Top             =   1920
+         Width           =   2055
+      End
+      Begin VB.CommandButton cmdProfile 
+         Appearance      =   0  'Flat
+         BackColor       =   &H0000C000&
+         Caption         =   "Rad Rally"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Index           =   6
+         Left            =   0
+         Style           =   1  'Graphical
+         TabIndex        =   106
+         Top             =   1440
+         Width           =   2055
+      End
+      Begin VB.CommandButton cmdProfile 
+         Appearance      =   0  'Flat
+         BackColor       =   &H0000C000&
+         Caption         =   "F1 Super Lap"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Index           =   5
+         Left            =   0
+         Style           =   1  'Graphical
+         TabIndex        =   105
+         Top             =   960
+         Width           =   2055
+      End
+      Begin VB.CommandButton cmdProfile 
+         Appearance      =   0  'Flat
+         BackColor       =   &H0000C000&
+         Caption         =   "Super Monaco GP"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Index           =   23
+         Left            =   0
+         Style           =   1  'Graphical
+         TabIndex        =   104
+         Top             =   480
+         Width           =   2055
+      End
+      Begin VB.CommandButton cmdProfile 
+         Appearance      =   0  'Flat
+         BackColor       =   &H0000C000&
+         Caption         =   "Power Drift"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Index           =   22
+         Left            =   0
+         Style           =   1  'Graphical
+         TabIndex        =   103
+         Top             =   0
+         Width           =   2055
+      End
+      Begin VB.CommandButton cmdProfile 
+         Appearance      =   0  'Flat
+         BackColor       =   &H0000C0C0&
+         Caption         =   "DooM-tona"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Index           =   33
+         Left            =   6840
+         Style           =   1  'Graphical
+         TabIndex        =   87
+         Top             =   4320
+         Width           =   2055
+      End
+      Begin VB.CommandButton cmdProfile 
+         Appearance      =   0  'Flat
+         BackColor       =   &H0000C0C0&
+         Caption         =   "SHOWCASE #4"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Index           =   31
+         Left            =   6840
+         Style           =   1  'Graphical
+         TabIndex        =   74
+         Top             =   3840
+         Width           =   2055
+      End
+      Begin VB.CommandButton cmdProfile 
+         Appearance      =   0  'Flat
+         BackColor       =   &H0000C0C0&
+         Caption         =   "SHOWCASE #3"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Index           =   30
+         Left            =   4560
+         Style           =   1  'Graphical
+         TabIndex        =   73
+         Top             =   3840
+         Width           =   2055
+      End
+      Begin VB.CommandButton cmdProfile 
+         Appearance      =   0  'Flat
+         BackColor       =   &H00C000C0&
+         Caption         =   "BENCHMARK"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Index           =   29
+         Left            =   4560
+         Style           =   1  'Graphical
+         TabIndex        =   72
+         Top             =   4800
+         Width           =   2055
+      End
+      Begin VB.CommandButton cmdProfile 
+         Appearance      =   0  'Flat
+         BackColor       =   &H0000C0C0&
+         Caption         =   "FLATOUT 2"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Index           =   25
+         Left            =   4560
+         Style           =   1  'Graphical
+         TabIndex        =   71
+         Top             =   4320
+         Width           =   2055
+      End
+      Begin VB.CommandButton cmdProfile 
+         Appearance      =   0  'Flat
+         BackColor       =   &H0000C0C0&
+         Caption         =   "SEGA RALLY 1/2"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Index           =   24
+         Left            =   0
+         Style           =   1  'Graphical
+         TabIndex        =   70
+         Top             =   4320
+         Width           =   2055
+      End
+      Begin VB.CommandButton cmdProfile 
+         Appearance      =   0  'Flat
+         BackColor       =   &H00C000C0&
+         Caption         =   "Media Player"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Index           =   21
+         Left            =   6840
+         Style           =   1  'Graphical
+         TabIndex        =   69
+         Top             =   4800
+         Width           =   2055
+      End
+      Begin VB.CommandButton cmdProfile 
+         Appearance      =   0  'Flat
+         BackColor       =   &H0000C000&
+         Caption         =   "S.F. Rush"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Index           =   20
+         Left            =   2280
+         Style           =   1  'Graphical
+         TabIndex        =   50
+         Top             =   4800
+         Width           =   2055
+      End
+      Begin VB.CommandButton cmdProfile 
+         Appearance      =   0  'Flat
+         BackColor       =   &H0000C000&
+         Caption         =   "California Speed"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Index           =   19
+         Left            =   0
+         Style           =   1  'Graphical
+         TabIndex        =   49
+         Top             =   4800
+         Width           =   2055
+      End
+      Begin VB.CommandButton cmdProfile 
+         Appearance      =   0  'Flat
+         BackColor       =   &H0000C0C0&
+         Caption         =   "SHOWCASE #2"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Index           =   18
+         Left            =   2280
+         Style           =   1  'Graphical
+         TabIndex        =   48
+         Top             =   3840
+         Width           =   2055
+      End
+      Begin VB.CommandButton cmdProfile 
+         Appearance      =   0  'Flat
+         BackColor       =   &H0000C0C0&
+         Caption         =   "SHOWCASE #1"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Index           =   17
+         Left            =   0
+         Style           =   1  'Graphical
+         TabIndex        =   47
+         Top             =   3840
+         Width           =   2055
+      End
+      Begin VB.CommandButton cmdProfile 
+         Appearance      =   0  'Flat
+         BackColor       =   &H0000C000&
+         Caption         =   "DIRT DEVILS"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Index           =   16
+         Left            =   6840
+         Style           =   1  'Graphical
+         TabIndex        =   46
+         Top             =   1920
+         Width           =   2055
+      End
+      Begin VB.CommandButton cmdProfile 
+         Appearance      =   0  'Flat
+         BackColor       =   &H0000C000&
+         Caption         =   "LE MANS 24"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Index           =   15
+         Left            =   6840
+         Style           =   1  'Graphical
+         TabIndex        =   45
+         Top             =   960
+         Width           =   2055
+      End
+      Begin VB.CommandButton cmdProfile 
+         Appearance      =   0  'Flat
+         BackColor       =   &H0000C000&
+         Caption         =   "SEGA RALLY 2"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Index           =   14
+         Left            =   6840
+         Style           =   1  'Graphical
+         TabIndex        =   44
+         Top             =   1440
+         Width           =   2055
+      End
+      Begin VB.CommandButton cmdProfile 
+         Appearance      =   0  'Flat
+         BackColor       =   &H0000C000&
+         Caption         =   "SCUD Race"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Index           =   11
+         Left            =   6840
+         Style           =   1  'Graphical
+         TabIndex        =   43
+         Top             =   0
+         Width           =   2055
+      End
+      Begin VB.CommandButton cmdProfile 
+         Appearance      =   0  'Flat
+         BackColor       =   &H0000C000&
+         Caption         =   "Daytona2 PE"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Index           =   10
+         Left            =   6840
+         Style           =   1  'Graphical
+         TabIndex        =   42
+         Top             =   2880
+         Width           =   2055
+      End
+      Begin VB.CommandButton cmdProfile 
+         Appearance      =   0  'Flat
+         BackColor       =   &H0000C000&
+         Caption         =   "Daytona2 BotE"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Index           =   9
+         Left            =   6840
+         Style           =   1  'Graphical
+         TabIndex        =   41
+         Top             =   2400
+         Width           =   2055
+      End
+   End
 End
 Attribute VB_Name = "Window"
 Attribute VB_GlobalNameSpace = False
@@ -3101,8 +3130,8 @@ Option Explicit
 Private UDP_LocalAddress_RX As String
 Private UDP_Socket_RX As Long
 
-Private UDP_RemoteAddress_RX(0 To 15) As String
-Private UDP_RemoteStatus(0 To 15) As Byte
+Private UDP_RemoteAddress_RX(0 To 16) As String
+Private UDP_RemoteStatus(0 To 16) As Byte
 
 Private CurrentPriority As Byte
 
@@ -3124,7 +3153,7 @@ Private Sub cmdCamera_Click(Index As Integer)
   sBuffer = StrConv(baBuffer, vbUnicode)
   
   ' only to camera
-  SendToClient 15, sBuffer, CTRL_STATUS_OFFLINE
+  SendToClient 16, sBuffer, CTRL_STATUS_OFFLINE
 End Sub
 
 Private Sub cmdLock_Click()
@@ -3259,7 +3288,7 @@ Private Sub cmdRefresh_Click()
   Dim sBuffer As String
   
   Dim Index As Integer
-  For Index = 0 To 15
+  For Index = 0 To 16
     UDP_RemoteStatus(Index) = 0&
     shStatus(Index).FillColor = &H80&
     baBuffer(2) = Index
@@ -3313,6 +3342,7 @@ End Sub
 Private Sub fmTabPage_DblClick(Index As Integer)
   Form_DblClick
 End Sub
+
 
 Private Sub optGears_Click(Index As Integer)
   Select Case Index
@@ -3476,13 +3506,13 @@ Private Sub Form_Load()
     Form_Unload 0
   End If
   
-  ' Remote-RX (control - 16 units)
-  For Index = 0 To 15
+  ' Remote-RX (control - 16+1 units)
+  For Index = 0 To 16
     Host = ReadIni("control.ini", "server", "remotehost" & Index, "")
     Port = CLng(ReadIni("control.ini", "server", "remoteport" & Index, "23456"))
     UDP_RemoteAddress_RX(Index) = Winsock.WSABuildSocketAddress(Host, Port)
   Next
-  For Index = 0 To 15
+  For Index = 0 To 16
     UDP_RemoteStatus(Index) = CTRL_STATUS_OFFLINE
   Next
 
@@ -3509,7 +3539,7 @@ Public Sub OnReadUDP(lHandle As Long, sBuffer As String, sAddress As String)
   
   Select Case baBuffer(0)
     Case CTRL_CMD_PING
-      If baBuffer(2) < 16 Then
+      If baBuffer(2) < 17 Then
         Index = baBuffer(2)
         UDP_RemoteStatus(Index) = baBuffer(1)
         Select Case UDP_RemoteStatus(Index)
@@ -3571,7 +3601,7 @@ End Sub
 
 Public Sub SendToClients(sBuffer As String, MinimumStatus As Byte)
   Dim Index As Integer
-  For Index = 15 To 0 Step -1
+  For Index = 16 To 0 Step -1
     SendToClient Index, sBuffer, MinimumStatus
   Next
 End Sub
