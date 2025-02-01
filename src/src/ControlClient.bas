@@ -269,26 +269,26 @@ Private Sub OnTimer_Daytona2()
         Offset.lowpart = M3EM_RAMBASE.lowpart + &H105FC6
         Select Case OPT_Track
           Case CTRL_TRACK_BEGINNER
-            WriteLong64 Offset, 1
+            WriteByte64 Offset, 1
           Case CTRL_TRACK_ADVANCED
-            WriteLong64 Offset, 2
+            WriteByte64 Offset, 2
           Case CTRL_TRACK_EXPERT
-            WriteLong64 Offset, 3
+            WriteByte64 Offset, 3
           Case CTRL_TRACK_CHALLENGE
-            WriteLong64 Offset, 0
+            WriteByte64 Offset, 0
         End Select
         
         ' 500343 - Selection
         Offset.lowpart = M3EM_RAMBASE.lowpart + &H500343
         Select Case OPT_Track
           Case CTRL_TRACK_BEGINNER
-            WriteLong64 Offset, 1
+            WriteByte64 Offset, 1
           Case CTRL_TRACK_ADVANCED
-            WriteLong64 Offset, 2
+            WriteByte64 Offset, 2
           Case CTRL_TRACK_EXPERT
-            WriteLong64 Offset, 3
+            WriteByte64 Offset, 3
           Case CTRL_TRACK_CHALLENGE
-            WriteLong64 Offset, 4
+            WriteByte64 Offset, 4
         End Select
       End If
     ElseIf MEM_SetupState = &H9 Or MEM_SetupState = &HC Then
@@ -299,31 +299,31 @@ Private Sub OnTimer_Daytona2()
       Offset.lowpart = M3EM_RAMBASE.lowpart + &H105FC4
       Select Case OPT_Music
         Case CTRL_MUSIC_1
-          WriteLong64 Offset, 0
+          WriteByte64 Offset, 0
         Case CTRL_MUSIC_2
-          WriteLong64 Offset, 1
+          WriteByte64 Offset, 1
         Case CTRL_MUSIC_3
-          WriteLong64 Offset, 2
+          WriteByte64 Offset, 2
         Case CTRL_MUSIC_4
-          WriteLong64 Offset, 3
+          WriteByte64 Offset, 3
       End Select
 
       ' 105FC5 - AT/MT
       Offset.lowpart = M3EM_RAMBASE.lowpart + &H105FC5
       Select Case OPT_Gears
         Case CTRL_GEARS_AUTO
-          WriteLong64 Offset, 0
+          WriteByte64 Offset, 0
         Case CTRL_GEARS_MANUAL
-          WriteLong64 Offset, 1
+          WriteByte64 Offset, 1
       End Select
 
       ' 106200 - Timelap
       Offset.lowpart = M3EM_RAMBASE.lowpart + &H106200
       Select Case OPT_GameMode
         Case CTRL_GAMEMODE_NORMAL
-          WriteLong64 Offset, 0
+          WriteByte64 Offset, 0
         Case CTRL_GAMEMODE_TIMEATCK
-          WriteLong64 Offset, 1
+          WriteByte64 Offset, 1
       End Select
       
       AllowTracksD2 = False
@@ -398,44 +398,44 @@ Private Sub OnTimer_Scud()
     Offset.lowpart = M3EM_RAMBASE.lowpart + &H104F46
     Select Case OPT_Track
       Case CTRL_TRACK_BEGINNER
-        WriteLong64 Offset, 0
+        WriteByte64 Offset, 0
       Case CTRL_TRACK_ADVANCED
-        WriteLong64 Offset, 1
+        WriteByte64 Offset, 1
       Case CTRL_TRACK_EXPERT
-        WriteLong64 Offset, 2
+        WriteByte64 Offset, 2
       Case CTRL_TRACK_CHALLENGE
-        WriteLong64 Offset, 3
+        WriteByte64 Offset, 3
     End Select
     
     ' 104F45 - AT/MT
     Offset.lowpart = M3EM_RAMBASE.lowpart + &H104F45
     Select Case OPT_Gears
       Case CTRL_GEARS_AUTO
-        WriteLong64 Offset, 0
+        WriteByte64 Offset, 0
       Case CTRL_GEARS_MANUAL
-        WriteLong64 Offset, 1
+        WriteByte64 Offset, 1
     End Select
     
     ' 104F44 - Car
     Offset.lowpart = M3EM_RAMBASE.lowpart + &H104F44
     Select Case OPT_Music
       Case CTRL_MUSIC_1
-        WriteLong64 Offset, 4
+        WriteByte64 Offset, 4
       Case CTRL_MUSIC_2
-        WriteLong64 Offset, 5
+        WriteByte64 Offset, 5
       Case CTRL_MUSIC_3
-        WriteLong64 Offset, 6
+        WriteByte64 Offset, 6
       Case CTRL_MUSIC_4
-        WriteLong64 Offset, 7
+        WriteByte64 Offset, 7
     End Select
     
     ' 1051A0 - Timelap
     Offset.lowpart = M3EM_RAMBASE.lowpart + &H1051A0
     Select Case OPT_GameMode
       Case CTRL_GAMEMODE_NORMAL
-        WriteLong64 Offset, 0
+        WriteByte64 Offset, 0
       Case CTRL_GAMEMODE_TIMEATCK
-        WriteLong64 Offset, 1
+        WriteByte64 Offset, 1
     End Select
   End If
 
