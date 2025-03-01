@@ -288,7 +288,7 @@ Private Sub OnTimer_Daytona2()
           Case CTRL_TRACK_EXPERT
             WriteByte64 Offset, 3
           Case CTRL_TRACK_CHALLENGE
-            WriteByte64 Offset, 4
+            WriteByte64 Offset, 0
         End Select
       End If
     ElseIf MEM_SetupState = &H9 Or MEM_SetupState = &HC Then
@@ -499,7 +499,7 @@ Public Sub ReadUDP(lHandle As Long, sBuffer As String, sAddress As String)
       
     Case CTRL_CMD_TRACK
       Select Case baBuffer(1)
-        Case CTRL_TRACK_MAJOR, CTRL_TRACK_BEGINNER, CTRL_TRACK_ADVANCED, CTRL_TRACK_EXPERT
+        Case CTRL_TRACK_MAJOR, CTRL_TRACK_BEGINNER, CTRL_TRACK_ADVANCED, CTRL_TRACK_EXPERT, CTRL_TRACK_CHALLENGE
           OPT_Track = baBuffer(1)
       End Select
       
