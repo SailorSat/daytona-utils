@@ -95,7 +95,7 @@ Public Function mame_updatestate(ByVal id As Long, ByVal State As Long) As Long
     MAME_SendLeftRight
   End If
   
-  'Debug.Print "mame_updatestate", id, Hex(State), Name
+  Debug.Print "mame_updatestate", id, Hex(State), Name
   
   Select Case MAME_Profile
     Case "harddriv", "racedriv"
@@ -289,7 +289,7 @@ Public Sub CalSpeed(Name As String, State As Long)
 '  lamp2 view2 0/1
 '  lamp3 view3 0/1
   
-  If Name = "wheel" Then
+  If Name = "wheel" Or Name = "wheel_motor" Then
     Dim Cmd As Byte
     Dim Force As Byte
     If State > &H7F Then
