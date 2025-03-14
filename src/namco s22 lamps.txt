@@ -1,12 +1,14 @@
 0x60004000
 
 0x60004021	- lamps / GOUT, 0x01 = game counter
+				0x01 = green lamp (ace drive)
 				0x02 = coin counter #1
 				0x04 = coin counter #2
 				0x08 = ?
 				0x10 = LAMP (ridge racer 2 leader)
+				0x20 = red lamp (ace drive)
 
-060004041	- feedback	0xCC = 18% left?
+0x060004041	- feedback	0xCC = 18% left?
 				0xCE = 18% right?
 				0xFE/0xFC = 0% left/right 
 
@@ -26,3 +28,5 @@
 				0xAE	15	1010
 				0x2E	17	0010
 				0xCE	18	1100
+
+0x060004043	- led (ace drive)

@@ -81,6 +81,36 @@ Public Function mame_copydata(ByVal id As Long, ByVal Name As String) As Long
   Call get_name_from_id(id, Name)
 End Function
 
+Public Function get_name_from_id(id As Long, Name As String) As String
+  Dim i As Integer
+  Dim idStr As String
+  
+  idStr = ""
+  
+  For i = 1 To UBound(output_array, 2)
+    If output_array(0, i) = id Then
+      idStr = output_array(1, i)
+    End If
+  Next i
+  
+  If idStr = "" Then
+    If Name = "" Then
+      idStr = map_id_to_outname(id)
+    Else
+      idStr = Name
+    End If
+    ReDim Preserve output_array(1, UBound(output_array, 2) + 1) As String
+    output_array(0, UBound(output_array, 2)) = id
+    output_array(1, UBound(output_array, 2)) = idStr
+    
+    If id = 0 And MAME_Online = False Then
+      mame_start_internal idStr
+    End If
+  End If
+  
+  get_name_from_id = idStr
+End Function
+
 Public Function mame_updatestate(ByVal id As Long, ByVal State As Long) As Long
   Dim Name As String
   Name = get_name_from_id(id, "")
@@ -123,6 +153,17 @@ Public Function mame_updatestate(ByVal id As Long, ByVal State As Long) As Long
     Case "gticlub", "midnrun", "windheat"
       GtiClub Name, State
 
+    Case "ridgera2", "raverace"
+      RaveRacer Name, State
+
+    Case "acedrive", "victlap"
+      AceDriver Name, State
+    
+    Case "cybrcomm"
+      ' 0x10 = "view lamp"
+
+    Case "cybrcycc"
+    
     Case Else
       Select Case Name
         Case "digit0", "RawDrive"
@@ -529,35 +570,50 @@ Public Sub GtiClub(Name As String, State As Long)
   End If
 End Sub
 
-Public Function get_name_from_id(id As Long, Name As String) As String
-  Dim i As Integer
-  Dim idStr As String
-  
-  idStr = ""
-  
-  For i = 1 To UBound(output_array, 2)
-    If output_array(0, i) = id Then
-      idStr = output_array(1, i)
-    End If
-  Next i
-  
-  If idStr = "" Then
-    If Name = "" Then
-      idStr = map_id_to_outname(id)
-    Else
-      idStr = Name
-    End If
-    ReDim Preserve output_array(1, UBound(output_array, 2) + 1) As String
-    output_array(0, UBound(output_array, 2)) = id
-    output_array(1, UBound(output_array, 2)) = idStr
+Public Sub RaveRacer(Name As String, State As Long)
+  Select Case Name
+    Case "mcuout0"
+      ' lamps
+      ' 0x02 = coin counter #1
+      ' 0x08 = ? ingame ?
+      ' 0x10 = leader lamp
+      Debug.Print "RaveRacer", "Lamp", Hex(State)
+    Case "mcuout1"
+      ' driveboard
+      ' 80-9f = right?
+      ' c0-df = left?
+      Dim Cmd As Byte
+      Cmd = Not bitReverse(CByte(State))
+      Debug.Print "RaveRacer", "Drive", Hex(Cmd)
+
+    Case Else
     
-    If id = 0 And MAME_Online = False Then
-      mame_start_internal idStr
-    End If
-  End If
-  
-  get_name_from_id = idStr
-End Function
+  End Select
+End Sub
+
+Public Sub AceDriver(Name As String, State As Long)
+  Select Case Name
+    Case "mcuout0"
+      ' lamps
+      ' 0x01 = green lamp
+      ' 0x02 = coin counter #1
+      ' 0x04 = motor on?
+      ' 0x08 = ? ingame ?
+      ' 0x10 = leader lamp
+      ' 0x20 = red lamp
+      Debug.Print "AceDriver", "Lamp", Hex(State)
+    Case "mcuout1"
+      ' driveboard
+      ' 3f-00 = right?
+      ' 40-7f = left?
+      Dim Cmd As Byte
+      Cmd = Not bitReverse(CByte(State))
+      Debug.Print "AceDriver", "Drive", Hex(Cmd)
+
+    Case Else
+    
+  End Select
+End Sub
 
 Public Function decode_force_feedback_command(Cmd As Long)
   Static page As Long
