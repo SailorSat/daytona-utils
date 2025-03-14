@@ -50,7 +50,7 @@ Public Sub mame_start_internal(Profile As String)
   Debug.Print "mame_start_internal", Profile
   MAME_Profile = Profile
   Select Case MAME_Profile
-    Case "orunners", "outrun", "calspeed", "offroadc", "crusnusa", "crusnwld", "crusnexo", "sfrush", "sfrushrk", "sf2049", "gticlub", "midnrun", "windheat", "harddriv", "racedriv"
+    Case "orunners", "outrun", "calspeed", "offroadc", "crusnusa", "crusnwld", "crusnexo", "sfrush", "sfrushrk", "sf2049", "gticlub", "midnrun", "windheat", "harddriv", "racedriv", "ridgera", "ridgera2", "raverace", "acedrive", "victlap"
       DriveData = &H7
       LampsData = &H0
       PwmData = &H0
@@ -153,7 +153,7 @@ Public Function mame_updatestate(ByVal id As Long, ByVal State As Long) As Long
     Case "gticlub", "midnrun", "windheat"
       GtiClub Name, State
 
-    Case "ridgera2", "raverace"
+    Case "ridgera", "ridgera2", "raverace"
       RaveRacer Name, State
 
     Case "acedrive", "victlap"
@@ -577,14 +577,42 @@ Public Sub RaveRacer(Name As String, State As Long)
       ' 0x02 = coin counter #1
       ' 0x08 = ? ingame ?
       ' 0x10 = leader lamp
-      Debug.Print "RaveRacer", "Lamp", Hex(State)
+      Dim Lmp As Byte
+      If State And &H8 Then Lmp = Lmp Or &H4
+      If State And &H10 Then Lmp = Lmp Or &H80
+      LampsData = Lmp
+    
     Case "mcuout1"
       ' driveboard
-      ' 80-9f = right?
-      ' c0-df = left?
-      Dim Cmd As Byte
-      Cmd = Not bitReverse(CByte(State))
-      Debug.Print "RaveRacer", "Drive", Hex(Cmd)
+      ' 80-9f = left!
+      ' c0-df = right!
+      If LampsData And &H4 Then
+        Dim Cmd As Byte
+        Dim Force As Byte
+        Force = Not bitReverse(CByte(State))
+        If Force >= &H80 And Force <= &H9F Then
+          ' left!
+          Cmd = &H60
+          Force = (Force - &H80) / 8
+          If Force = 0 Then
+            Cmd = &H10
+          Else
+            Force = Force - 1
+          End If
+        ElseIf Force >= &HC0 And Force <= &HDF Then
+          ' right!
+          Cmd = &H50
+          Force = (Force - &HC0) / 8
+          If Force = 0 Then
+            Cmd = &H10
+          Else
+            Force = Force - 1
+          End If
+        End If
+        If Cmd <> 0 Then DriveData = Cmd Or Force
+      Else
+        DriveData = &H10
+      End If
 
     Case Else
     
@@ -602,13 +630,47 @@ Public Sub AceDriver(Name As String, State As Long)
       ' 0x10 = leader lamp
       ' 0x20 = red lamp
       Debug.Print "AceDriver", "Lamp", Hex(State)
+      Dim Lmp As Byte
+      If State And &H1 Then Lmp = Lmp Or &H8
+      If State And &H8 Then Lmp = Lmp Or &H4
+      If State And &H10 Then Lmp = Lmp Or &H80
+      If State And &H20 Then Lmp = Lmp Or &H10
+      LampsData = Lmp
+      
+      Debug.Print "AceDriver", "Lamp", Hex(State)
     Case "mcuout1"
       ' driveboard
-      ' 3f-00 = right?
-      ' 40-7f = left?
-      Dim Cmd As Byte
-      Cmd = Not bitReverse(CByte(State))
-      Debug.Print "AceDriver", "Drive", Hex(Cmd)
+      ' 3f-00 = left!
+      ' 40-7f = right!
+      If LampsData And &H4 Then
+        Dim Cmd As Byte
+        Dim Force As Byte
+        Force = Not bitReverse(CByte(State))
+        Debug.Print "AceDriver", "Drive", Hex(Cmd)
+        If Force >= &H40 And Force <= &H7F Then
+          ' right!
+          Cmd = &H50
+          Force = (Force - &H40) / 8
+          If Force = 0 Then
+            Cmd = &H10
+          Else
+            Force = Force - 1
+          End If
+        ElseIf Force >= &H0 And Force <= &H3F Then
+          ' left!
+          Cmd = &H60
+          Force = (Force) / 8
+          If Force = 0 Then
+            Cmd = &H10
+          Else
+            Force = Force - 1
+          End If
+        End If
+        If Cmd <> 0 Then DriveData = Cmd Or Force
+      Else
+        DriveData = &H10
+      End If
+
 
     Case Else
     
