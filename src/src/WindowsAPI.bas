@@ -6,7 +6,7 @@ Option Explicit
 ' Generics
 Public Declare Function GetTickCount Lib "kernel32.dll" () As Long
 Public Declare Function CloseHandle Lib "kernel32.dll" (ByVal hObject As Long) As Long
-Public Declare Sub RtlMoveMemory Lib "kernel32.dll" (Destination As Any, Source As Any, ByVal Length As Long)
+Public Declare Sub RtlMoveMemory Lib "kernel32.dll" (Destination As Any, Source As Any, ByVal length As Long)
 Public Declare Function GetSystemDirectoryA Lib "kernel32.dll" (ByVal lpBuffer As String, ByVal nSize As Long) As Long
 
 Public Declare Function SetFocus Lib "user32.dll" (ByVal hWnd As Long) As Long
@@ -366,7 +366,7 @@ Public Type LIST_ENTRY64
 End Type
 
 Public Type UNICODE_STRING64
-  Length As Integer
+  length As Integer
   MaxLength As Integer
   lPad As Long
   lpBuffer As LARGE_INTEGER
@@ -466,7 +466,7 @@ Public Type PEB64
 End Type
 
 Public Type PEB_LDR_DATA64
-  Length As Long
+  length As Long
   Initialized As Long
   SsHandle As LARGE_INTEGER
   InLoadOrderModuleList As LIST_ENTRY64
@@ -526,6 +526,8 @@ Public Const VK_UP As Long = &H26
 Public Const VK_RIGHT As Long = &H27
 Public Const VK_DOWN As Long = &H28
 Public Const VK_7 As Long = &H37
+Public Const VK_F3 As Long = &H72
+Public Const VK_F5 As Long = &H74
 
 Public Const MAPVK_VK_TO_VSC As Long = 0
 

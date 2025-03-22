@@ -3601,7 +3601,7 @@ End Sub
 
 Public Sub SendToClients(sBuffer As String, MinimumStatus As Byte)
   Dim Index As Integer
-  For Index = 16 To 0 Step -1
+  For Index = 0 To 16
     SendToClient Index, sBuffer, MinimumStatus
   Next
 End Sub

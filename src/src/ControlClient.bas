@@ -66,17 +66,20 @@ Public Sub Timer()
       OnStatus "ControlClient", vbGreen, "online"
       MEM_Open = True
     End If
+  ElseIf M3EM_Online Then
+    If Not MEM_Open Then
+      OnStatus "ControlClient", vbGreen, "online"
+      MEM_Open = True
+    End If
+  ElseIf MAME_Online Then
+    If Not MEM_Open Then
+      OnStatus "ControlClient", vbGreen, "online"
+      MEM_Open = True
+    End If
   Else
-    If M3EM_Online Then
-      If Not MEM_Open Then
-        OnStatus "ControlClient", vbGreen, "online"
-        MEM_Open = True
-      End If
-    Else
-      If MEM_Open Then
-        OnStatus "ControlClient", vbYellow, "ready"
-        MEM_Open = False
-      End If
+    If MEM_Open Then
+      OnStatus "ControlClient", vbYellow, "ready"
+      MEM_Open = False
     End If
   End If
 
@@ -87,6 +90,8 @@ Public Sub Timer()
       OnTimer_Daytona2
     ElseIf M3EM_Profile = "scud" Then
       OnTimer_Scud
+    ElseIf MAME_Online Then
+      OnTimer_MAME
     End If
   End If
 End Sub
@@ -450,6 +455,14 @@ Private Sub OnTimer_Scud()
   End If
 End Sub
 
+Private Sub OnTimer_MAME()
+  ' remote reset
+  If OPT_Reset = 1 Then
+    MAME_SendF3
+    OPT_Reset = 0
+  End If
+End Sub
+
 Public Sub OnDriveEx(Data As Byte)
   If Not Data = CTRL_Ex Then
     CTRL_Ex = Data
@@ -540,4 +553,3 @@ Public Sub ReadUDP(lHandle As Long, sBuffer As String, sAddress As String)
       PlaySoundA "test.wav", 0, SND_FILENAME Or SND_ASYNC
   End Select
 End Sub
-

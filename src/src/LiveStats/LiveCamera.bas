@@ -17,7 +17,7 @@ Private Type CAMERA_Location
   Y As Single
   Distance As Single
   Rotation As Long
-  View As Byte
+  VIEW As Byte
 End Type
 
 Public CAMERA_Name(0 To 15) As String
@@ -79,7 +79,7 @@ Public Sub CAMERA_OnRaceStart(Track As Byte, Node As Byte, Players As Byte)
         .X = -89
         .Y = -98
         .Distance = 80
-        .View = 15
+        .VIEW = 15
       End With
   
       With CAMERA_Preset(1)
@@ -88,7 +88,7 @@ Public Sub CAMERA_OnRaceStart(Track As Byte, Node As Byte, Players As Byte)
         .X = 130
         .Y = -264
         .Distance = 100
-        .View = 15
+        .VIEW = 15
       End With
   
     Case 2
@@ -100,7 +100,7 @@ Public Sub CAMERA_OnRaceStart(Track As Byte, Node As Byte, Players As Byte)
         .Y = -87
         .Distance = 250
         .Rotation = &H10000
-        .View = 14
+        .VIEW = 14
       End With
   
       With CAMERA_Preset(1)
@@ -109,7 +109,7 @@ Public Sub CAMERA_OnRaceStart(Track As Byte, Node As Byte, Players As Byte)
         .X = -475
         .Y = 278
         .Distance = 80
-        .View = 14
+        .VIEW = 14
       End With
   
       With CAMERA_Preset(2)
@@ -118,7 +118,7 @@ Public Sub CAMERA_OnRaceStart(Track As Byte, Node As Byte, Players As Byte)
         .X = -532
         .Y = 59
         .Distance = 80
-        .View = 14
+        .VIEW = 14
       End With
   
       With CAMERA_Preset(3)
@@ -127,7 +127,7 @@ Public Sub CAMERA_OnRaceStart(Track As Byte, Node As Byte, Players As Byte)
         .X = -211
         .Y = 128
         .Distance = 80
-        .View = 14
+        .VIEW = 14
       End With
   
       With CAMERA_Preset(4)
@@ -136,7 +136,7 @@ Public Sub CAMERA_OnRaceStart(Track As Byte, Node As Byte, Players As Byte)
         .X = -586
         .Y = -233
         .Distance = 100
-        .View = 15
+        .VIEW = 15
       End With
   End Select
 End Sub
@@ -169,6 +169,7 @@ Public Sub ProcessPackets(ServerPacket As DaytonaPacket, ClientPacket As Daytona
     Y1 = ClientPacket.x05C_CarY
     
     FoundOne = False
+    On Error Resume Next
     For Preset = 0 To 7
       If Not FoundOne Then
         With CAMERA_Preset(Preset)
@@ -192,8 +193,8 @@ Public Sub ProcessPackets(ServerPacket As DaytonaPacket, ClientPacket As Daytona
                   ZPos = (CLng(Sqr(Distance(X1, Y1, X2, Y2)) * &H400000) + &HC0000000)
                   
                   ' Use correct name and view
-                  CAMERA_Name(.View) = .Name
-                  ViewNo = .View
+                  CAMERA_Name(.VIEW) = .Name
+                  ViewNo = .VIEW
                   
                 Case 2
                   ' -= Car-to-Point =-
@@ -206,8 +207,8 @@ Public Sub ProcessPackets(ServerPacket As DaytonaPacket, ClientPacket As Daytona
                   ZPos = &H43480000
                   
                   ' Use correct name and view
-                  CAMERA_Name(.View) = .Name
-                  ViewNo = .View
+                  CAMERA_Name(.VIEW) = .Name
+                  ViewNo = .VIEW
                   
                 Case 3
                   ' -= Car-Rotation =-
@@ -217,24 +218,26 @@ Public Sub ProcessPackets(ServerPacket As DaytonaPacket, ClientPacket As Daytona
                   Rot = (Deg - Yaw)
                   
                   ' Use correct name and view
-                  CAMERA_Name(.View) = .Name
-                  ViewNo = .View
+                  CAMERA_Name(.VIEW) = .Name
+                  ViewNo = .VIEW
               End Select
             End If
           End If
         End With
       End If
     Next
-    
+    If Err Then Err.Clear
+    On Error GoTo 0
+
     If FoundOne Then
       RtlMoveMemory RotI, Rot, 2
       WriteInteger M2EM_RAMBASE + CAMERA_ROTATION, RotI
       WriteLong M2EM_BACKUPBASE + &H350&, ZPos
-      WriteByte M2EM_RAMBASE + View, ViewNo
+      WriteByte M2EM_RAMBASE + VIEW, ViewNo
     Else
       ' Change View
       WriteInteger M2EM_RAMBASE + CAMERA_ROTATION, 0
-      WriteByte M2EM_RAMBASE + View, ViewNo
+      WriteByte M2EM_RAMBASE + VIEW, ViewNo
     End If
   End If
 End Sub

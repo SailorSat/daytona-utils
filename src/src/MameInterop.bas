@@ -19,6 +19,7 @@ Private OutRun_Motor_Speed As Byte
 ' status flags
 Public MAME_Online As Boolean
 Public MAME_Profile As String
+Public MAME_NagScreen As Boolean
 
 Private DriveData As Byte
 Private LampsData As Byte
@@ -60,6 +61,7 @@ Public Sub mame_start_internal(Profile As String)
       PwmData = &H0
   End Select
   MAME_Online = True
+  MAME_NagScreen = True
 End Sub
 
 
@@ -115,6 +117,12 @@ Public Function mame_updatestate(ByVal id As Long, ByVal State As Long) As Long
   Dim Name As String
   Name = get_name_from_id(id, "")
   
+  If MAME_NagScreen = True Then
+    If id <> 0 Then MAME_NagScreen = False
+  End If
+  
+  'Debug.Print "mame_updatestate", id, Hex(State), Name
+  
   If Left(Name, 6) = "cpuled" Then Exit Function
   If Left(Name, 10) = "system_led" Then Exit Function
   
@@ -125,7 +133,6 @@ Public Function mame_updatestate(ByVal id As Long, ByVal State As Long) As Long
     MAME_SendLeftRight
   End If
   
-  Debug.Print "mame_updatestate", id, Hex(State), Name
   
   Select Case MAME_Profile
     Case "harddriv", "racedriv"
@@ -856,3 +863,23 @@ Public Sub MAME_SendLeftRight()
   Sleep 25
 End Sub
 
+Public Sub MAME_SendF3()
+  Dim keyInput As INPUT_
+  Dim VKey As Long, ScanCode As Long
+  
+  ' left
+  ScanCode = MapVirtualKeyA(VK_F3, MAPVK_VK_TO_VSC)
+  
+  keyInput.dwType = INPUT_KEYBOARD
+  keyInput.dwFlags = KEYEVENTF_SCANCODE
+  keyInput.wScan = ScanCode
+  SendInput 1, keyInput, LenB(keyInput)
+  
+  Sleep 25
+  
+  keyInput.dwFlags = KEYEVENTF_SCANCODE + KEYEVENTF_KEYUP
+  keyInput.wScan = ScanCode
+  SendInput 1, keyInput, LenB(keyInput)
+
+  Sleep 25
+End Sub

@@ -27,6 +27,12 @@ End Sub
 
 Public Sub Timer()
   If MAME_Online Then
+    If MAME_NagScreen Then
+      Sleep 500
+      MAME_SendLeftRight
+      Sleep 500
+      MAME_SendLeftRight
+    End If
     Profile = MAME_Profile
     ProcessDrive Get_MAME_DriveData
     ProcessLamps Get_MAME_LampsData
