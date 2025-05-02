@@ -19,7 +19,7 @@ Private OutRun_Motor_Speed As Byte
 ' status flags
 Public MAME_Online As Boolean
 Public MAME_Profile As String
-Public MAME_NagScreen As Boolean
+Public MAME_NagScreen As Byte
 
 Private DriveData As Byte
 Private LampsData As Byte
@@ -61,7 +61,7 @@ Public Sub mame_start_internal(Profile As String)
       PwmData = &H0
   End Select
   MAME_Online = True
-  MAME_NagScreen = True
+  MAME_NagScreen = 10
 End Sub
 
 
@@ -117,8 +117,8 @@ Public Function mame_updatestate(ByVal id As Long, ByVal State As Long) As Long
   Dim Name As String
   Name = get_name_from_id(id, "")
   
-  If MAME_NagScreen = True Then
-    If id <> 0 Then MAME_NagScreen = False
+  If MAME_NagScreen > 0 Then
+    If id <> 0 Then MAME_NagScreen = 0
   End If
   
   'Debug.Print "mame_updatestate", id, Hex(State), Name

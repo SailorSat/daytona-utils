@@ -27,7 +27,8 @@ End Sub
 
 Public Sub Timer()
   If MAME_Online Then
-    If MAME_NagScreen Then
+    If MAME_NagScreen > 0 Then
+      MAME_NagScreen = MAME_NagScreen - 1
       Sleep 500
       MAME_SendLeftRight
       Sleep 500

@@ -470,6 +470,27 @@ Begin VB.Form Window
       Begin VB.CommandButton cmdProfile 
          Appearance      =   0  'Flat
          BackColor       =   &H0000C000&
+         Caption         =   "DAYTONA USA*"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Index           =   44
+         Left            =   4560
+         Style           =   1  'Graphical
+         TabIndex        =   132
+         Top             =   5280
+         Width           =   2055
+      End
+      Begin VB.CommandButton cmdProfile 
+         Appearance      =   0  'Flat
+         BackColor       =   &H0000C000&
          Caption         =   "Racin' Force"
          BeginProperty Font 
             Name            =   "Fixedsys"
@@ -3275,6 +3296,8 @@ Private Sub cmdProfile_Click(Index As Integer)
     Case 43
       bsBuffer = StrConv("racinfrc", vbFromUnicode)
       bMode = 2
+    Case 44
+      bsBuffer = StrConv("daytonas", vbFromUnicode)
       
     Case 9
       bsBuffer = StrConv("daytona2", vbFromUnicode)
@@ -3296,8 +3319,10 @@ Private Sub cmdProfile_Click(Index As Integer)
       bsBuffer = StrConv("srally12", vbFromUnicode)
     Case 25
       bsBuffer = StrConv("flatout2", vbFromUnicode)
+      bMode = 1
     Case 33
       bsBuffer = StrConv("doomtona", vbFromUnicode)
+      bMode = 1
     
     Case 29
       bsBuffer = StrConv("bench", vbFromUnicode)
@@ -3670,12 +3695,12 @@ Public Sub SendToClients(sBuffer As String, MinimumStatus As Byte, Optional Mode
     Case 1
       For Index = 0 To 16
         SendToClient Index, sBuffer, MinimumStatus
-        Sleep 50
+        Sleep 66
       Next
     Case 2
       For Index = 16 To 0 Step -1
         SendToClient Index, sBuffer, MinimumStatus
-        Sleep 50
+        Sleep 66
       Next
   End Select
 End Sub
