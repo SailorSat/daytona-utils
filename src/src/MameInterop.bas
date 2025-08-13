@@ -51,7 +51,7 @@ Public Sub mame_start_internal(Profile As String)
   Debug.Print "mame_start_internal", Profile
   MAME_Profile = Profile
   Select Case MAME_Profile
-    Case "orunners", "outrun", "calspeed", "offroadc", "crusnusa", "crusnwld", "crusnexo", "sfrush", "sfrushrk", "sf2049", "gticlub", "midnrun", "windheat", "harddriv", "racedriv", "ridgera", "ridgera2", "raverace", "acedrive", "victlap"
+    Case "orunners", "outrun", "calspeed", "offroadc", "crusnusa", "crusnwld", "crusnwld24", "crusnexo", "sfrush", "sfrushrk", "sf2049", "gticlub", "midnrun", "windheat", "harddriv", "racedriv", "ridgera", "ridgera2", "raverace", "acedrive", "victlap"
       DriveData = &H7
       LampsData = &H0
       PwmData = &H0
@@ -121,7 +121,7 @@ Public Function mame_updatestate(ByVal id As Long, ByVal State As Long) As Long
     If id <> 0 Then MAME_NagScreen = 0
   End If
   
-  'Debug.Print "mame_updatestate", id, Hex(State), Name
+  Debug.Print "mame_updatestate", id, Hex(State), Name
   
   If Left(Name, 6) = "cpuled" Then Exit Function
   If Left(Name, 10) = "system_led" Then Exit Function
@@ -148,7 +148,7 @@ Public Function mame_updatestate(ByVal id As Long, ByVal State As Long) As Long
     Case "calspeed"
       CalSpeed Name, State
       
-    Case "crusnusa", "crusnwld", "crusnexo"
+    Case "crusnusa", "crusnwld", "crusnwld24", "crusnexo"
       Crusn Name, State
     
     Case "sfrush", "sfrushrk"
@@ -309,6 +309,7 @@ Public Sub OffroadC(Name As String, State As Long)
 '  lamp1 view1 0/1
 '  lamp2 view2 0/1
 '  lamp3 view3 0/1
+'  lamp6/lamp7 leader 0/1
   
   If Name = "wheel" Then
     Dim Cmd As Byte
@@ -365,8 +366,8 @@ Public Sub Crusn(Name As String, State As Long)
 '  lamp3 view3 0/1
 '  lamp4 ltail 0/1 (not mapped)
 '  lamp5 rtail 0/1 (not mapped)
-'  lamp7 lfrnt 0/1 (not mapped) / mrq1
-'  lamp8 rfrnt 0/1 (not mapped) / mrq2
+'  lamp6 lfrnt 0/1 (not mapped) / mrq1
+'  lamp7 rfrnt 0/1 (not mapped) / mrq2
   
   If Name = "wheel" Then
     Dim Cmd As Byte
@@ -400,6 +401,9 @@ Public Sub Crusn(Name As String, State As Long)
       Case "lamp3"
         '&H20 - yellow lamp
         Mask = &H20
+      Case "lamp7"
+        '&H80 - leader lamp
+        Mask = &H80
     End Select
     If State = 0 Then
       LampsData = LampsData And (&HFF - Mask)
@@ -554,7 +558,7 @@ Public Sub OutRunners(Name As String, State As Long)
 End Sub
 
 Public Sub GtiClub(Name As String, State As Long)
-  If Name = "pcbdigit2" Then
+  If Name = "pcbdigit2" Or Name = "pcboutput0" Then
     Dim Cmd As Byte
     Dim Force As Byte
     Cmd = State And &HF0&
@@ -579,7 +583,7 @@ End Sub
 
 Public Sub RaveRacer(Name As String, State As Long)
   Select Case Name
-    Case "mcuout0"
+    Case "mcuoutput0"
       ' lamps
       ' 0x02 = coin counter #1
       ' 0x08 = ? ingame ?
@@ -589,7 +593,7 @@ Public Sub RaveRacer(Name As String, State As Long)
       If State And &H10 Then Lmp = Lmp Or &H80
       LampsData = Lmp
     
-    Case "mcuout1"
+    Case "mcuoutput1"
       ' driveboard
       ' 80-9f = left!
       ' c0-df = right!
@@ -628,7 +632,7 @@ End Sub
 
 Public Sub AceDriver(Name As String, State As Long)
   Select Case Name
-    Case "mcuout0"
+    Case "mcuoutput0"
       ' lamps
       ' 0x01 = green lamp
       ' 0x02 = coin counter #1
@@ -645,7 +649,7 @@ Public Sub AceDriver(Name As String, State As Long)
       LampsData = Lmp
       
       Debug.Print "AceDriver", "Lamp", Hex(State)
-    Case "mcuout1"
+    Case "mcuoutput1"
       ' driveboard
       ' 3f-00 = left!
       ' 40-7f = right!

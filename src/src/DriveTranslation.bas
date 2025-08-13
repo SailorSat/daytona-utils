@@ -11,7 +11,8 @@ Public TranslationDebug As Boolean
 
 Public Function TranslateDrive(ByRef OldData As Byte, ByVal NewData As Byte) As Boolean
   If DirectMode Then
-    TranslateDrive = NewData
+    NewData = OldData
+    TranslateDrive = True
   Else
     If Model3Mode Then
       TranslateDrive = TranslateDrive_M3(OldData, NewData)
