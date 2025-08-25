@@ -118,21 +118,22 @@ Public Function mame_updatestate(ByVal id As Long, ByVal State As Long) As Long
   Name = get_name_from_id(id, "")
   
   If MAME_NagScreen > 0 Then
-    If id <> 0 Then MAME_NagScreen = 0
+    If Name = "pause" And State = 0 Then
+      MAME_NagScreen = 0
+    End If
   End If
-  
-  Debug.Print "mame_updatestate", id, Hex(State), Name
   
   If Left(Name, 6) = "cpuled" Then Exit Function
   If Left(Name, 10) = "system_led" Then Exit Function
   
-  If Left(Name, 11) = "Orientation" Then
-    Sleep 500
-    MAME_SendLeftRight
-    Sleep 500
-    MAME_SendLeftRight
-  End If
+  Debug.Print "mame_updatestate", id, Hex(State), Name
   
+'  If Left(Name, 11) = "Orientation" Then
+'    Sleep 500
+'    MAME_SendLeftRight
+'    Sleep 500
+'    MAME_SendLeftRight
+'  End If
   
   Select Case MAME_Profile
     Case "harddriv", "racedriv"
@@ -171,6 +172,16 @@ Public Function mame_updatestate(ByVal id As Long, ByVal State As Long) As Long
 
     Case "cybrcycc"
     
+    Case "daytona", "srallyc", "indy500", "stcc"
+      Select Case Name
+        Case "output0"
+          ' raw drive data
+          DriveData = State
+        Case "output1"
+          ' raw lamps data
+          LampsData = State
+      End Select
+
     Case Else
       Select Case Name
         Case "digit0", "RawDrive"
@@ -887,3 +898,25 @@ Public Sub MAME_SendF3()
 
   Sleep 25
 End Sub
+
+Public Sub MAME_SendF5()
+  Dim keyInput As INPUT_
+  Dim VKey As Long, ScanCode As Long
+  
+  ' left
+  ScanCode = MapVirtualKeyA(VK_F5, MAPVK_VK_TO_VSC)
+  
+  keyInput.dwType = INPUT_KEYBOARD
+  keyInput.dwFlags = KEYEVENTF_SCANCODE
+  keyInput.wScan = ScanCode
+  SendInput 1, keyInput, LenB(keyInput)
+  
+  Sleep 25
+  
+  keyInput.dwFlags = KEYEVENTF_SCANCODE + KEYEVENTF_KEYUP
+  keyInput.wScan = ScanCode
+  SendInput 1, keyInput, LenB(keyInput)
+
+  Sleep 25
+End Sub
+

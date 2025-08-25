@@ -28,11 +28,7 @@ End Sub
 Public Sub Timer()
   If MAME_Online Then
     If MAME_NagScreen > 0 Then
-      MAME_NagScreen = MAME_NagScreen - 1
-      Sleep 500
-      MAME_SendLeftRight
-      Sleep 500
-      MAME_SendLeftRight
+      MAME_SendF5
     End If
     Profile = MAME_Profile
     ProcessDrive Get_MAME_DriveData
@@ -46,6 +42,7 @@ Public Sub Timer()
     ProcessPwm 0
     If FeedbackDebug Then OnText "Feedback", "Debug", "M2EM"
   Else
+    Profile = ""
     ProcessDrive &H10
     Sleep 50
     ProcessDrive &H0
