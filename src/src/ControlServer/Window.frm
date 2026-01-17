@@ -470,6 +470,69 @@ Begin VB.Form Window
       Begin VB.CommandButton cmdProfile 
          Appearance      =   0  'Flat
          BackColor       =   &H0000C000&
+         Caption         =   "FinalLap R"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Index           =   47
+         Left            =   4560
+         Style           =   1  'Graphical
+         TabIndex        =   135
+         Top             =   6720
+         Width           =   2055
+      End
+      Begin VB.CommandButton cmdProfile 
+         Appearance      =   0  'Flat
+         BackColor       =   &H0000C000&
+         Caption         =   "OffRoadChallenge"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Index           =   46
+         Left            =   2280
+         Style           =   1  'Graphical
+         TabIndex        =   134
+         Top             =   6720
+         Width           =   2055
+      End
+      Begin VB.CommandButton cmdProfile 
+         Appearance      =   0  'Flat
+         BackColor       =   &H0000C000&
+         Caption         =   "Cruis'n World"
+         BeginProperty Font 
+            Name            =   "Fixedsys"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Index           =   45
+         Left            =   0
+         Style           =   1  'Graphical
+         TabIndex        =   133
+         Top             =   6720
+         Width           =   2055
+      End
+      Begin VB.CommandButton cmdProfile 
+         Appearance      =   0  'Flat
+         BackColor       =   &H0000C000&
          Caption         =   "DAYTONA USA*"
          BeginProperty Font 
             Name            =   "Fixedsys"
@@ -3298,6 +3361,12 @@ Private Sub cmdProfile_Click(Index As Integer)
       bMode = 2
     Case 44
       bsBuffer = StrConv("daytonas", vbFromUnicode)
+    Case 45
+      bsBuffer = StrConv("crusnwld", vbFromUnicode)
+    Case 46
+      bsBuffer = StrConv("offroadc", vbFromUnicode)
+    Case 47
+      bsBuffer = StrConv("finalapr", vbFromUnicode)
       
     Case 9
       bsBuffer = StrConv("daytona2", vbFromUnicode)
