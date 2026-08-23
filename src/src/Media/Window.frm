@@ -9,6 +9,14 @@ Begin VB.Form Window
    ScaleHeight     =   3120
    ScaleWidth      =   8145
    StartUpPosition =   3  'Windows Default
+   Begin VB.CommandButton Command16 
+      Caption         =   "Endboss"
+      Height          =   435
+      Left            =   2040
+      TabIndex        =   15
+      Top             =   2520
+      Width           =   1815
+   End
    Begin VB.CommandButton Command15 
       Caption         =   "BillieJean"
       Height          =   435
@@ -155,38 +163,44 @@ End Sub
 
 Private Sub Command10_Click()
   Dim Data As String
-  Data = "GET /browser.html?path=%5c%5cDAYTONA09%5cSoftware%5cSeligenstadt.mp4 HTTP/1.1" & vbCrLf & vbCrLf
+  Data = "GET /browser.html?path=%5c%5cDAYTONA17%5cSoftware%5cSeligenstadt.mp4 HTTP/1.1" & vbCrLf & vbCrLf
   SendToAll Data
 End Sub
 
 Private Sub Command11_Click()
   Dim Data As String
-  Data = "GET /browser.html?path=%5c%5cDAYTONA09%5cSoftware%5cBlindingLights.mp4 HTTP/1.1" & vbCrLf & vbCrLf
+  Data = "GET /browser.html?path=%5c%5cDAYTONA17%5cSoftware%5cBlindingLights.mp4 HTTP/1.1" & vbCrLf & vbCrLf
   SendToAll Data
 End Sub
 
 Private Sub Command12_Click()
   Dim Data As String
-  Data = "GET /browser.html?path=%5c%5cDAYTONA09%5cSoftware%5cdinner4one.mp4 HTTP/1.1" & vbCrLf & vbCrLf
+  Data = "GET /browser.html?path=%5c%5cDAYTONA17%5cSoftware%5cdinner4one.mp4 HTTP/1.1" & vbCrLf & vbCrLf
   SendToAll Data
 End Sub
 
 Private Sub Command13_Click()
   Dim Data As String
-  Data = "GET /browser.html?path=%5c%5cDAYTONA09%5cSoftware%5cmagfest.mp4 HTTP/1.1" & vbCrLf & vbCrLf
+  Data = "GET /browser.html?path=%5c%5cDAYTONA17%5cSoftware%5cmagfest.mp4 HTTP/1.1" & vbCrLf & vbCrLf
   SendToAll Data
 End Sub
 'ShineaLightonMe.mp4
 
 Private Sub Command14_Click()
   Dim Data As String
-  Data = "GET /browser.html?path=%5c%5cDAYTONA09%5cSoftware%5cDaytonaUSA.mp4 HTTP/1.1" & vbCrLf & vbCrLf
+  Data = "GET /browser.html?path=%5c%5cDAYTONA17%5cSoftware%5cDaytonaUSA.mp4 HTTP/1.1" & vbCrLf & vbCrLf
   SendToAll Data
 End Sub
 
 Private Sub Command15_Click()
   Dim Data As String
-  Data = "GET /browser.html?path=%5c%5cDAYTONA09%5cSoftware%5cShineaLightonMe.mp4 HTTP/1.1" & vbCrLf & vbCrLf
+  Data = "GET /browser.html?path=%5c%5cDAYTONA17%5cSoftware%5cShineaLightonMe.mp4 HTTP/1.1" & vbCrLf & vbCrLf
+  SendToAll Data
+End Sub
+
+Private Sub Command16_Click()
+  Dim Data As String
+  Data = "GET /browser.html?path=%5c%5cDAYTONA17%5cSoftware%5cendboss.mp4 HTTP/1.1" & vbCrLf & vbCrLf
   SendToAll Data
 End Sub
 
@@ -198,13 +212,13 @@ End Sub
 
 Private Sub Command3_Click()
   Dim Data As String
-  Data = "GET /browser.html?path=%5c%5cDAYTONA09%5cSoftware%5cHurricane.mp4 HTTP/1.1" & vbCrLf & vbCrLf
+  Data = "GET /browser.html?path=%5c%5cDAYTONA17%5cSoftware%5cHurricane.mp4 HTTP/1.1" & vbCrLf & vbCrLf
   SendToAll Data
 End Sub
 
 Private Sub Command4_Click()
   Dim Data As String
-  Data = "GET /browser.html?path=%5c%5cDAYTONA09%5cSoftware%5cSpritgeld.mp4 HTTP/1.1" & vbCrLf & vbCrLf
+  Data = "GET /browser.html?path=%5c%5cDAYTONA17%5cSoftware%5cSpritgeld.mp4 HTTP/1.1" & vbCrLf & vbCrLf
   SendToAll Data
 End Sub
 
@@ -216,37 +230,41 @@ End Sub
 
 Private Sub Command6_Click()
   Dim Data As String
-  Data = "GET /browser.html?path=%5c%5cDAYTONA09%5cSoftware%5cArmitage3rd.mp4 HTTP/1.1" & vbCrLf & vbCrLf
+  Data = "GET /browser.html?path=%5c%5cDAYTONA17%5cSoftware%5cArmitage3rd.mp4 HTTP/1.1" & vbCrLf & vbCrLf
   SendToAll Data
 End Sub
 
 Private Sub Command7_Click()
   Dim Data As String
-  Data = "GET /browser.html?path=%5c%5cDAYTONA09%5cSoftware%5cBlackKnight2000.mp4 HTTP/1.1" & vbCrLf & vbCrLf
+  Data = "GET /browser.html?path=%5c%5cDAYTONA17%5cSoftware%5cBlackKnight2000.mp4 HTTP/1.1" & vbCrLf & vbCrLf
   SendToAll Data
 End Sub
 
 Private Sub Command8_Click()
   Dim Data As String
-  Data = "GET /browser.html?path=%5c%5cDAYTONA09%5cSoftware%5cBillieJean.mp4 HTTP/1.1" & vbCrLf & vbCrLf
+  Data = "GET /browser.html?path=%5c%5cDAYTONA17%5cSoftware%5cBillieJean.mp4 HTTP/1.1" & vbCrLf & vbCrLf
   SendToAll Data
 
 End Sub
 
 Private Sub Command9_Click()
   Dim Data As String
-  Data = "GET /browser.html?path=%5c%5cDAYTONA09%5cSoftware%5cThriller.mp4 HTTP/1.1" & vbCrLf & vbCrLf
+  Data = "GET /browser.html?path=%5c%5cDAYTONA17%5cSoftware%5cThriller.mp4 HTTP/1.1" & vbCrLf & vbCrLf
   SendToAll Data
 End Sub
 
-'/browser.html?path=%5c%5cDAYTONA09%5cSoftware%5c02.%20Head%20Radio%20(Chart).mp3
+'/browser.html?path=%5c%5cDAYTONA17%5cSoftware%5c02.%20Head%20Radio%20(Chart).mp3
 Private Sub Form_Load()
   Winsock.Load
   
   Dim Index As Integer
   For Index = 0 To 8
     SocketReady(Index) = False
-    SocketAddr(Index) = WSABuildSocketAddress("192.168.10.21" & Index + 1, 80)
+    SocketAddr(Index) = WSABuildSocketAddress("192.168.10.10" & Index + 1, 80)
+    If Index = 8 Then
+        SocketAddr(Index) = WSABuildSocketAddress("192.168.10.117", 80)
+
+    End If
     Socket(Index) = Winsock.ConnectTCP(SocketAddr(Index))
   Next
 End Sub
